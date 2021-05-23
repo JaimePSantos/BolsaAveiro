@@ -65,7 +65,9 @@ TT_MUL = 'MUL'
 TT_DIV = 'DIV'
 TT_LPAREN = 'LPAREN'
 TT_RPAREN = 'RPAREN'
-
+TT_LOWERLIM = 'LOWERLIM'
+TT_UPPERLIM = 'UPPERLIM'
+TT_SEPARATOR = 'SEPARATOR'
 
 class Token:
     def __init__(self, type_, value=None):
@@ -119,6 +121,16 @@ class Lexer:
             elif self.current_char == ')':
                 tokens.append(Token(TT_RPAREN))
                 self.advance()
+            elif self.current_char == '[':
+                tokens.append(Token(TT_LOWERLIM))
+                self.advance()
+            elif self.current_char == ']':
+                tokens.append(Token(TT_UPPERLIM))
+                self.advance()
+            elif self.current_char == ',':
+                tokens.append(Token(TT_SEPARATOR))
+                self.advance()
+
             else:
                 pos_start = self.pos.copy()
                 char = self.current_char
@@ -144,6 +156,26 @@ class Lexer:
             return Token(TT_INT, int(num_str))
         else:
             return Token(TT_FLOAT, float(num_str))
+
+#######################################
+# NODES
+#######################################
+
+class NumberNode:
+	def __init__(self, tok):
+		self.tok = tok
+
+	def __repr__(self):
+		return f'{self.tok}'
+
+class BinOpNode:
+	def __init__(self, left_node, op_tok, right_node):
+		self.left_node = left_node
+		self.op_tok = op_tok
+		self.right_node = right_node
+
+	def __repr__(self):
+		return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
 
 #######################################
