@@ -148,3 +148,9 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
+/.idea/workspace.xml
+/.idea/vcs.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/modules.xml
+/.idea/misc.xml
+/.idea/BolsaAveiro.iml
