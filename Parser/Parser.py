@@ -34,11 +34,15 @@ class Parser:
             tokList.append(self.current_tok)
             res.register(self.advance())
             return self.buildInterval(res, tokList)
+        elif self.current_tok.type in TT_INTERVALDIV:
+            tokList.append(self.current_tok)
+            res.register(self.advance())
+            return self.buildInterval(res, tokList)
         else:
             return self.buildInterval(res, tokList)
 
     def intervalExpr(self):
-        return self.bin_op(self.interval, (TT_INTERVALPLUS, TT_INTERVALDIV, TT_INTERVALMULT))
+        return self.bin_op(self.interval, (TT_INTERVALPLUS, TT_INTERVALMULT))
 
     ###################################
 

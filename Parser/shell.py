@@ -2,11 +2,12 @@ from main import run
 
 while True:
     text = input('basic > ')
-    result, error = run('<stdin>', text)
 
-    if text == "quit": 
-        print("Exiting...") 
+    if text == "quit":
+        print("Exiting...")
         break
+
+    result, error = run('<stdin>', text)
 
     if error:
         print(error.as_string())
