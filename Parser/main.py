@@ -6,7 +6,8 @@ def run(fn, text):
     # Generate tokens
     lexer = Lexer(fn, text)
     tokens, error = lexer.make_tokens()
-    # if error: return None, error
+    if error:
+        return None, error
     # return tokens,error
     # Generate AST
     parser = Parser(tokens)

@@ -1,9 +1,10 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV
 from Errors import InvalidSyntaxError
-from Nodes import IntervalNode, BinOpNode
-from ParseResult import ParseResult
 
+#######################################
+# PARSER
+#######################################
 
 class Parser:
     def __init__(self, tokens):
@@ -82,3 +83,58 @@ class Parser:
         failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                                                  "Expected [ , ] or -"))
         return failure
+
+#######################################
+# PARSERESULT
+#######################################
+
+class ParseResult:
+    def __init__(self):
+        self.error = None
+        self.node = None
+
+    def register(self, res):
+        if isinstance(res, ParseResult):
+            if res.error:
+                self.error = res.error
+            return res.node
+
+        return res
+
+    def success(self, node):
+        self.node = node
+        return self
+
+    def failure(self, error):
+        self.error = error
+        return self
+
+#######################################
+# NODES
+#######################################
+
+class NumberNode:
+    def __init__(self, tok):
+        self.tok = tok
+
+    def __repr__(self):
+        return f'{self.tok}'
+
+
+class IntervalNode:
+    tokList = []
+    def __init__(self,tokList):
+        self.tokList = tokList
+
+    def __repr__(self):
+        return f'{self.tokList}'
+
+
+class BinOpNode:
+    def __init__(self, left_node, op_tok, right_node):
+        self.left_node = left_node
+        self.op_tok = op_tok
+        self.right_node = right_node
+
+    def __repr__(self):
+        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
