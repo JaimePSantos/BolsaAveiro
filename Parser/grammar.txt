@@ -6,6 +6,7 @@ factor  : INT|FLOAT
 				: (PLUS|MINUS) factor
 				: LPAREN expr RPAREN
 
+
 intervalExpr : interval ( (++ | ** | ^-1) interval )?
 
 interval : LOWERLIM expr SEPARATOR expr UPPERLIM
