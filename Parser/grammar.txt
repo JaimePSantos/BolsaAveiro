@@ -9,4 +9,4 @@ factor  : INT|FLOAT
 
 intervalExpr : interval ( (++ | ** | ^-1) interval )?
 
-interval : LOWERLIM expr SEPARATOR expr UPPERLIM
+interval : LOWERLIM INT SEPARATOR INT UPPERLIM
