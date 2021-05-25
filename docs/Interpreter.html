@@ -1,0 +1,288 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Interpreter module &#8212; Interval Language 2021 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lexer module" href="Lexer.html" />
+    <link rel="prev" title="Errors module" href="Errors.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Lexer.html" title="Lexer module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Errors.html" title="Errors module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Interval Language 2021 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Interpreter module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-Interpreter">
+<span id="interpreter-module"></span><h1>Interpreter module<a class="headerlink" href="#module-Interpreter" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Interpreter.Interpreter">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Interpreter.</span></span><span class="sig-name descname"><span class="pre">Interpreter</span></span><a class="headerlink" href="#Interpreter.Interpreter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that evalutates the input.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.no_visit_method">
+<span class="sig-name descname"><span class="pre">no_visit_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.no_visit_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>If no acceptable method found, throw an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the lists of numbers so each input has a clean slate.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.visit">
+<span class="sig-name descname"><span class="pre">visit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.visit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template of the function to visit each method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.visit_BinOpNode">
+<span class="sig-name descname"><span class="pre">visit_BinOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.visit_BinOpNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visits nodes that have binary operations on them.         If the token is + then we simply add all lower limit numbers and upper limit numbers separately.         If the token is * then we join lower limit numbers and upper limit numbers so we can perform interval multiplication on them.
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.visit_LowerNumberNode">
+<span class="sig-name descname"><span class="pre">visit_LowerNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.visit_LowerNumberNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visits the nodes that have lower limit values and constructs a list that keeps track of these values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.visit_SeparatorNode">
+<span class="sig-name descname"><span class="pre">visit_SeparatorNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.visit_SeparatorNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visits the nodes with the SEPARATOR token.
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interpreter.visit_UpperNumberNode">
+<span class="sig-name descname"><span class="pre">visit_UpperNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interpreter.visit_UpperNumberNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visits the nodes that have upper limit values and constructs a list that keeps track of these values.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Interpreter.Interval">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Interpreter.</span></span><span class="sig-name descname"><span class="pre">Interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowerNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us represent the interval that resulted from an operation and keep track of errors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Interval.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Interval.set_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>So we know the position of our intervals.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Interpreter.Number">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Interpreter.</span></span><span class="sig-name descname"><span class="pre">Number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us perform integer operations on the elements belonging to the NumberList class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.Number.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.Number.set_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>For keeping track of number position.
+:param pos_start:
+:param pos_end:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Interpreter.NumberList">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Interpreter.</span></span><span class="sig-name descname"><span class="pre">NumberList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numberList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us keep track of the numbers present in each node so we can perform interval operations on them.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.addIntervals">
+<span class="sig-name descname"><span class="pre">addIntervals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.addIntervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the list with either the lower limits or upper limits of the interval and sums the terms.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.appendNum">
+<span class="sig-name descname"><span class="pre">appendNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apNumber</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.appendNum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to construct the appropriate list of numbers present in each node.
+:param apNumber:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otherNumberList</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function so we can combine the upper limit list with the lower limit list.
+:param otherNumberList:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.invInterval">
+<span class="sig-name descname"><span class="pre">invInterval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.invInterval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum of a list so we can get the upper limit that resulted from the multiplication of intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum of a list so we can get the lower limit that resulted from the multiplication of intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.multIntervals">
+<span class="sig-name descname"><span class="pre">multIntervals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.multIntervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the set of numbers resulted from interval multiplication.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.negInterval">
+<span class="sig-name descname"><span class="pre">negInterval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.negInterval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.NumberList.separatedIntervals">
+<span class="sig-name descname"><span class="pre">separatedIntervals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.NumberList.separatedIntervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the list with the lower limits and upper limits of the intervals and separates them into the original intervals.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Interpreter.RTResult">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Interpreter.</span></span><span class="sig-name descname"><span class="pre">RTResult</span></span><a class="headerlink" href="#Interpreter.RTResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.RTResult.failure">
+<span class="sig-name descname"><span class="pre">failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.RTResult.failure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.RTResult.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.RTResult.register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Interpreter.RTResult.success">
+<span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Interpreter.RTResult.success" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Errors.html"
+                        title="previous chapter">Errors module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Lexer.html"
+                        title="next chapter">Lexer module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Interpreter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Lexer.html" title="Lexer module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Errors.html" title="Errors module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Interval Language 2021 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Interpreter module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Jaime Santos.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    </div>
+  </body>
+</html>
