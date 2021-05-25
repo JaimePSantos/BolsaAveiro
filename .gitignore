@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -154,6 +153,3 @@ tags
 /.idea/modules.xml
 /.idea/misc.xml
 /.idea/BolsaAveiro.iml
-/Parser/Docs/source/
-/Parser/Docs/make.bat
-/Parser/Docs/Makefile
