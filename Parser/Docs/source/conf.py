@@ -30,7 +30,7 @@ release = '2021'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.napoleon'
+
 ]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -46,8 +46,16 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'bizstyle'
-napoleon_google_docstring = False
+
+html_theme = 'ribokit-Sphinx-theme'
+html_theme_path = ['_theme']
+html_theme_options = {
+    'description': 'PCR Assembly Primer Design',
+    'author': author.split(',')[0].strip(),
+    'github_repo': 'ribokit/Primerize',
+    'ga_tracker': 'UA-12345678-9'
+}
+html_additional_pages = {'404': '404.html'}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
