@@ -21,7 +21,6 @@ class Parser:
     def parse(self):
         res = self.intervalExpr()
         if not res.error and self.current_tok.type != TT_EOF:
-            print("HELLO %s"%self.current_tok)
             failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                                                      "Expected an interval operation."))
             return failure
@@ -50,64 +49,72 @@ class Parser:
         return failure
 
 
-    def interval2(self):
-        return self.bin_op(self.intervalFactor, TT_SEPARATOR)
-
     def interval(self):
-        res = ParseResult()
-        tokList = []
-        if self.current_tok.type in TT_INTERVALMINUS:
-            tokList.append(self.current_tok)
-            res.register(self.advance())
-            return self.buildInterval(res, tokList)
-        elif self.current_tok.type in TT_INTERVALDIV:
-            tokList.append(self.current_tok)
-            res.register(self.advance())
-            return self.buildInterval(res, tokList)
-        else:
-            return self.buildInterval(res, tokList)
+        return self.bin_op(self.intervalFactor, TT_SEPARATOR, True)
 
     def intervalExpr(self):
-        return self.bin_op(self.interval2, (TT_INTERVALPLUS, TT_INTERVALMULT))
+        return self.bin_op(self.interval, (TT_INTERVALPLUS, TT_INTERVALMULT))
 
     ###################################
 
-    def bin_op(self, func, ops):
+    def bin_op(self, func, ops,Separator = None):
         res = ParseResult()
         left = res.register(func())
         if res.error:
-            print("HELLO??")
             return res
         while self.current_tok.type in ops:
-            print("HELLO %s"%self.current_tok)
             op_tok = self.current_tok
             res.register(self.advance())
             right = res.register(func())
             if res.error: return res
-            left = BinOpNode(left, op_tok, right)
+            if Separator:
+                left = SeparatorNode(left, op_tok, right)
+            else:
+                left = BinOpNode(left, op_tok, right)
+
         return res.success(left)
 
-    def buildInterval(self, res, tokList):
-        if self.current_tok.type in (TT_LOWERLIM, TT_UPPERLIM):
-            tokList.append(self.current_tok)
+    def separator(self, func, ops):
+        res = ParseResult()
+        left = res.register(func())
+        if res.error:
+            return res
+        while self.current_tok.type in ops:
+            op_tok = self.current_tok
             res.register(self.advance())
-            if self.current_tok.type in (TT_INT, TT_FLOAT):
-                tokList.append(self.current_tok)
-                res.register(self.advance())
-                if self.current_tok.type in TT_SEPARATOR:
-                    tokList.append(self.current_tok)
-                    res.register(self.advance())
-                    if self.current_tok.type in (TT_INT, TT_FLOAT):
-                        tokList.append(self.current_tok)
-                        res.register(self.advance())
-                        if self.current_tok.type in (TT_LOWERLIM, TT_UPPERLIM):
-                            tokList.append(self.current_tok)
-                            res.register(self.advance())
-                            return res.success(IntervalNode(tokList))
+            right = res.register(func())
+            if res.error: return res
+            left = SeparatorNode(left, op_tok, right)
+        return res.success(left)
 
-        failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
-                                                 "Expected an interval or interval operation ( - or /)."))
-        return failure
+#######################################
+# Interpreter
+#######################################
+
+class Interpreter:
+    def visit(self,node):
+        method_name = f'visit_{type(node).__name__}'
+        method = getattr(self,method_name,self.no_visit_method)
+        return method(node)
+
+    def no_visit_method(self,node):
+        raise Exception(f'No visit_{type(node).__name__} defined.')
+
+    def visit_LowerNumberNode(self,node):
+        print("Found LowerNumberNode")
+
+    def visit_UpperNumberNode(self, node):
+        print("Found UpperNumberNode")
+
+    def visit_BinOpNode(self, node):
+        print("Found BinOpNode")
+        self.visit(node.left_node)
+        self.visit(node.right_node)
+
+    def visit_SeparatorNode(self, node):
+        print("Found SeperatorNode")
+        self.visit(node.left_node)
+        self.visit(node.right_node)
 
 #######################################
 # PARSERESULT
@@ -168,6 +175,14 @@ class IntervalNode:
     def __repr__(self):
         return f'{self.tokList}'
 
+class SeparatorNode:
+    def __init__(self, left_node, op_tok, right_node):
+        self.left_node = left_node
+        self.op_tok = op_tok
+        self.right_node = right_node
+
+    def __repr__(self):
+        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):
