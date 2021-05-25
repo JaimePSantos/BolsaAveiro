@@ -2,6 +2,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV
 from Errors import InvalidSyntaxError
 
+
 #######################################
 # PARSER
 #######################################
@@ -48,7 +49,6 @@ class Parser:
                                                  "Expected an interval or interval operation ( - or /)."))
         return failure
 
-
     def interval(self):
         return self.bin_op(self.intervalFactor, TT_SEPARATOR, True)
 
@@ -57,7 +57,7 @@ class Parser:
 
     ###################################
 
-    def bin_op(self, func, ops,Separator = None):
+    def bin_op(self, func, ops, Separator=None):
         res = ParseResult()
         left = res.register(func())
         if res.error:
@@ -87,34 +87,6 @@ class Parser:
             left = SeparatorNode(left, op_tok, right)
         return res.success(left)
 
-#######################################
-# Interpreter
-#######################################
-
-class Interpreter:
-    def visit(self,node):
-        method_name = f'visit_{type(node).__name__}'
-        method = getattr(self,method_name,self.no_visit_method)
-        return method(node)
-
-    def no_visit_method(self,node):
-        raise Exception(f'No visit_{type(node).__name__} defined.')
-
-    def visit_LowerNumberNode(self,node):
-        print("Found LowerNumberNode")
-
-    def visit_UpperNumberNode(self, node):
-        print("Found UpperNumberNode")
-
-    def visit_BinOpNode(self, node):
-        print("Found BinOpNode")
-        self.visit(node.left_node)
-        self.visit(node.right_node)
-
-    def visit_SeparatorNode(self, node):
-        print("Found SeperatorNode")
-        self.visit(node.left_node)
-        self.visit(node.right_node)
 
 #######################################
 # PARSERESULT
@@ -141,6 +113,7 @@ class ParseResult:
         self.error = error
         return self
 
+
 #######################################
 # NODES
 #######################################
@@ -148,16 +121,22 @@ class ParseResult:
 class LowerNumberNode:
     def __init__(self, tok):
         self.tok = tok
+        self.pos_start = self.tok.pos_start
+        self.pos_end = self.tok.pos_end
 
     def __repr__(self):
         return f'{self.tok}'
+
 
 class UpperNumberNode:
     def __init__(self, tok):
         self.tok = tok
+        self.pos_start = self.tok.pos_start
+        self.pos_end = self.tok.pos_end
 
     def __repr__(self):
         return f'{self.tok}'
+
 
 class NumberNode:
     def __init__(self, tok):
@@ -169,26 +148,33 @@ class NumberNode:
 
 class IntervalNode:
     tokList = []
-    def __init__(self,tokList):
+
+    def __init__(self, tokList):
         self.tokList = tokList
 
     def __repr__(self):
         return f'{self.tokList}'
+
 
 class SeparatorNode:
     def __init__(self, left_node, op_tok, right_node):
         self.left_node = left_node
         self.op_tok = op_tok
         self.right_node = right_node
-
+        self.pos_start = self.left_node.pos_start
+        self.pos_end = self.right_node.pos_end
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
+
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):
         self.left_node = left_node
         self.op_tok = op_tok
         self.right_node = right_node
+
+        self.pos_start = self.left_node.pos_start
+        self.pos_end = self.right_node.pos_end
 
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'

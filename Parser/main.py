@@ -1,5 +1,6 @@
-from Parser import Parser, Interpreter
 from Lexer import Lexer
+from Interpreter import Interpreter
+from Parser import Parser
 
 
 def run(fn, text):
@@ -16,7 +17,10 @@ def run(fn, text):
         return None, ast.error
 
     interpreter = Interpreter()
-    interpreter.visit(ast.node)
+    interpreter.reset()
+    result = interpreter.visit(ast.node)
+    # print(interpreter.upperNumberList)
+    # print(interpreter.lowerNumberList)
     #return ast.node, ast.error
 
-    return None,None
+    return result,None
