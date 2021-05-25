@@ -3,7 +3,7 @@ from main import run
 while True:
     text = input('basic > ')
 
-    if text == "quit":
+    if text == "q":
         print("Exiting...")
         break
 

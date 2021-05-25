@@ -3,10 +3,17 @@ expr    : term ((PLUS|MINUS) term)*
 term    : factor ((MUL|DIV) factor)*
 
 factor  : INT|FLOAT
-				: (PLUS|MINUS) factor
-				: LPAREN expr RPAREN
+		: (PLUS|MINUS) factor
+		: LPAREN expr RPAREN
 
 
-intervalExpr : interval ( (++ | ** | ^-1) interval )?
+intervalExpr : (/,-)? interval ( (+ | *) interval )?
 
 interval : LOWERLIM INT SEPARATOR INT UPPERLIM
+
+
+interval : lowerNum SEPARATOR upperNum
+
+lowerNum : LOWERLIM INT
+
+upperNum : INT UPPERLIM

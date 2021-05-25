@@ -50,25 +50,11 @@ class Parser:
         return failure
 
 
-    def interval2(self):
+    def interval(self):
         return self.bin_op(self.intervalFactor, TT_SEPARATOR)
 
-    def interval(self):
-        res = ParseResult()
-        tokList = []
-        if self.current_tok.type in TT_INTERVALMINUS:
-            tokList.append(self.current_tok)
-            res.register(self.advance())
-            return self.buildInterval(res, tokList)
-        elif self.current_tok.type in TT_INTERVALDIV:
-            tokList.append(self.current_tok)
-            res.register(self.advance())
-            return self.buildInterval(res, tokList)
-        else:
-            return self.buildInterval(res, tokList)
-
     def intervalExpr(self):
-        return self.bin_op(self.interval2, (TT_INTERVALPLUS, TT_INTERVALMULT))
+        return self.bin_op(self.interval, (TT_INTERVALPLUS, TT_INTERVALMULT))
 
     ###################################
 
@@ -86,28 +72,6 @@ class Parser:
             if res.error: return res
             left = BinOpNode(left, op_tok, right)
         return res.success(left)
-
-    def buildInterval(self, res, tokList):
-        if self.current_tok.type in (TT_LOWERLIM, TT_UPPERLIM):
-            tokList.append(self.current_tok)
-            res.register(self.advance())
-            if self.current_tok.type in (TT_INT, TT_FLOAT):
-                tokList.append(self.current_tok)
-                res.register(self.advance())
-                if self.current_tok.type in TT_SEPARATOR:
-                    tokList.append(self.current_tok)
-                    res.register(self.advance())
-                    if self.current_tok.type in (TT_INT, TT_FLOAT):
-                        tokList.append(self.current_tok)
-                        res.register(self.advance())
-                        if self.current_tok.type in (TT_LOWERLIM, TT_UPPERLIM):
-                            tokList.append(self.current_tok)
-                            res.register(self.advance())
-                            return res.success(IntervalNode(tokList))
-
-        failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
-                                                 "Expected an interval or interval operation ( - or /)."))
-        return failure
 
 #######################################
 # PARSERESULT
