@@ -1,7 +1,7 @@
 from main import run
 
 while True:
-    text = input('basic > ')
+    text = input('Intervals > ')
 
     if text == "q":
         print("Exiting...")
