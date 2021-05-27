@@ -28,12 +28,14 @@ class Interpreter:
         # print("Found LowerNumberNode")
         num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
         self.lowerNumberList.appendNum(num)
+        return num
 
     def visit_UpperNumberNode(self, node):
         'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
         # print("Found UpperNumberNode")
         num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
         self.upperNumberList.appendNum(num)
+        return num
 
     def visit_BinOpNode(self, node):
         '''
@@ -66,8 +68,9 @@ class Interpreter:
         :return:
         '''
         # print("Found SeperatorNode")
-        self.visit(node.left_node)
-        self.visit(node.right_node)
+        lower = self.visit(node.left_node)
+        upper = self.visit(node.right_node)
+        return Interval(lower, upper).set_pos()
 
     def reset(self):
         '''
@@ -76,6 +79,7 @@ class Interpreter:
         '''
         self.lowerNumberNodeList = []
         self.upperNumberNodeList = []
+
 
 #######################################
 # VALUES

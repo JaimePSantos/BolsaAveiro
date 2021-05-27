@@ -7,13 +7,8 @@ factor  : INT|FLOAT
 		: LPAREN expr RPAREN
 
 
-intervalExpr : (/,-)? interval ( (+ | *) interval )?
+interval : (-,/)? lowerNum SEPARATOR upperNum
 
-interval : LOWERLIM INT SEPARATOR INT UPPERLIM
+lowerNum : LOWERLIM (-)? INT
 
-
-interval : lowerNum SEPARATOR upperNum
-
-lowerNum : LOWERLIM INT
-
-upperNum : INT UPPERLIM
+upperNum : (-)? INT UPPERLIM

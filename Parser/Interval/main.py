@@ -15,12 +15,12 @@ def run(fn, text):
     ast = parser.parse()
     if ast.error:
         return None, ast.error
+    # return ast.node, ast.error
 
     interpreter = Interpreter()
     interpreter.reset()
     result = interpreter.visit(ast.node)
     # print(interpreter.upperNumberList)
     # print(interpreter.lowerNumberList)
-    #return ast.node, ast.error
 
     return result,None
