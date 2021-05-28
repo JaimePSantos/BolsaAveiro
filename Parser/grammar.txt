@@ -7,7 +7,24 @@ factor  : INT|FLOAT
 		: LPAREN expr RPAREN
 
 
-interval : (-,/)? lowerNum SEPARATOR upperNum
+
+
+Programs :
+
+Props : intervalExpr (&, ||) intervalExpr
+      : Forall VAR Props
+
+
+intervalExpr : intervalExpr (+,*) intervalExpr
+             : (/,-)? interval
+
+
+intervalExpr : intervalTerm ((+) intervalTerm)*
+
+intervalTerm : interval ((*) interval)*
+
+interval : (-)? lowerNum SEPARATOR upperNum
+               : VAR
 
 lowerNum : LOWERLIM (-)? INT
 

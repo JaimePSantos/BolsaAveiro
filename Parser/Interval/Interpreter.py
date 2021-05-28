@@ -11,6 +11,9 @@ class Interpreter:
     def __init__(self):
         self.lowerNumberList = NumberList()
         self.upperNumberList = NumberList()
+        self.resultInterval = Interval()
+        self.intervalList = [Interval()]
+        self.intervalList.pop(0)
         self.intervalNumberList = [NumberList()]
 
     def visit(self, node):
@@ -50,16 +53,40 @@ class Interpreter:
         if node.op_tok.type in TT_INTERVALPLUS:
             self.visit(node.left_node)
             self.visit(node.right_node)
-            resultLower = self.lowerNumberList.addIntervals()
-            resultUpper = self.upperNumberList.addIntervals()
-            return Interval(resultLower,resultUpper).set_pos()
+            # resultLower = self.lowerNumberList.addIntervals()
+            # resultUpper = self.upperNumberList.addIntervals()
+            # return Interval(resultLower,resultUpper).set_pos()
+            self.addIntervals()
+            self.updateIntervalList()
+            return self.resultInterval
 
         if node.op_tok.type in TT_INTERVALMULT:
             self.visit(node.left_node)
             self.visit(node.right_node)
-            self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
-            resultList = self.intervalNumberList.multIntervals()
-            return Interval(resultList.min(),resultList.max()).set_pos()
+            # self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
+            resultList = self.multIntervals()
+            self.resultInterval = Interval(resultList.min(),resultList.max()).set_pos()
+            self.updateIntervalList()
+            return self.resultInterval
+
+    def addIntervals(self):
+        intervalList = self.intervalList
+        resultLower = intervalList[0].lowerNum + intervalList[1].lowerNum
+        resultUpper = intervalList[0].upperNum + intervalList[1].upperNum
+        self.resultInterval = Interval(resultLower,resultUpper).set_pos()
+        return self.resultInterval
+
+    def multIntervals(self):
+        '''
+        Generates the set of numbers resulted from interval multiplication.
+        :return:
+        '''
+        # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
+        # intervalList = NumberList(self.numberList).separatedIntervals()
+        intervalList = self.intervalList
+        resultList = [intervalList[0].lowerNum * intervalList[1].lowerNum, intervalList[0].lowerNum * intervalList[1].upperNum,
+                      intervalList[0].upperNum * intervalList[1].lowerNum, intervalList[0].upperNum * intervalList[1].upperNum]
+        return NumberList(resultList)
 
     def visit_SeparatorNode(self, node):
         '''
@@ -70,7 +97,14 @@ class Interpreter:
         # print("Found SeperatorNode")
         lower = self.visit(node.left_node)
         upper = self.visit(node.right_node)
-        return Interval(lower, upper).set_pos()
+        interval = Interval(lower, upper).set_pos()
+        self.intervalList.append(interval)
+        print("Interval List1 " + str(self.intervalList))
+        return interval
+
+    def updateIntervalList(self):
+        self.intervalList = []
+        self.intervalList.append(self.resultInterval)
 
     def reset(self):
         '''
@@ -168,14 +202,15 @@ class NumberList:
             resultNumber += num
         return resultNumber
 
-    def multIntervals(self):
+    def multIntervals(self,intervalList):
         '''
         Generates the set of numbers resulted from interval multiplication.
         :return:
         '''
         #TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
-        intervalList = NumberList(self.numberList).separatedIntervals()
+        # intervalList = NumberList(self.numberList).separatedIntervals()
         resultList = [intervalList[0][0]*intervalList[1][0], intervalList[0][0]*intervalList[1][1], intervalList[0][1]*intervalList[1][0],intervalList[0][1]*intervalList[1][1]]
+
         return NumberList(resultList)
 
     def negInterval(self):
@@ -192,12 +227,14 @@ class NumberList:
         :return:
         '''
         separatedIntervals = [[]]
+        # print("Number List: "+str(self.numberList))
         for i in range(0,len(self.numberList)):
             if i >= len(self.numberList)-2:
                 break
             interval = [self.numberList[i],self.numberList[i+2]]
             separatedIntervals.append(interval)
         separatedIntervals.pop(0)
+        # print("Separated Intervals: "+str(separatedIntervals))
         return separatedIntervals
 
     def min(self):
@@ -238,10 +275,14 @@ class Interval:
     '''
     This class helps us represent the interval that resulted from an operation and keep track of errors.
     '''
-    def __init__(self,lowerNum,upperNum):
-        self.lowerNum = lowerNum
-        self.upperNum = upperNum
-        self.set_pos()
+    def __init__(self,lowerNum=None,upperNum=None):
+        if lowerNum and upperNum is not None:
+            self.lowerNum = lowerNum
+            self.upperNum = upperNum
+            self.set_pos()
+        else:
+            self.lowerNum = None
+            self.upperNum = None
 
     def set_pos(self):
         '''

@@ -52,8 +52,11 @@ class Parser:
     def interval(self):
         return self.bin_op(self.intervalFactor, TT_SEPARATOR, True)
 
+    def intervalTerm(self):
+        return self.bin_op(self.interval,TT_INTERVALMULT)
+
     def intervalExpr(self):
-        return self.bin_op(self.interval, (TT_INTERVALPLUS, TT_INTERVALMULT))
+        return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
 
     ###################################
 
