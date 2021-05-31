@@ -1,5 +1,6 @@
-from Tokens import Token, TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX
+from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
+    TT_LPAREN, TT_RPAREN,Token
 from Errors import IllegalCharError
 
 
@@ -47,6 +48,12 @@ class Lexer:
                 self.advance()
             elif self.current_char == '/':
                 tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == '(':
+                tokens.append(Token(TT_LPAREN, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == ')':
+                tokens.append(Token(TT_RPAREN, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '>':
                 if self.next_char == '=':

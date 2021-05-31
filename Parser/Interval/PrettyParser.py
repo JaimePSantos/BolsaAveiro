@@ -1,5 +1,6 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
+    TT_LPAREN, TT_RPAREN
 from Errors import InvalidSyntaxError
 
 
@@ -32,6 +33,14 @@ class PrettyParser:
 
     def intervalFactor(self):
         res = ParseResult()
+        if self.current_tok.type in TT_NOT:
+            #TODO: Nao tenho a certeza se este NOT esta correto.
+            tok = self.current_tok
+            res.register(self.advance())
+            factor = res.register(self.intervalEq())
+            if res.error: return res
+            return res.success(UnaryOpNode(tok, factor))
+
         if self.current_tok.type in TT_LOWERLIM:
             res.register(self.advance())
             success = res.success(LowerNumberNode(self.current_tok))
@@ -46,6 +55,18 @@ class PrettyParser:
                 res.register(self.advance())
                 return success
 
+        elif self.current_tok.type == TT_LPAREN:
+            res.register(self.advance())
+            expr = res.register(self.propExpr())
+            if res.error: return res
+            if self.current_tok.type == TT_RPAREN:
+                res.register(self.advance())
+                return res.success(expr)
+            else:
+                return res.failure(InvalidSyntaxError(
+                    self.current_tok.pos_start, self.current_tok.pos_end,
+                    "Expected ')'"
+                ))
         failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                                                  "Expected an interval or interval operation ( - or /)."))
         return failure
@@ -134,7 +155,7 @@ class LowerNumberNode:
         self.pos_end = self.tok.pos_end
 
     def __repr__(self):
-        return f'{self.tok}'
+        return f'{self.tok.value}'
 
 
 class UpperNumberNode:
@@ -144,7 +165,7 @@ class UpperNumberNode:
         self.pos_end = self.tok.pos_end
 
     def __repr__(self):
-        return f'{self.tok}'
+        return f'{self.tok.value}'
 
 class IntervalNode:
     tokList = []
@@ -171,16 +192,18 @@ class BinOpNode:
         self.left_node = left_node
         if op_tok.type in TT_INTERVALPLUS:
             self.op_tok = '+'
-        if op_tok.type in TT_INTERVALMULT:
+        elif op_tok.type in TT_INTERVALMULT:
             self.op_tok = '*'
-        if op_tok.type in TT_SEQ:
+        elif op_tok.type in TT_SEQ:
             self.op_tok = '<='
-        if op_tok.type in TT_GEQ:
+        elif op_tok.type in TT_GEQ:
             self.op_tok = '>='
-        if op_tok.type in TT_ST:
+        elif op_tok.type in TT_ST:
             self.op_tok = '<'
-        if op_tok.type in TT_GT:
+        elif op_tok.type in TT_GT:
             self.op_tok = '>'
+        else:
+            self.op_tok = op_tok
         self.right_node = right_node
         self.pos_start = self.left_node.pos_start
         self.pos_end = self.right_node.pos_end
@@ -193,6 +216,8 @@ class PropOpNode:
         self.left_node = left_node
         if op_tok.type in TT_AND:
             self.op_tok = '∧'
+        else:
+            self.op_tok = op_tok
         self.right_node = right_node
         self.pos_start = self.left_node.pos_start
         self.pos_end = self.right_node.pos_end
@@ -202,9 +227,14 @@ class PropOpNode:
 
 class UnaryOpNode:
     def __init__(self, op_tok, node):
-        self.op_tok = op_tok
+        if op_tok.type in TT_NOT:
+            self.op_tok = '¬'
+        else:
+            self.op_tok = op_tok
         self.node = node
+        self.pos_start = op_tok.pos_start
+        self.pos_end = node.pos_end
 
     def __repr__(self):
-        return f'({self.op_tok}, {self.node})'
-
+        print(self.op_tok)
+        return f'( {self.op_tok}{self.node} )'

@@ -1,5 +1,6 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
+    TT_LPAREN, TT_RPAREN
 from Errors import InvalidSyntaxError
 
 
@@ -32,6 +33,14 @@ class Parser:
 
     def intervalFactor(self):
         res = ParseResult()
+        if self.current_tok.type in TT_NOT:
+            #TODO: Nao tenho a certeza se este NOT esta correto.
+            tok = self.current_tok
+            res.register(self.advance())
+            factor = res.register(self.intervalEq())
+            if res.error: return res
+            return res.success(UnaryOpNode(tok, factor))
+
         if self.current_tok.type in TT_LOWERLIM:
             res.register(self.advance())
             success = res.success(LowerNumberNode(self.current_tok))
@@ -46,12 +55,24 @@ class Parser:
                 res.register(self.advance())
                 return success
 
+        elif self.current_tok.type == TT_LPAREN:
+            res.register(self.advance())
+            expr = res.register(self.propExpr())
+            if res.error: return res
+            if self.current_tok.type == TT_RPAREN:
+                res.register(self.advance())
+                return res.success(expr)
+            else:
+                return res.failure(InvalidSyntaxError(
+                    self.current_tok.pos_start, self.current_tok.pos_end,
+                    "Expected ')'"
+                ))
         failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                                                  "Expected an interval or interval operation ( - or /)."))
         return failure
 
     def interval(self):
-        return self.bin_op(self.intervalFactor, TT_SEPARATOR, True)
+        return self.bin_op(self.intervalFactor, (TT_SEPARATOR), True)
 
     def intervalTerm(self):
         return self.bin_op(self.interval,TT_INTERVALMULT)
@@ -60,6 +81,7 @@ class Parser:
         return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
 
     #TODO: Decidir a prioridade de uma igualdade. Deve ser depois da soma mas antes do &?
+    #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
     def intervalEq(self):
         return self.bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
@@ -189,9 +211,11 @@ class PropOpNode:
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
 class UnaryOpNode:
-	def __init__(self, op_tok, node):
-		self.op_tok = op_tok
-		self.node = node
+    def __init__(self, op_tok, node):
+        self.op_tok = op_tok
+        self.node = node
+        self.pos_start = self.op_tok.pos_start
+        self.pos_end = node.pos_end
 
-	def __repr__(self):
-		return f'({self.op_tok}, {self.node})'
+    def __repr__(self):
+        return f'({self.op_tok}, {self.node})'
