@@ -1,9 +1,10 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,Token
+    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR
 from Errors import IllegalCharError
+import string
 
-
+LETTERS = string.ascii_letters
 DIGITS = '0123456789'
 
 
@@ -28,6 +29,9 @@ class Lexer:
                 self.advance()
             elif self.current_char in DIGITS:
                 tokens.append(self.make_number())
+                print(self.current_char)
+            elif self.current_char in LETTERS:
+                tokens.append(self.make_letter())
             elif self.current_char == '[':
                 tokens.append(Token(TT_LOWERLIM, pos_start=self.pos))
                 self.advance()
@@ -104,6 +108,15 @@ class Lexer:
             return Token(TT_INT, int(num_str), pos_start, self.pos)
         else:
             return Token(TT_FLOAT, float(num_str), pos_start, self.pos)
+
+    def make_letter(self):
+        post_start = self.pos.copy()
+        letter_str = ''
+        while self.current_char is not None and self.current_char in LETTERS:
+            letter_str+=self.current_char
+            self.advance()
+        return Token(TT_INTERVALVAR, str(letter_str), post_start, self.pos)
+
 
 class Position:
     def __init__(self, idx, ln, col, fn, ftxt):

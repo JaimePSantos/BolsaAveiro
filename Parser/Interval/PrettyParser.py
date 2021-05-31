@@ -1,6 +1,6 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN
+    TT_LPAREN, TT_RPAREN, TT_INTERVALVAR
 from Errors import InvalidSyntaxError
 
 
@@ -41,19 +41,24 @@ class PrettyParser:
             if res.error: return res
             return res.success(UnaryOpNode(tok, factor))
 
-        if self.current_tok.type in TT_LOWERLIM:
+        elif self.current_tok.type in TT_LOWERLIM:
             res.register(self.advance())
             success = res.success(LowerNumberNode(self.current_tok))
             res.register(self.advance())
             return success
 
-        if self.current_tok.type in TT_INT:
+        elif self.current_tok.type in TT_INT:
             tokTemp = self.current_tok
             res.register(self.advance())
             if self.current_tok.type in TT_UPPERLIM:
                 success = res.success(UpperNumberNode(tokTemp))
                 res.register(self.advance())
                 return success
+
+        elif self.current_tok.type in TT_INTERVALVAR:
+            success = res.success(IntervalVarNode(self.current_tok))
+            res.register(self.advance())
+            return success
 
         elif self.current_tok.type == TT_LPAREN:
             res.register(self.advance())
@@ -236,5 +241,13 @@ class UnaryOpNode:
         self.pos_end = node.pos_end
 
     def __repr__(self):
-        print(self.op_tok)
         return f'( {self.op_tok}{self.node} )'
+
+class IntervalVarNode:
+    def __init__(self, tok):
+        self.tok = tok
+        self.pos_start = self.tok.pos_start
+        self.pos_end = self.tok.pos_end
+
+    def __repr__(self):
+        return f'{self.tok.value}'

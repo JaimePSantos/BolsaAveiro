@@ -10,7 +10,7 @@ def run(fn, text):
     if error:
         return None, error
     print("\nLEXER: %s\n"%tokens)
-    #
+
     parser = Parser(tokens)
     ast = parser.parse()
     if ast.error:
