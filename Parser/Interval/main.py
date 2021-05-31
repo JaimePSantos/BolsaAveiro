@@ -1,6 +1,7 @@
 from Lexer import Lexer
 from Interpreter import Interpreter
 from Parser import Parser
+from PrettyParser import PrettyParser
 
 
 def run(fn, text):
@@ -10,11 +11,17 @@ def run(fn, text):
         return None, error
     print("\nLEXER: %s\n"%tokens)
     #
-    # parser = Parser(tokens)
-    # ast = parser.parse()
-    # if ast.error:
-        # return None, ast.error
-    # print("PARSER: %s\n"%ast.node)
+    parser = Parser(tokens)
+    ast = parser.parse()
+    if ast.error:
+        return None, ast.error
+    print("PARSER: %s\n"%ast.node)
+
+    prettyParser = PrettyParser(tokens)
+    prettyAst = prettyParser.parse()
+    if ast.error:
+        return None, ast.error
+    print("PRETTYPARSER: %s\n"%prettyAst.node)
 
     # interpreter = Interpreter()
     # interpreter.reset()

@@ -7,7 +7,7 @@ from Errors import InvalidSyntaxError
 # PARSER
 #######################################
 
-class Parser:
+class PrettyParser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.tok_idx = -1
@@ -158,40 +158,53 @@ class IntervalNode:
 class SeparatorNode:
     def __init__(self, left_node, op_tok, right_node):
         self.left_node = left_node
-        self.op_tok = op_tok
+        self.op_tok = ', '
         self.right_node = right_node
         self.pos_start = self.left_node.pos_start
         self.pos_end = self.right_node.pos_end
     def __repr__(self):
-        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
+        return f'[{self.left_node} {self.op_tok} {self.right_node}]'
 
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):
         self.left_node = left_node
-        self.op_tok = op_tok
+        if op_tok.type in TT_INTERVALPLUS:
+            self.op_tok = '+'
+        if op_tok.type in TT_INTERVALMULT:
+            self.op_tok = '*'
+        if op_tok.type in TT_SEQ:
+            self.op_tok = '<='
+        if op_tok.type in TT_GEQ:
+            self.op_tok = '>='
+        if op_tok.type in TT_ST:
+            self.op_tok = '<'
+        if op_tok.type in TT_GT:
+            self.op_tok = '>'
         self.right_node = right_node
         self.pos_start = self.left_node.pos_start
         self.pos_end = self.right_node.pos_end
 
     def __repr__(self):
-        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
+        return f'({self.left_node} {self.op_tok} {self.right_node})'
 
 class PropOpNode:
     def __init__(self, left_node, op_tok, right_node):
         self.left_node = left_node
-        self.op_tok = op_tok
+        if op_tok.type in TT_AND:
+            self.op_tok = '∧'
         self.right_node = right_node
         self.pos_start = self.left_node.pos_start
         self.pos_end = self.right_node.pos_end
 
     def __repr__(self):
-        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
+        return f'({self.left_node} {self.op_tok} {self.right_node})'
 
 class UnaryOpNode:
-	def __init__(self, op_tok, node):
-		self.op_tok = op_tok
-		self.node = node
+    def __init__(self, op_tok, node):
+        self.op_tok = op_tok
+        self.node = node
 
-	def __repr__(self):
-		return f'({self.op_tok}, {self.node})'
+    def __repr__(self):
+        return f'({self.op_tok}, {self.node})'
+

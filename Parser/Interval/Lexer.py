@@ -1,5 +1,5 @@
 from Tokens import Token, TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_NEQ,TT_GE,TT_NE,TT_NOT,TT_AND,TT_FORALL,TT_BOX
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX
 from Errors import IllegalCharError
 
 
@@ -54,15 +54,15 @@ class Lexer:
                     self.advance()
                     self.advance()
                 else:
-                    tokens.append(Token(TT_GE, pos_start=self.pos))
+                    tokens.append(Token(TT_GT, pos_start=self.pos))
                     self.advance()
             elif self.current_char == '<':
                 if self.next_char == '=':
-                    tokens.append(Token(TT_NEQ, pos_start=self.pos))
+                    tokens.append(Token(TT_SEQ, pos_start=self.pos))
                     self.advance()
                     self.advance()
                 else:
-                    tokens.append(Token(TT_NE, pos_start=self.pos))
+                    tokens.append(Token(TT_ST, pos_start=self.pos))
                     self.advance()
             elif self.current_char == '!':
                 tokens.append(Token(TT_NOT, pos_start=self.pos))
