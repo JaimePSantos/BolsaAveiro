@@ -11,8 +11,11 @@ factor  : INT|FLOAT
 
 Programs :
 
-Props : intervalExpr (&, ||) intervalExpr
+Props : intervalExpr (>, <,>=,<=) intervalExpr
+      : NOT Props
+      : Props (AND) Props
       : Forall VAR Props
+      : BOX(Program) Props
 
 
 intervalExpr : intervalExpr (+,*) intervalExpr
@@ -24,7 +27,7 @@ intervalExpr : intervalTerm ((+) intervalTerm)*
 intervalTerm : interval ((*) interval)*
 
 interval : (-)? lowerNum SEPARATOR upperNum
-               : VAR
+         : VAR
 
 lowerNum : LOWERLIM (-)? INT
 

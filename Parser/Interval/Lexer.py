@@ -1,5 +1,5 @@
 from Tokens import Token, TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_NEQ,TT_GE,TT_NE,TT_NOT,TT_AND,TT_FORALL,TT_BOX
 from Errors import IllegalCharError
 
 
@@ -12,11 +12,13 @@ class Lexer:
         self.text = text
         self.pos = Position(-1, 0, -1, fn, text)
         self.current_char = None
+        self.next_char = None
         self.advance()
 
     def advance(self):
         self.pos.advance(self.current_char)
         self.current_char = self.text[self.pos.idx] if self.pos.idx < len(self.text) else None
+        self.next_char = self.text[self.pos.idx+1] if self.pos.idx < len(self.text)-1 else None
 
     def make_tokens(self):
         tokens = []
@@ -45,6 +47,28 @@ class Lexer:
                 self.advance()
             elif self.current_char == '/':
                 tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == '>':
+                if self.next_char == '=':
+                    tokens.append(Token(TT_GEQ, pos_start=self.pos))
+                    self.advance()
+                    self.advance()
+                else:
+                    tokens.append(Token(TT_GE, pos_start=self.pos))
+                    self.advance()
+            elif self.current_char == '<':
+                if self.next_char == '=':
+                    tokens.append(Token(TT_NEQ, pos_start=self.pos))
+                    self.advance()
+                    self.advance()
+                else:
+                    tokens.append(Token(TT_NE, pos_start=self.pos))
+                    self.advance()
+            elif self.current_char == '!':
+                tokens.append(Token(TT_NOT, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == '&':
+                tokens.append(Token(TT_AND, pos_start=self.pos))
                 self.advance()
             else:
                 pos_start = self.pos.copy()

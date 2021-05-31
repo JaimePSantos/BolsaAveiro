@@ -8,13 +8,13 @@ def run(fn, text):
     tokens, error = lexer.make_tokens()
     if error:
         return None, error
-    # print("\nLEXER: %s\n"%tokens)
-
-    parser = Parser(tokens)
-    ast = parser.parse()
-    if ast.error:
-        return None, ast.error
-    print("PARSER: %s\n"%ast.node)
+    print("\nLEXER: %s\n"%tokens)
+    #
+    # parser = Parser(tokens)
+    # ast = parser.parse()
+    # if ast.error:
+        # return None, ast.error
+    # print("PARSER: %s\n"%ast.node)
 
     # interpreter = Interpreter()
     # interpreter.reset()
