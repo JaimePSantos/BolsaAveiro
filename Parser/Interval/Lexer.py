@@ -1,6 +1,6 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR
+    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE
 from Errors import IllegalCharError
 import string
 
@@ -29,7 +29,6 @@ class Lexer:
                 self.advance()
             elif self.current_char in DIGITS:
                 tokens.append(self.make_number())
-                print(self.current_char)
             elif self.current_char in LETTERS:
                 tokens.append(self.make_letter())
             elif self.current_char == '[':
@@ -79,7 +78,26 @@ class Lexer:
                 tokens.append(Token(TT_NOT, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '&':
-                tokens.append(Token(TT_AND, pos_start=self.pos))
+                if self.next_char == '&':
+                    tokens.append(Token(TT_PROGAND,pos_start=self.pos))
+                    self.advance()
+                    self.advance()
+                else:
+                    tokens.append(Token(TT_AND, pos_start=self.pos))
+                    self.advance()
+            elif self.current_char == '|':
+                if self.next_char == '|':
+                    tokens.append(Token(TT_PROGUNION,pos_start=self.pos))
+                    self.advance()
+                    self.advance()
+                # else:
+                #     tokens.append(Token(TT_AND, pos_start=self.pos))
+                #     self.advance()
+            elif self.current_char == '?':
+                tokens.append(Token(TT_PROGTEST, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == ';':
+                tokens.append(Token(TT_PROGSEQUENCE, pos_start=self.pos))
                 self.advance()
             else:
                 pos_start = self.pos.copy()
