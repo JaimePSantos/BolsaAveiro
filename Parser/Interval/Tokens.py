@@ -28,8 +28,7 @@ TT_PROGAND = 'PROGAND'
 TT_PROGUNION = 'PROGUNION'
 TT_PROGSEQUENCE = 'PROGSEQUENCE'
 TT_PROGASSIGN = 'PROGASSIGN'
-
-
+TT_DIFFERENTIALVAR = 'DIFFERENTIALVAR'
 
 class Token:
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):

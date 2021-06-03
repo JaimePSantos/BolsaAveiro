@@ -35,6 +35,14 @@ class IntervalVarNode:
     def __repr__(self):
         return f'{self.tok}'
 
+class DifferentialVarNode:
+    def __init__(self, tok):
+        self.tok = tok
+        self.pos_start = self.tok.pos_start
+        self.pos_end = self.tok.pos_end
+
+    def __repr__(self):
+        return f'{self.tok}'
 
 class SeparatorNode:
     def __init__(self, left_node, op_tok, right_node):

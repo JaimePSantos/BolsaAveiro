@@ -1,10 +1,11 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN
+    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
+    TT_DIFFERENTIALVAR
 from Errors import IllegalCharError
 import string
 
-LETTERS = string.ascii_letters
+LETTERS = string.ascii_letters + "'"
 DIGITS = '0123456789'
 
 
@@ -151,6 +152,8 @@ class Lexer:
         while self.current_char is not None and self.current_char in LETTERS:
             letter_str+=self.current_char
             self.advance()
+        if "'" in letter_str:
+            return Token(TT_DIFFERENTIALVAR,str(letter_str), post_start, self.pos)
         return Token(TT_INTERVALVAR, str(letter_str), post_start, self.pos)
 
 

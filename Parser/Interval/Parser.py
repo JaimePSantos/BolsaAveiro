@@ -1,9 +1,10 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS,\
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN
+    TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
+    TT_DIFFERENTIALVAR
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
-    UnaryOpNode
+    UnaryOpNode,DifferentialVarNode
 
 
 #######################################
@@ -43,6 +44,7 @@ class Parser:
             if type(factor) is not PropOpNode:
                 return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
                                                      "Can only perform test action on propositions."))
+            #TODO: Talvez definir um nodo unario de programas.
             return res.success(UnaryOpNode(tok, factor))
         if self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
@@ -65,6 +67,11 @@ class Parser:
                 return success
         elif self.current_tok.type in TT_INTERVALVAR:
             success = res.success(IntervalVarNode(self.current_tok))
+            if res.error: return res
+            res.register(self.advance())
+            return success
+        elif self.current_tok.type in TT_DIFFERENTIALVAR:
+            success = res.success(DifferentialVarNode(self.current_tok))
             if res.error: return res
             res.register(self.advance())
             return success
@@ -154,6 +161,9 @@ class Parser:
             if ops == 'PROGASSIGN' and type(left) is not IntervalVarNode:
                 return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      "Can only assign to variables."))
+            if ops == 'PROGAND' and type(right) is not PropOpNode:
+                return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(right)} is not a proposition.'))
             if res.error: return res
             left = ProgOpNode(left, op_tok, right)
         return res.success(left)
