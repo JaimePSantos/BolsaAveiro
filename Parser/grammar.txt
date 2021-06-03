@@ -9,7 +9,7 @@ factor  : INT|FLOAT
 
 
 
-Programs : VAR (>, <,>=,<=) intervalExpr
+Programs : VAR (>, <,>=,<=) intervalExpr OU : VAR (=) intervalExpr
          : ?(Prop)
          : DERIVAR (>, <,>=,<=) intervalExpr && Prop
          : Program || Program

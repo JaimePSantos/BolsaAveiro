@@ -1,6 +1,6 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS,\
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE
+    TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode
@@ -40,6 +40,9 @@ class Parser:
             res.register(self.advance())
             factor = res.register(self.propExpr())
             if res.error: return res
+            if type(factor) is not PropOpNode:
+                return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
+                                                     "Can only perform test action on propositions."))
             return res.success(UnaryOpNode(tok, factor))
         if self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
@@ -62,6 +65,7 @@ class Parser:
                 return success
         elif self.current_tok.type in TT_INTERVALVAR:
             success = res.success(IntervalVarNode(self.current_tok))
+            if res.error: return res
             res.register(self.advance())
             return success
         elif self.current_tok.type == TT_LPAREN:
@@ -77,7 +81,7 @@ class Parser:
                     "Expected ')'"
                 ))
         failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
-                                                 "Expected an interval or interval operation ( - or /)."))
+                                                 "Expected an interval or operator."))
         return failure
 
     def interval(self):
@@ -91,14 +95,18 @@ class Parser:
 
     #TODO: Decidir a prioridade de uma igualdade. Deve ser depois da soma mas antes do &?
     #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
-    def intervalEq(self):
-        return self.bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
+    def propEq(self):
+        return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
     def propExpr(self):
-        return self.prop_bin_op(self.intervalEq, (TT_AND))
+        return self.prop_bin_op(self.propEq, (TT_AND))
+
+    def progEq(self):
+        #TODO: Descobrir se o termo é uma proposiçao ou apenas intervalo.
+        return self.prog_bin_op(self.propExpr,TT_PROGASSIGN)
 
     def progAnd(self):
-        return self.prog_bin_op(self.propExpr,(TT_PROGAND))
+        return self.prog_bin_op(self.progEq,(TT_PROGAND))
 
     def progExpr(self):
         return self.prog_bin_op(self.progAnd,(TT_PROGUNION,TT_PROGSEQUENCE))
@@ -143,6 +151,9 @@ class Parser:
             op_tok = self.current_tok
             res.register(self.advance())
             right = res.register(func())
+            if ops == 'PROGASSIGN' and type(left) is not IntervalVarNode:
+                return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     "Can only assign to variables."))
             if res.error: return res
             left = ProgOpNode(left, op_tok, right)
         return res.success(left)

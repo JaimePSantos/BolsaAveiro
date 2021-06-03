@@ -1,8 +1,9 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE
+    TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN
 from Errors import InvalidSyntaxError
-
+from Nodes import PrettyLowerNumberNode,PrettyUpperNumberNode,PrettyIntervalVarNode,PrettySeparatorNode,\
+    PrettyBinOpNode,PrettyPropOpNode,PrettyProgOpNode,PrettyUnaryOpNode
 
 #######################################
 # PARSER
@@ -39,18 +40,18 @@ class PrettyParser:
             res.register(self.advance())
             factor = res.register(self.propExpr())
             if res.error: return res
-            return res.success(UnaryOpNode(tok, factor))
+            return res.success(PrettyUnaryOpNode(tok, factor))
         if self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
             tok = self.current_tok
             res.register(self.advance())
             factor = res.register(self.intervalEq())
             if res.error: return res
-            return res.success(UnaryOpNode(tok, factor))
+            return res.success(PrettyUnaryOpNode(tok, factor))
 
         elif self.current_tok.type in TT_LOWERLIM:
             res.register(self.advance())
-            success = res.success(LowerNumberNode(self.current_tok))
+            success = res.success(PrettyLowerNumberNode(self.current_tok))
             res.register(self.advance())
             return success
 
@@ -58,12 +59,12 @@ class PrettyParser:
             tokTemp = self.current_tok
             res.register(self.advance())
             if self.current_tok.type in TT_UPPERLIM:
-                success = res.success(UpperNumberNode(tokTemp))
+                success = res.success(PrettyUpperNumberNode(tokTemp))
                 res.register(self.advance())
                 return success
 
         elif self.current_tok.type in TT_INTERVALVAR:
-            success = res.success(IntervalVarNode(self.current_tok))
+            success = res.success(PrettyIntervalVarNode(self.current_tok))
             res.register(self.advance())
             return success
 
@@ -93,15 +94,19 @@ class PrettyParser:
         return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
 
     #TODO: Decidir a prioridade de uma igualdade. Deve ser depois da soma mas antes do &?
-    def intervalEq(self):
+    #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
+    def propEq(self):
         return self.bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
     def propExpr(self):
-        return self.prop_bin_op(self.intervalEq, (TT_AND))
+        return self.prop_bin_op(self.propEq, (TT_AND))
+
+    def progEq(self):
+        #TODO: Descobrir se o termo é uma proposiçao ou apenas intervalo.
+        return self.prog_bin_op(self.propExpr,TT_PROGASSIGN)
 
     def progAnd(self):
-        return self.prog_bin_op(self.propExpr,(TT_PROGAND))
-
+        return self.prog_bin_op(self.progEq,(TT_PROGAND))
     def progExpr(self):
         return self.prog_bin_op(self.progAnd,(TT_PROGUNION,TT_PROGSEQUENCE))
     ###################################
@@ -117,9 +122,9 @@ class PrettyParser:
             right = res.register(func())
             if res.error: return res
             if Separator:
-                left = SeparatorNode(left, op_tok, right)
+                left = PrettySeparatorNode(left, op_tok, right)
             else:
-                left = BinOpNode(left, op_tok, right)
+                left = PrettyBinOpNode(left, op_tok, right)
         return res.success(left)
 
     def prop_bin_op(self, func, ops):
@@ -132,7 +137,7 @@ class PrettyParser:
             res.register(self.advance())
             right = res.register(func())
             if res.error: return res
-            left = PropOpNode(left, op_tok, right)
+            left = PrettyPropOpNode(left, op_tok, right)
         return res.success(left)
 
     def prog_bin_op(self, func, ops):
@@ -145,7 +150,7 @@ class PrettyParser:
             res.register(self.advance())
             right = res.register(func())
             if res.error: return res
-            left = ProgOpNode(left, op_tok, right)
+            left = PrettyProgOpNode(left, op_tok, right)
         return res.success(left)
 
 #######################################
@@ -172,127 +177,3 @@ class ParseResult:
     def failure(self, error):
         self.error = error
         return self
-
-
-#######################################
-# NODES
-#######################################
-
-class LowerNumberNode:
-    def __init__(self, tok):
-        self.tok = tok
-        self.pos_start = self.tok.pos_start
-        self.pos_end = self.tok.pos_end
-
-    def __repr__(self):
-        return f'{self.tok.value}'
-
-
-class UpperNumberNode:
-    def __init__(self, tok):
-        self.tok = tok
-        self.pos_start = self.tok.pos_start
-        self.pos_end = self.tok.pos_end
-
-    def __repr__(self):
-        return f'{self.tok.value}'
-
-class IntervalNode:
-    tokList = []
-    def __init__(self, tokList):
-        self.tokList = tokList
-
-    def __repr__(self):
-        return f'{self.tokList}'
-
-
-class SeparatorNode:
-    def __init__(self, left_node, op_tok, right_node):
-        self.left_node = left_node
-        self.op_tok = ', '
-        self.right_node = right_node
-        self.pos_start = self.left_node.pos_start
-        self.pos_end = self.right_node.pos_end
-    def __repr__(self):
-        return f'[{self.left_node} {self.op_tok} {self.right_node}]'
-
-
-class BinOpNode:
-    def __init__(self, left_node, op_tok, right_node):
-        self.left_node = left_node
-        if op_tok.type in TT_INTERVALPLUS:
-            self.op_tok = '+'
-        elif op_tok.type in TT_INTERVALMULT:
-            self.op_tok = '*'
-        elif op_tok.type in TT_SEQ:
-            self.op_tok = '<='
-        elif op_tok.type in TT_GEQ:
-            self.op_tok = '>='
-        elif op_tok.type in TT_ST:
-            self.op_tok = '<'
-        elif op_tok.type in TT_GT:
-            self.op_tok = '>'
-        else:
-            self.op_tok = op_tok
-        self.right_node = right_node
-        self.pos_start = self.left_node.pos_start
-        self.pos_end = self.right_node.pos_end
-
-    def __repr__(self):
-        return f'( {self.left_node} {self.op_tok} {self.right_node} )'
-
-class PropOpNode:
-    def __init__(self, left_node, op_tok, right_node):
-        self.left_node = left_node
-        if op_tok.type in TT_AND:
-            self.op_tok = '∧'
-        else:
-            self.op_tok = op_tok
-        self.right_node = right_node
-        self.pos_start = self.left_node.pos_start
-        self.pos_end = self.right_node.pos_end
-
-    def __repr__(self):
-        return f'{self.left_node} {self.op_tok} {self.right_node}'
-
-class UnaryOpNode:
-    def __init__(self, op_tok, node):
-        if op_tok.type in TT_NOT:
-            self.op_tok = '¬'
-        elif op_tok.type in TT_PROGTEST:
-            self.op_tok = '?'
-        else:
-            self.op_tok = op_tok
-        self.node = node
-        self.pos_start = op_tok.pos_start
-        self.pos_end = node.pos_end
-
-    def __repr__(self):
-        return f' {self.op_tok} ( {self.node} )'
-
-class IntervalVarNode:
-    def __init__(self, tok):
-        self.tok = tok
-        self.pos_start = self.tok.pos_start
-        self.pos_end = self.tok.pos_end
-
-    def __repr__(self):
-        return f'{self.tok.value}'
-
-class ProgOpNode:
-    def __init__(self, left_node, op_tok, right_node):
-        self.left_node = left_node
-        if op_tok.type in TT_PROGAND:
-            self.op_tok = '&'
-        elif op_tok.type in TT_PROGUNION:
-            self.op_tok = '∪'
-        elif op_tok.type in TT_PROGSEQUENCE:
-            self.op_tok = '∘'
-        else:
-            self.op_tok = op_tok
-        self.right_node = right_node
-        self.pos_start = self.left_node.pos_start
-        self.pos_end = self.right_node.pos_end
-
-    def __repr__(self):
-        return f' {self.left_node} {self.op_tok} {self.right_node} '

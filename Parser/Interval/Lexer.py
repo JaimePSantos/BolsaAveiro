@@ -1,6 +1,6 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
-    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE
+    TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN
 from Errors import IllegalCharError
 import string
 
@@ -22,6 +22,7 @@ class Lexer:
         self.current_char = self.text[self.pos.idx] if self.pos.idx < len(self.text) else None
         self.next_char = self.text[self.pos.idx+1] if self.pos.idx < len(self.text)-1 else None
 
+    #TODO: Tem que haver melhor maneira de fazer tokens.
     def make_tokens(self):
         tokens = []
         while self.current_char is not None:
@@ -90,6 +91,11 @@ class Lexer:
                     tokens.append(Token(TT_PROGUNION,pos_start=self.pos))
                     self.advance()
                     self.advance()
+                else:
+                    pos_start = self.pos.copy()
+                    char = self.current_char
+                    self.advance()
+                    return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
                 # else:
                 #     tokens.append(Token(TT_AND, pos_start=self.pos))
                 #     self.advance()
@@ -99,6 +105,18 @@ class Lexer:
             elif self.current_char == ';':
                 tokens.append(Token(TT_PROGSEQUENCE, pos_start=self.pos))
                 self.advance()
+            elif self.current_char == ':':
+                if self.next_char == '=':
+                    tokens.append(Token(TT_PROGASSIGN,pos_start=self.pos))
+                    self.advance()
+                    self.advance()
+                else:
+                    pos_start = self.pos.copy()
+                    char = self.current_char
+                    self.advance()
+                    return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
+                # tokens.append(Token(TT_PROGSEQUENCE, pos_start=self.pos))
+                # self.advance()
             else:
                 pos_start = self.pos.copy()
                 char = self.current_char
