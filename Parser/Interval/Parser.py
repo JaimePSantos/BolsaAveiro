@@ -37,7 +37,6 @@ class Parser:
     def intervalFactor(self):
         res = ParseResult()
         if self.current_tok.type in TT_FORALL:
-            #TODO: Nao tenho a certeza se este NOT esta correto.
             tok = self.current_tok
             res.register(self.advance())
             factor = res.register(self.propEq())
@@ -113,6 +112,7 @@ class Parser:
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
     def propExpr(self):
+        # TODO: TT_IN para o forall nao esta muito bom.
         return self.prop_bin_op(self.propEq, (TT_AND,TT_IN))
 
     def progEq(self):
