@@ -1,7 +1,7 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN
 from Errors import IllegalCharError
 import string
 
@@ -16,12 +16,14 @@ class Lexer:
         self.pos = Position(-1, 0, -1, fn, text)
         self.current_char = None
         self.next_char = None
+        self.prev_char = None
         self.advance()
 
     def advance(self):
         self.pos.advance(self.current_char)
         self.current_char = self.text[self.pos.idx] if self.pos.idx < len(self.text) else None
         self.next_char = self.text[self.pos.idx+1] if self.pos.idx < len(self.text)-1 else None
+        self.prev_char = self.text[self.pos.idx-1] if (self.pos.idx < len(self.text)+1 and len(self.text) > 0) else None
 
     #TODO: Tem que haver melhor maneira de fazer tokens.
     def make_tokens(self):
@@ -51,9 +53,9 @@ class Lexer:
             elif self.current_char == '*':
                 tokens.append(Token(TT_INTERVALMULT, pos_start=self.pos))
                 self.advance()
-            elif self.current_char == '/':
-                tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
-                self.advance()
+            # elif self.current_char == '/':
+            #     tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
+            #     self.advance()
             elif self.current_char == '(':
                 tokens.append(Token(TT_LPAREN, pos_start=self.pos))
                 self.advance()
@@ -97,15 +99,21 @@ class Lexer:
                     char = self.current_char
                     self.advance()
                     return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
-                # else:
-                #     tokens.append(Token(TT_AND, pos_start=self.pos))
-                #     self.advance()
             elif self.current_char == '?':
                 tokens.append(Token(TT_PROGTEST, pos_start=self.pos))
                 self.advance()
             elif self.current_char == ';':
                 tokens.append(Token(TT_PROGSEQUENCE, pos_start=self.pos))
                 self.advance()
+            elif self.current_char == '=' :
+                if self.prev_char != ':':
+                    tokens.append(Token(TT_PROGDIFASSIGN, pos_start=self.pos))
+                    self.advance()
+                else:
+                    pos_start = self.pos.copy()
+                    char = self.current_char
+                    self.advance()
+                    return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
             elif self.current_char == ':':
                 if self.next_char == '=':
                     tokens.append(Token(TT_PROGASSIGN,pos_start=self.pos))
@@ -116,8 +124,12 @@ class Lexer:
                     char = self.current_char
                     self.advance()
                     return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
-                # tokens.append(Token(TT_PROGSEQUENCE, pos_start=self.pos))
-                # self.advance()
+            elif self.current_char == '$':
+                tokens.append(Token(TT_FORALL, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == '/':
+                tokens.append(Token(TT_IN, pos_start=self.pos))
+                self.advance()
             else:
                 pos_start = self.pos.copy()
                 char = self.current_char

@@ -1,10 +1,10 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS,\
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
-    UnaryOpNode,DifferentialVarNode
+    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode
 
 
 #######################################
@@ -36,7 +36,14 @@ class Parser:
 
     def intervalFactor(self):
         res = ParseResult()
-        if self.current_tok.type in TT_PROGTEST:
+        if self.current_tok.type in TT_FORALL:
+            #TODO: Nao tenho a certeza se este NOT esta correto.
+            tok = self.current_tok
+            res.register(self.advance())
+            factor = res.register(self.propEq())
+            if res.error: return res
+            return res.success(UnaryForallOpNode(tok, factor))
+        elif self.current_tok.type in TT_PROGTEST:
             tok = self.current_tok
             res.register(self.advance())
             factor = res.register(self.propExpr())
@@ -44,16 +51,16 @@ class Parser:
             if type(factor) is not PropOpNode:
                 return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
                                                      "Can only perform test action on propositions."))
-            #TODO: Talvez definir um nodo unario de programas.
-            return res.success(UnaryOpNode(tok, factor))
-        if self.current_tok.type in TT_NOT:
+            return res.success(UnaryProgOpNode(tok, factor))
+        elif self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
             tok = self.current_tok
             res.register(self.advance())
-            factor = res.register(self.intervalEq())
+            factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in TT_LOWERLIM:
+            #TODO: Concatenar isto num so TT_Interval?
             res.register(self.advance())
             success = res.success(LowerNumberNode(self.current_tok))
             res.register(self.advance())
@@ -106,11 +113,10 @@ class Parser:
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
     def propExpr(self):
-        return self.prop_bin_op(self.propEq, (TT_AND))
+        return self.prop_bin_op(self.propEq, (TT_AND,TT_IN))
 
     def progEq(self):
-        #TODO: Descobrir se o termo é uma proposiçao ou apenas intervalo.
-        return self.prog_bin_op(self.propExpr,TT_PROGASSIGN)
+        return self.prog_bin_op(self.propExpr,(TT_PROGASSIGN,TT_PROGDIFASSIGN))
 
     def progAnd(self):
         return self.prog_bin_op(self.progEq,(TT_PROGAND))
@@ -145,7 +151,17 @@ class Parser:
             op_tok = self.current_tok
             res.register(self.advance())
             right = res.register(func())
+            print(type(left))
+            print(type(right))
+            print(op_tok)
             if res.error: return res
+            if op_tok.type in TT_IN:
+                if type(left) is not UnaryForallOpNode:
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(left)} is not a for all node.'))
+                if type(right) is not PropOpNode:
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(right)} is not a proposition.'))
             left = PropOpNode(left, op_tok, right)
         return res.success(left)
 
@@ -158,12 +174,33 @@ class Parser:
             op_tok = self.current_tok
             res.register(self.advance())
             right = res.register(func())
-            if ops == 'PROGASSIGN' and type(left) is not IntervalVarNode:
-                return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
-                                                     "Can only assign to variables."))
-            if ops == 'PROGAND' and type(right) is not PropOpNode:
-                return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+            # print(type(left))
+            # print(type(right))
+            # print(op_tok)
+            if op_tok.type in TT_PROGDIFASSIGN:
+                if type(left) is not DifferentialVarNode:
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(left)} is not a differential variable.'))
+                elif type(right) is not (SeparatorNode and IntervalVarNode):
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                          f'{str(right)} is not an interval or interval variable.'))
+                else:
+                    left = ProgDifNode(left,op_tok,right)
+                    return res.success(left)
+            if op_tok.type in TT_PROGASSIGN:
+                if type(left) is not IntervalVarNode:
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(left)} is not an interval variable.'))
+                elif type(right) is not (SeparatorNode and IntervalVarNode):
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(right)} must be an interval or an interval variable.'))
+            if op_tok.type in TT_PROGAND:
+                if type(right) is not PropOpNode:
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(right)} is not a proposition.'))
+                elif type(left) is not ProgDifNode:
+                    return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
+                                                     f'{str(left)} is not a differential equation.'))
             if res.error: return res
             left = ProgOpNode(left, op_tok, right)
         return res.success(left)

@@ -17,11 +17,11 @@ def run(fn, text):
         return None, ast.error
     print("PARSER: %s\n"%ast.node)
 
-    prettyParser = PrettyParser(tokens)
-    prettyAst = prettyParser.parse()
-    if ast.error:
-        return None, ast.error
-    print("PRETTYPARSER: %s\n"%prettyAst.node)
+    # prettyParser = PrettyParser(tokens)
+    # prettyAst = prettyParser.parse()
+    # if ast.error:
+    #     return None, ast.error
+    # print("PRETTYPARSER: %s\n"%prettyAst.node)
 
     # interpreter = Interpreter()
     # interpreter.reset()
