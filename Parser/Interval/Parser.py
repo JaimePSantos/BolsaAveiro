@@ -1,7 +1,7 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS,\
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode
@@ -38,13 +38,15 @@ class Parser:
         res = ParseResult()
         if self.current_tok.type in TT_FORALL:
             tok = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryForallOpNode(tok, factor))
         elif self.current_tok.type in TT_PROGTEST:
             tok = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             factor = res.register(self.propExpr())
             if res.error: return res
             if type(factor) is not PropOpNode:
@@ -54,39 +56,48 @@ class Parser:
         elif self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
             tok = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in TT_LOWERLIM:
             #TODO: Concatenar isto num so TT_Interval?
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             success = res.success(LowerNumberNode(self.current_tok))
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             return success
         elif self.current_tok.type in TT_INT:
             tokTemp = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             if self.current_tok.type in TT_UPPERLIM:
                 success = res.success(UpperNumberNode(tokTemp))
-                res.register(self.advance())
+                res.register_advancement()
+                self.advance()
                 return success
-        elif self.current_tok.type in TT_INTERVALVAR:
+        elif self.current_tok.type in TT_IDENTIFIER:
             success = res.success(IntervalVarNode(self.current_tok))
             if res.error: return res
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             return success
-        elif self.current_tok.type in TT_DIFFERENTIALVAR:
+        elif self.current_tok.type in TT_IDENTIFIERDIF:
             success = res.success(DifferentialVarNode(self.current_tok))
             if res.error: return res
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             return success
         elif self.current_tok.type == TT_LPAREN:
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             expr = res.register(self.propExpr())
             if res.error: return res
             if self.current_tok.type == TT_RPAREN:
-                res.register(self.advance())
+                res.register_advancement()
+                self.advance()
                 return res.success(expr)
             else:
                 return res.failure(InvalidSyntaxError(
@@ -134,10 +145,12 @@ class Parser:
             return res
         while self.current_tok.type in ops:
             op_tok = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             right = res.register(func())
             if res.error: return res
             if Separator:
+                print("Hello")
                 left = SeparatorNode(left, op_tok, right)
             else:
                 left = BinOpNode(left, op_tok, right)
@@ -150,11 +163,12 @@ class Parser:
             return res
         while self.current_tok.type in ops:
             op_tok = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             right = res.register(func())
-            print(type(left))
-            print(type(right))
-            print(op_tok)
+            # print(type(left))
+            # print(type(right))
+            # print(op_tok)
             if res.error: return res
             if op_tok.type in TT_IN:
                 if type(left) is not UnaryForallOpNode:
@@ -173,7 +187,8 @@ class Parser:
             return res
         while self.current_tok.type in ops:
             op_tok = self.current_tok
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             right = res.register(func())
             # print(type(left))
             # print(type(right))
@@ -183,6 +198,7 @@ class Parser:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not a differential variable.'))
                 elif type(right) is not (SeparatorNode and IntervalVarNode):
+                    # print(type(right))
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                           f'{str(right)} is not an interval or interval variable.'))
                 else:
@@ -192,7 +208,7 @@ class Parser:
                 if type(left) is not IntervalVarNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not an interval variable.'))
-                elif type(right) is not (SeparatorNode and IntervalVarNode):
+                if not(isinstance(right,SeparatorNode) or isinstance(right,IntervalVarNode)):
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(right)} must be an interval or an interval variable.'))
             if op_tok.type in TT_PROGAND:
@@ -211,22 +227,27 @@ class Parser:
 #######################################
 
 class ParseResult:
-    def __init__(self):
-        self.error = None
-        self.node = None
+  def __init__(self):
+    self.error = None
+    self.node = None
+    self.last_registered_advance_count = 0
+    self.advance_count = 0
 
-    def register(self, res):
-        if isinstance(res, ParseResult):
-            if res.error:
-                self.error = res.error
-            return res.node
+  def register_advancement(self):
+    self.last_registered_advance_count = 1
+    self.advance_count += 1
 
-        return res
+  def register(self, res):
+    self.last_registered_advance_count = res.advance_count
+    self.advance_count += res.advance_count
+    if res.error: self.error = res.error
+    return res.node
 
-    def success(self, node):
-        self.node = node
-        return self
+  def success(self, node):
+    self.node = node
+    return self
 
-    def failure(self, error):
-        self.error = error
-        return self
+  def failure(self, error):
+    if not self.error or self.last_registered_advance_count == 0:
+      self.error = error
+    return self

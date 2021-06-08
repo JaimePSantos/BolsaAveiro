@@ -33,6 +33,8 @@ TT_PROGDIFASSIGN = 'PROGDIFASSIGN'
 TT_DIFFERENTIALVAR = 'DIFFERENTIALVAR'
 TT_KEYWORD = 'KEYWORD'
 TT_IDENTIFIER = 'IDENTIFIER'
+TT_IDENTIFIERDIF = 'IDENTIFIERDIF'
+
 
 class Token:
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):
@@ -45,7 +47,10 @@ class Token:
             self.pos_end.advance()
 
         if pos_end:
-            self.pos_end = pos_end
+            self.pos_end = pos_end.copy()
+
+    def matches(self, type_, value):
+        return self.type == type_ and self.value == value
 
     def __repr__(self):
         if self.value: return f'{self.type}:{self.value}'
