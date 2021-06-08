@@ -106,7 +106,7 @@ class Parser:
     def intervalExpr(self):
         return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
 
-    #TODO: Decidir a prioridade de uma igualdade. Deve ser depois da soma mas antes do &?
+    #TODO: Decidir a prioridade de uma comparacao. Supostamente seria depois da soma, mas acho que nao queremos misturar os 2.
     #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
     def propEq(self):
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
@@ -115,6 +115,7 @@ class Parser:
         # TODO: TT_IN para o forall nao esta muito bom.
         return self.prop_bin_op(self.propEq, (TT_AND,TT_IN))
 
+    #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
     def progEq(self):
         return self.prog_bin_op(self.propExpr,(TT_PROGASSIGN,TT_PROGDIFASSIGN))
 

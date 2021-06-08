@@ -93,7 +93,7 @@ class PrettyParser:
     def intervalExpr(self):
         return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
 
-    #TODO: Decidir a prioridade de uma igualdade. Deve ser depois da soma mas antes do &?
+    #TODO: Decidir a prioridade de uma comparacao. Supostamente seria depois da soma, mas acho que nao queremos misturar os 2.
     #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
     def propEq(self):
         return self.bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
