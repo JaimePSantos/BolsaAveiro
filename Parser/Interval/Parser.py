@@ -124,7 +124,7 @@ class Parser:
 
     def propExpr(self):
         # TODO: TT_IN para o forall nao esta muito bom.
-        return self.prop_bin_op(self.propEq, (TT_AND,TT_IN))
+        return self.prop_bin_op(self.propEq, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD, 'IN')))
 
     #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
     def progEq(self):
@@ -150,7 +150,6 @@ class Parser:
             right = res.register(func())
             if res.error: return res
             if Separator:
-                print("Hello")
                 left = SeparatorNode(left, op_tok, right)
             else:
                 left = BinOpNode(left, op_tok, right)
@@ -161,7 +160,7 @@ class Parser:
         left = res.register(func())
         if res.error:
             return res
-        while self.current_tok.type in ops:
+        while self.current_tok.type in ops or (self.current_tok.type, self.current_tok.value) in ops:
             op_tok = self.current_tok
             res.register_advancement()
             self.advance()

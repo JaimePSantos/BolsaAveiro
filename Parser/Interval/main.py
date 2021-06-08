@@ -6,7 +6,7 @@ from PrettyParser import PrettyParser
 
 def run(fn, text):
     lexer = Lexer(fn, text)
-    tokens, error = lexer.make_tokens()
+    tokens, error = lexer.makeTokens()
     if error:
         return None, error
     print("\nLEXER: %s\n"%tokens)
