@@ -17,11 +17,14 @@ class Parser:
         self.tok_idx = -1
         self.advance()
 
-    def advance(self, ):
+    def advance(self):
         self.tok_idx += 1
-        if self.tok_idx < len(self.tokens):
-            self.current_tok = self.tokens[self.tok_idx]
+        self.update_current_tok()
         return self.current_tok
+
+    def update_current_tok(self):
+        if self.tok_idx >= 0 and self.tok_idx < len(self.tokens):
+            self.current_tok = self.tokens[self.tok_idx]
 
     def parse(self):
         # res = self.intervalExpr()
@@ -124,7 +127,7 @@ class Parser:
 
     def propExpr(self):
         # TODO: TT_IN para o forall nao esta muito bom.
-        return self.prop_bin_op(self.propEq, (TT_AND,TT_IN))
+        return self.prop_bin_op(self.propEq, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD, 'IN')))
 
     #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
     def progEq(self):
@@ -150,7 +153,6 @@ class Parser:
             right = res.register(func())
             if res.error: return res
             if Separator:
-                print("Hello")
                 left = SeparatorNode(left, op_tok, right)
             else:
                 left = BinOpNode(left, op_tok, right)
@@ -161,7 +163,7 @@ class Parser:
         left = res.register(func())
         if res.error:
             return res
-        while self.current_tok.type in ops:
+        while self.current_tok.type in ops or (self.current_tok.type, self.current_tok.value) in ops:
             op_tok = self.current_tok
             res.register_advancement()
             self.advance()
@@ -223,7 +225,7 @@ class Parser:
         return res.success(left)
 
 #######################################
-# PARSERESULT
+# PARSE RESULT
 #######################################
 
 class ParseResult:
@@ -251,3 +253,38 @@ class ParseResult:
     if not self.error or self.last_registered_advance_count == 0:
       self.error = error
     return self
+
+#######################################
+# CONTEXT
+#######################################
+
+class Context:
+  def __init__(self, display_name, parent=None, parent_entry_pos=None):
+    self.display_name = display_name
+    self.parent = parent
+    self.parent_entry_pos = parent_entry_pos
+    self.symbol_table = None
+
+#######################################
+# SYMBOL TABLE
+#######################################
+
+class SymbolTable:
+  def __init__(self, parent=None):
+    self.symbols = {}
+    self.parent = parent
+
+  def get(self, name):
+    value = self.symbols.get(name, None)
+    if value == None and self.parent:
+      return self.parent.get(name)
+    return value
+
+  def set(self, name, value):
+    self.symbols[name] = value
+
+  def remove(self, name):
+    del self.symbols[name]
+
+
+
