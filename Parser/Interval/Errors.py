@@ -24,4 +24,6 @@ class ExpectedCharError(Error):
 
 class InvalidSyntaxError(Error):
     def __init__(self, pos_start, pos_end, details=''):
+        print("Hello: %s"%details)
+        print("Pos start: %s\t Pos end: %s"%(pos_start,pos_end))
         super().__init__(pos_start, pos_end, 'Invalid Syntax', details)

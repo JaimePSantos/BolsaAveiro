@@ -1,6 +1,6 @@
 from Lexer import Lexer
 from Interpreter import Interpreter
-from Parser import Parser
+from Parser import Parser, SymbolTable
 from PrettyParser import PrettyParser
 
 
@@ -9,13 +9,14 @@ def run(fn, text):
     tokens, error = lexer.makeTokens()
     if error:
         return None, error
-    print("\nLEXER: %s\n"%tokens)
+    print("\nLEXER:\t %s\n"%tokens)
 
     parser = Parser(tokens)
     ast = parser.parse()
     if ast.error:
         return None, ast.error
-    print("PARSER: %s\n"%ast.node)
+    print("PARSER:\t %s\n"%ast.node)
+    print("####################################################################################\n")
 
     # prettyParser = PrettyParser(tokens)
     # prettyAst = prettyParser.parse()

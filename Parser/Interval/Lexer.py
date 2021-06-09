@@ -33,11 +33,13 @@ class Lexer:
         self.next_char = self.text[self.pos.idx+1] if self.pos.idx < len(self.text)-1 else None
         self.prev_char = self.text[self.pos.idx-1] if (self.pos.idx < len(self.text)+1 and len(self.text) > 0) else None
 
-    #TODO: Tem que haver melhor maneira de fazer tokens.
     def makeTokens(self):
         tokens = []
-        while self.current_char is not None:
-            if self.current_char in ' \t' or ' \n':
+        while self.current_char != None:
+            # print("Current char: %s\t"%self.current_char)
+            if self.current_char in ' \t':
+                self.advance()
+            elif self.current_char in ' \n':
                 self.advance()
             elif self.current_char in DIGITS:
                 tokens.append(self.makeNumber())
