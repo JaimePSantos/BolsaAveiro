@@ -1,10 +1,10 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS,\
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
-    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode
+    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode
 
 
 #######################################
@@ -37,7 +37,7 @@ class Parser:
 
     ################################################
 
-    def intervalFactor(self):
+    def atom(self):
         res = ParseResult()
         if self.current_tok.type in TT_FORALL:
             tok = self.current_tok
@@ -46,6 +46,11 @@ class Parser:
             factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryForallOpNode(tok, factor))
+        elif self.current_tok.type in TT_LBOX:
+            box = res.register(self.propBox())
+            if res.error: return res
+            success = res.success(box)
+            return success
         elif self.current_tok.type in TT_PROGTEST:
             tok = self.current_tok
             res.register_advancement()
@@ -112,7 +117,7 @@ class Parser:
         return failure
 
     def interval(self):
-        return self.bin_op(self.intervalFactor, (TT_SEPARATOR), True)
+        return self.bin_op(self.atom, (TT_SEPARATOR), True)
 
     def intervalTerm(self):
         return self.bin_op(self.interval,TT_INTERVALMULT)
@@ -124,6 +129,40 @@ class Parser:
     #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
     def propEq(self):
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
+
+    def propBox(self):
+        res = ParseResult()
+        element_nodes = []
+        pos_start = self.current_tok.pos_start.copy()
+        if self.current_tok.type != TT_LBOX:
+            return res.failure(InvalidSyntaxError(
+                pos_start, self.current_tok.pos_end,
+                "Expected {['"
+            ))
+        res.register_advancement()
+        self.advance()
+        if self.current_tok.type == TT_RBOX:
+            res.register_advancement()
+            self.advance()
+        else:
+            element_nodes.append(res.register((self.progExpr())))
+            if res.error:
+                return res.failure(InvalidSyntaxError(
+                    pos_start, self.current_tok.pos_end,
+                    "Expected ']}', 'VAR', '+', '(', '{[' or 'NOT'"
+                ))
+        if self.current_tok.type != TT_RBOX:
+            return res.failure(InvalidSyntaxError(
+                self.current_tok.pos_start, self.current_tok.pos_end,
+                f"Expected ',' or ']'"
+            ))
+        res.register_advancement()
+        self.advance()
+        return res.success(BoxNode(
+            element_nodes,
+            pos_start,
+            self.current_tok.pos_end.copy()
+        ))
 
     def propExpr(self):
         # TODO: TT_IN para o forall nao esta muito bom.
@@ -199,7 +238,7 @@ class Parser:
                 if type(left) is not DifferentialVarNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not a differential variable.'))
-                elif type(right) is not (SeparatorNode and IntervalVarNode):
+                elif not (isinstance(right, SeparatorNode) or isinstance(right, IntervalVarNode)):
                     # print(type(right))
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                           f'{str(right)} is not an interval or interval variable.'))

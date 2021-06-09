@@ -54,6 +54,15 @@ class SeparatorNode:
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
+class BoxNode:
+    def __init__(self, element_nodes, pos_start, pos_end):
+        self.element_nodes = element_nodes
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+
+    def __repr__(self):
+      return f'({{{self.element_nodes}}})'
+
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):

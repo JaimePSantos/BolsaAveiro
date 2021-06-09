@@ -1,7 +1,7 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX
 from Errors import IllegalCharError
 import string
 
@@ -49,7 +49,7 @@ class Lexer:
                 tokens.append(Token(TT_LOWERLIM, pos_start=self.pos))
                 self.advance()
             elif self.current_char == ']':
-                tokens.append(Token(TT_UPPERLIM, pos_start=self.pos))
+                tokens.append(self.makePar())
                 self.advance()
             elif self.current_char == ',':
                 tokens.append(Token(TT_SEPARATOR, pos_start=self.pos))
@@ -78,17 +78,14 @@ class Lexer:
                 tokens.append(self.makeGreaterThan())
             elif self.current_char in ASSIGNMENT:
                 tokens.append(self.makeAssignment())
+            elif self.current_char == '{':
+                tokens.append(self.makeBox())
             elif self.current_char == '!':
                 tokens.append(Token(TT_NOT, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '&':
-                if self.next_char == '&':
-                    tokens.append(Token(TT_PROGAND,pos_start=self.pos))
-                    self.advance()
-                    self.advance()
-                else:
-                    tokens.append(Token(TT_AND, pos_start=self.pos))
-                    self.advance()
+                tokens.append(Token(TT_PROGAND,pos_start=self.pos))
+                self.advance()
             elif self.current_char == '|':
                 if self.next_char == '|':
                     tokens.append(Token(TT_PROGUNION,pos_start=self.pos))
@@ -133,7 +130,6 @@ class Lexer:
             else:
                 num_str += self.current_char
             self.advance()
-
         if dot_count == 0:
             return Token(TT_INT, int(num_str), pos_start, self.pos)
         else:
@@ -155,9 +151,9 @@ class Lexer:
         while self.current_char != None and self.current_char in ['=', ':']:
             id_str += self.current_char
             self.advance()
-        if ':' in id_str:
-            tok_type = TT_PROGASSIGN
-        else:
+        if id_str[0]==':':
+                tok_type = TT_PROGASSIGN
+        elif id_str[0]=='=':
             tok_type = TT_PROGDIFASSIGN
         return Token(tok_type, id_str, pos_start, self.pos)
 
@@ -182,23 +178,40 @@ class Lexer:
         tok_type = TT_ST
         pos_start = self.pos.copy()
         self.advance()
-
         if self.current_char == '=':
             self.advance()
             tok_type = TT_SEQ
-
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def makeGreaterThan(self):
         tok_type = TT_GT
         pos_start = self.pos.copy()
         self.advance()
-
         if self.current_char == '=':
             self.advance()
             tok_type = TT_GEQ
-
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+
+    def makeBox(self):
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == '[':
+            self.advance()
+            tok_type = TT_LBOX
+        elif self.current_char == '<':
+            pass
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+
+    def makePar(self):
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == '}':
+            self.advance()
+            tok_type = TT_RBOX
+        else:
+            tok_type = TT_UPPERLIM
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+
 
 class Position:
     def __init__(self, idx, ln, col, fn, ftxt):
@@ -207,15 +220,12 @@ class Position:
         self.col = col
         self.fn = fn
         self.ftxt = ftxt
-
     def advance(self, current_char=None):
         self.idx += 1
         self.col += 1
-
         if current_char == '\n':
             self.ln += 1
             self.col = 0
-
         return self
 
     def copy(self):
