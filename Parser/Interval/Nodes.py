@@ -63,6 +63,15 @@ class BoxNode:
     def __repr__(self):
       return f'({{{self.element_nodes}}})'
 
+class BoxPropNode:
+    def __init__(self, element_nodes,boxProp, pos_start, pos_end):
+        self.element_nodes = element_nodes
+        self.boxProp = boxProp
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+
+    def __repr__(self):
+      return f'({{{self.element_nodes}}},{self.boxProp})'
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):

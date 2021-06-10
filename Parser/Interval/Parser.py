@@ -4,7 +4,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
-    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode
+    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode
 
 
 #######################################
@@ -133,6 +133,7 @@ class Parser:
     def propBox(self):
         res = ParseResult()
         element_nodes = []
+        boxProp = []
         pos_start = self.current_tok.pos_start.copy()
         if self.current_tok.type != TT_LBOX:
             return res.failure(InvalidSyntaxError(
@@ -156,13 +157,18 @@ class Parser:
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 f"Expected ',' or ']'"
             ))
+        elif self.current_tok.type == TT_RBOX:
+            box = res.success(BoxNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
+            self.advance()
+            boxProp.append(res.register((self.propExpr())))
+            if res.error:
+                return res.failure(InvalidSyntaxError(
+                    pos_start, self.current_tok.pos_end,
+                    "Expected ']}', 'VAR', '+', '(', '{[' or 'NOT'"
+                ))
         res.register_advancement()
         self.advance()
-        return res.success(BoxNode(
-            element_nodes,
-            pos_start,
-            self.current_tok.pos_end.copy()
-        ))
+        return res.success(BoxPropNode(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
 
     def propExpr(self):
         # TODO: TT_IN para o forall nao esta muito bom.
