@@ -17,6 +17,7 @@ KEYWORDS = [
     'IN'
 ]
 ASSIGNMENT = ['=',':']
+RSQUARE = ['}',']']
 
 class Lexer:
     def __init__(self, fn, text):
@@ -47,10 +48,9 @@ class Lexer:
             elif self.current_char in LETTERS:
                 tokens.append(self.makeIdentifier())
             elif self.current_char == '[':
-                tokens.append(Token(TT_LOWERLIM, pos_start=self.pos))
-                self.advance()
-            elif self.current_char == ']':
-                tokens.append(self.makePar())
+                tokens.append(self.makeLSquare())
+            elif self.current_char in RSQUARE:
+                tokens.append(self.makeRSquare())
             elif self.current_char == ',':
                 tokens.append(Token(TT_SEPARATOR, pos_start=self.pos))
                 self.advance()
@@ -77,8 +77,6 @@ class Lexer:
                 tokens.append(self.makeGreaterThan())
             elif self.current_char in ASSIGNMENT:
                 tokens.append(self.makeAssignment())
-            elif self.current_char == '{':
-                tokens.append(self.makeBox())
             elif self.current_char == '!':
                 tokens.append(Token(TT_NOT, pos_start=self.pos))
                 self.advance()
@@ -188,27 +186,28 @@ class Lexer:
             tok_type = TT_GEQ
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
-    def makeBox(self):
-        tok_type = TT_DEBUG
+    def makeLSquare(self):
+        tok_type = TT_LOWERLIM
         pos_start = self.pos.copy()
         self.advance()
-        if self.current_char == '[':
+        if self.current_char == '{':
             self.advance()
             tok_type = TT_LBOX
-        #TODO: Define this.
-        elif self.current_char == '<':
-            #self.advance()
-            pass
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
-    def makePar(self):
-        tok_type = TT_UPPERLIM
+    def makeRSquare(self):
+        id_str = ''
         pos_start = self.pos.copy()
-        self.advance()
-        if self.current_char == '}':
+        while self.current_char != None and self.current_char in RSQUARE:
+            id_str += self.current_char
             self.advance()
-            tok_type = TT_RBOX
-        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+            if(id_str[0]==']'):
+                break;
+        if id_str[0]=='}':
+                tok_type = TT_RBOX
+        elif id_str[0]==']':
+            tok_type = TT_UPPERLIM
+        return Token(tok_type,pos_start=pos_start, pos_end=self.pos)
 
     def makeHyphen(self):
         tok_type = TT_DEBUG
