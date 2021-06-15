@@ -169,9 +169,12 @@ class Parser:
         self.advance()
         return res.success(BoxPropNode(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
 
-    def propExpr(self):
+    def propTerm(self):
         # TODO: TT_IN para o forall nao esta muito bom.
         return self.prop_bin_op(self.propEq, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD, 'IN')))
+
+    def propExpr(self):
+        return self.prop_bin_op(self.propTerm(),TT_IMPLIES)
 
     #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
     def progEq(self):

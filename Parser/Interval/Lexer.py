@@ -1,7 +1,7 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES
 from Errors import IllegalCharError
 import string
 
@@ -76,6 +76,8 @@ class Lexer:
                 tokens.append(self.makeLessThan())
             elif self.current_char == '>':
                 tokens.append(self.makeGreaterThan())
+            elif self.current_char == '-':
+                tokens.append(self.makeMinus())
             elif self.current_char in ASSIGNMENT:
                 tokens.append(self.makeAssignment())
             elif self.current_char == '{':
@@ -210,6 +212,16 @@ class Lexer:
             tok_type = TT_RBOX
         else:
             tok_type = TT_UPPERLIM
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+
+    def makeMinus(self):
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == '>':
+            self.advance()
+            tok_type = TT_IMPLIES
+        else:
+            return
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
 
