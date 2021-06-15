@@ -51,7 +51,6 @@ class Lexer:
                 self.advance()
             elif self.current_char == ']':
                 tokens.append(self.makePar())
-                self.advance()
             elif self.current_char == ',':
                 tokens.append(Token(TT_SEPARATOR, pos_start=self.pos))
                 self.advance()
@@ -59,8 +58,7 @@ class Lexer:
                 tokens.append(Token(TT_INTERVALPLUS, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '-':
-                tokens.append(self.makeHypen())
-                self.advance()
+                tokens.append(self.makeHyphen())
             elif self.current_char == '*':
                 tokens.append(Token(TT_INTERVALMULT, pos_start=self.pos))
                 self.advance()
@@ -77,7 +75,6 @@ class Lexer:
                 tokens.append(self.makeLessThan())
             elif self.current_char == '>':
                 tokens.append(self.makeGreaterThan())
-
             elif self.current_char in ASSIGNMENT:
                 tokens.append(self.makeAssignment())
             elif self.current_char == '{':
@@ -220,7 +217,6 @@ class Lexer:
         if self.current_char == '>':
             self.advance()
             tok_type = TT_IMPLIES
-
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
 
