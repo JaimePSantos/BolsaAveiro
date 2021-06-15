@@ -27,7 +27,6 @@ class Parser:
             self.current_tok = self.tokens[self.tok_idx]
 
     def parse(self):
-        # res = self.intervalExpr()
         res = self.progExpr()
         if not res.error and self.current_tok.type != TT_EOF:
             failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
