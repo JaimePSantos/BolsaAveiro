@@ -155,7 +155,7 @@ class Parser:
         if self.current_tok.type != TT_RBOX:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                f"Expected ',' or ']'"
+                "Expected ',' or '}' "
             ))
         elif self.current_tok.type == TT_RBOX:
             box = res.success(BoxNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
@@ -164,7 +164,7 @@ class Parser:
             if res.error:
                 return res.failure(InvalidSyntaxError(
                     pos_start, self.current_tok.pos_end,
-                    "Expected ']}', 'VAR', '+', '(', '{[' or 'NOT'"
+                    "Expected a proposition after box program."
                 ))
         res.register_advancement()
         self.advance()

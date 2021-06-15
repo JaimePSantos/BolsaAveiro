@@ -6,7 +6,10 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode
-
+import string
+DIGITS = '0123456789'
+LETTERS = string.ascii_letters + "'"
+LETTERS_DIGITS = LETTERS + DIGITS
 
 class Translator:
     'Class that evalutates the input.'
@@ -17,6 +20,7 @@ class Translator:
         self.intervalList = [Interval()]
         self.intervalList.pop(0)
         self.intervalNumberList = [NumberList()]
+        self.varList = []
 
     def visit(self, node):
         'Template of the function to visit each method.'
@@ -53,14 +57,10 @@ class Translator:
         # print("Found BinOpNode")
         #TODO: Repensar a logica dos intervalos, talvez usar um no para o intervalo todo e depois dividi-lo em upper e lower.
         if node.op_tok.type in TT_INTERVALPLUS:
-            self.visit(node.left_node)
-            self.visit(node.right_node)
-            # resultLower = self.lowerNumberList.addIntervals()
-            # resultUpper = self.upperNumberList.addIntervals()
-            # return Interval(resultLower,resultUpper).set_pos()
-            self.addIntervals()
+            interval1 = self.visit(node.left_node)
+            interval2 = self.visit(node.right_node)
             self.updateIntervalList()
-            return self.resultInterval
+            return '(' + str(interval1)+ ' + '+ str(interval2) + ')'
 
         if node.op_tok.type in TT_INTERVALMULT:
             self.visit(node.left_node)
@@ -99,13 +99,26 @@ class Translator:
         # print("Found SeperatorNode")
         lower = self.visit(node.left_node)
         upper = self.visit(node.right_node)
-        interval = Interval(lower, upper).set_pos()
+        interval = TranslatedInterval(lower, upper,self.makeUniqueVar())
         self.intervalList.append(interval)
         return interval
 
     def updateIntervalList(self):
         self.intervalList = []
         self.intervalList.append(self.resultInterval)
+
+    def makeUniqueVar(self):
+        intervalVar = ''
+        for var in LETTERS:
+            if var not in self.varList:
+                intervalVar = var
+                self.varList.append(intervalVar)
+                return intervalVar
+            else:
+                continue
+        if intervalVar == '':
+            return -1
+
 
     def reset(self):
         '''
@@ -210,7 +223,6 @@ class NumberList:
         #TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
         # intervalList = NumberList(self.numberList).separatedIntervals()
         resultList = [intervalList[0][0]*intervalList[1][0], intervalList[0][0]*intervalList[1][1], intervalList[0][1]*intervalList[1][0],intervalList[0][1]*intervalList[1][1]]
-
         return NumberList(resultList)
 
     def negInterval(self):
@@ -220,22 +232,6 @@ class NumberList:
     def invInterval(self):
         #TODO: Definir [a,b]^-1.
         pass
-
-    def separatedIntervals(self):
-        '''
-        Takes the list with the lower limits and upper limits of the intervals and separates them into the original intervals.
-        :return:
-        '''
-        separatedIntervals = [[]]
-        # print("Number List: "+str(self.numberList))
-        for i in range(0,len(self.numberList)):
-            if i >= len(self.numberList)-2:
-                break
-            interval = [self.numberList[i],self.numberList[i+2]]
-            separatedIntervals.append(interval)
-        separatedIntervals.pop(0)
-        # print("Separated Intervals: "+str(separatedIntervals))
-        return separatedIntervals
 
     def min(self):
         '''
@@ -295,6 +291,37 @@ class Interval:
 
     def __repr__(self):
         return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
+
+class TranslatedInterval:
+    '''
+    This class helps us represent the interval that resulted from an operation and keep track of errors.
+    '''
+    def __init__(self,lowerNum=None,upperNum=None,ineqVar=None):
+        if lowerNum and upperNum is not None:
+            self.lowerNum = lowerNum
+            self.upperNum = upperNum
+            self.ineqVar = ineqVar
+            self.set_pos()
+            self.set_lims()
+        else:
+            self.lowerNum = None
+            self.upperNum = None
+
+    def set_pos(self):
+        '''
+        So we know the position of our intervals.
+        :return:
+        '''
+        self.pos_start = self.lowerNum.pos_start
+        self.pos_end = self.upperNum.pos_end
+        return self
+
+    def set_lims(self):
+        self.lowerLim = str(self.lowerNum) + '<=' + str(self.ineqVar)
+        self.upperLim = str(self.ineqVar) + '<=' + str(self.upperNum)
+
+    def __repr__(self):
+        return self.lowerLim + ' ∧ ' + self.upperLim
 
 class RTResult:
     def __init__(self):
