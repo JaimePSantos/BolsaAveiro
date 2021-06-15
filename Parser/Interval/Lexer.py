@@ -1,7 +1,8 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
+    TT_DEBUG
 from Errors import IllegalCharError
 import string
 
@@ -58,7 +59,7 @@ class Lexer:
                 tokens.append(Token(TT_INTERVALPLUS, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '-':
-                tokens.append(Token(TT_INTERVALMINUS, pos_start=self.pos))
+                tokens.append(self.makeHypen())
                 self.advance()
             elif self.current_char == '*':
                 tokens.append(Token(TT_INTERVALMULT, pos_start=self.pos))
@@ -76,8 +77,7 @@ class Lexer:
                 tokens.append(self.makeLessThan())
             elif self.current_char == '>':
                 tokens.append(self.makeGreaterThan())
-            elif self.current_char == '-':
-                tokens.append(self.makeMinus())
+
             elif self.current_char in ASSIGNMENT:
                 tokens.append(self.makeAssignment())
             elif self.current_char == '{':
@@ -165,9 +165,6 @@ class Lexer:
         while self.current_char != None and self.current_char in LETTERS_DIGITS + '_':
             id_str += self.current_char
             self.advance()
-        KEYWORDS2 = [x.lower for x in KEYWORDS]
-        # print(str(KEYWORDS2))
-        # print(KEYWORDS)
         if id_str in KEYWORDS:
             tok_type = TT_KEYWORD
         elif '\'' in id_str:
@@ -195,33 +192,35 @@ class Lexer:
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def makeBox(self):
+        tok_type = TT_DEBUG
         pos_start = self.pos.copy()
         self.advance()
         if self.current_char == '[':
             self.advance()
             tok_type = TT_LBOX
+        #TODO: Define this.
         elif self.current_char == '<':
+            #self.advance()
             pass
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def makePar(self):
+        tok_type = TT_UPPERLIM
         pos_start = self.pos.copy()
         self.advance()
         if self.current_char == '}':
             self.advance()
             tok_type = TT_RBOX
-        else:
-            tok_type = TT_UPPERLIM
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
-    def makeMinus(self):
+    def makeHyphen(self):
+        tok_type = TT_DEBUG
         pos_start = self.pos.copy()
         self.advance()
         if self.current_char == '>':
             self.advance()
             tok_type = TT_IMPLIES
-        else:
-            return
+
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
 
