@@ -32,20 +32,6 @@ class Translator:
         'If no acceptable method found, throw an exception.'
         raise Exception(f'No visit_{type(node).__name__} defined.')
 
-    def visit_LowerNumberNode(self, node):
-        'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
-        # print("Found LowerNumberNode")
-        num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
-        self.lowerNumberList.appendNum(num)
-        return num
-
-    def visit_UpperNumberNode(self, node):
-        'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
-        # print("Found UpperNumberNode")
-        num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
-        self.upperNumberList.appendNum(num)
-        return num
-
     def visit_BinOpNode(self, node):
         '''
         Visits nodes that have binary operations on them. \
@@ -71,6 +57,52 @@ class Translator:
             self.updateIntervalList()
             return self.resultInterval
 
+    def visit_UnaryOpNode(self,node):
+        pass
+
+    def visit_LowerNumberNode(self, node):
+        'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
+        # print("Found LowerNumberNode")
+        num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
+        self.lowerNumberList.appendNum(num)
+        return num
+
+    def visit_UpperNumberNode(self, node):
+        'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
+        # print("Found UpperNumberNode")
+        num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
+        self.upperNumberList.appendNum(num)
+        return num
+
+
+    def visit_SeparatorNode(self, node):
+        '''
+        Visits the nodes with the SEPARATOR token.
+        :param node:
+        :return:
+        '''
+        # print("Found SeperatorNode")
+        lower = self.visit(node.left_node)
+        upper = self.visit(node.right_node)
+        interval = TranslatedInterval(lower, upper,self.makeUniqueVar())
+        self.intervalList.append(interval)
+        return interval
+
+    def visit_IntervalVarNode(self,node):
+        print("Visited IntervalVarNode")
+        return node.tok.value
+
+
+    def visit_PropOpNode(self,node):
+        thing1 = self.visit(node.left_node)
+        thing2 = self.visit(node.right_node)
+        #TODO: Esta traducao tera que associar uma variavel a um intervalo para podermos lembrar da atribuicao.
+        translation = str(thing1) + " " + str(node.op_tok)+ " " + str(thing2)
+        return translation
+
+    def visit_ProgOpNode(self,node):
+        pass
+
     def addIntervals(self):
         intervalList = self.intervalList
         resultLower = intervalList[0].lowerNum + intervalList[1].lowerNum
@@ -89,19 +121,6 @@ class Translator:
         resultList = [intervalList[0].lowerNum * intervalList[1].lowerNum, intervalList[0].lowerNum * intervalList[1].upperNum,
                       intervalList[0].upperNum * intervalList[1].lowerNum, intervalList[0].upperNum * intervalList[1].upperNum]
         return NumberList(resultList)
-
-    def visit_SeparatorNode(self, node):
-        '''
-        Visits the nodes with the SEPARATOR token.
-        :param node:
-        :return:
-        '''
-        # print("Found SeperatorNode")
-        lower = self.visit(node.left_node)
-        upper = self.visit(node.right_node)
-        interval = TranslatedInterval(lower, upper,self.makeUniqueVar())
-        self.intervalList.append(interval)
-        return interval
 
     def updateIntervalList(self):
         self.intervalList = []
