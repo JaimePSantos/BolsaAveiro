@@ -1,0 +1,24 @@
+Programs : VAR (>, <,>=,<=) intervalExpr OU : VAR (=) intervalExpr
+         : ?(Prop)
+         : DIFFERENTIALVAR (>, <,>=,<=) intervalExpr && Prop
+         : Program || Program
+         : Program @ Program
+         : Program*
+
+Props : intervalExpr ((>, <,>=,<=) intervalExpr)*
+      : NOT Props
+      : Props (AND) Props
+      : Forall VAR IN Props
+      : BOX(Program) Props
+
+
+intervalExpr : intervalTerm ((+) intervalTerm)*
+
+intervalTerm : interval ((*) interval)*
+
+interval : (-)? lowerNum SEPARATOR upperNum
+         : VAR
+
+lowerNum : LOWERLIM (-)? INT
+
+upperNum : (-)? INT UPPERLIM
