@@ -21,6 +21,8 @@ class Translator:
         self.intervalList.pop(0)
         self.intervalNumberList = [NumberList()]
         self.varList = []
+        self.intervalDict = {}
+        self.varDict = {}
 
     def visit(self, node):
         'Template of the function to visit each method.'
@@ -84,8 +86,9 @@ class Translator:
         # print("Found SeperatorNode")
         lower = self.visit(node.left_node)
         upper = self.visit(node.right_node)
-        interval = TranslatedInterval(lower, upper,self.makeUniqueVar())
-        self.intervalList.append(interval)
+        uniqueVar = self.makeUniqueVar()
+        interval = TranslatedInterval(lower, upper,uniqueVar)
+        self.intervalDict[uniqueVar] = Interval(lower,upper)
         return interval
 
     def visit_IntervalVarNode(self,node):
@@ -94,14 +97,28 @@ class Translator:
 
 
     def visit_PropOpNode(self,node):
-        thing1 = self.visit(node.left_node)
-        thing2 = self.visit(node.right_node)
-        #TODO: Esta traducao tera que associar uma variavel a um intervalo para podermos lembrar da atribuicao.
-        translation = str(thing1) + " " + str(node.op_tok)+ " " + str(thing2)
+        leftNode = node.left_node
+        rightNode = node.right_node
+        visitLeftNode = self.visit(leftNode)
+        visitRightNode = self.visit(rightNode)
+        #print(node.left_node.tok.type)
+        #print(node.right_node.tok)
+        translation = str(visitLeftNode) + " " + str(node.op_tok)+ " " + str(visitRightNode)
+        print(self.intervalDict)
+        print(node.op_tok.type)
+        if node.op_tok.type in [TT_ST,TT_GT,TT_GEQ,TT_SEQ]:
+            print("Bla")
+            self.varDict[leftNode] = visitRightNode.ineqVar
+        print(self.varDict)
         return translation
 
     def visit_ProgOpNode(self,node):
-        pass
+        print("Visited program node")
+        thing1 = self.visit(node.left_node)
+        thing2 = self.visit(node.right_node)
+        print(thing2.type)
+        translation = str(thing1) + " " + str(node.op_tok) + " " + str(thing2)
+        return translation
 
     def addIntervals(self):
         intervalList = self.intervalList
