@@ -1,0 +1,12 @@
+Parser
+    IMPROVE FORALL;
+    define diamond;
+    define subtraction/inverse interval;
+    define inverse interval;
+    program assignment only needs : and not := , right box only needs } and not }];
+    Better way of representing powers.
+
+Translator
+    Multiplication translation is not defined.
+    Are the addition parenthesis correct?
+    Translate programs correctly.

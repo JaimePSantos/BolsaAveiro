@@ -20,7 +20,8 @@ def run(fn, text):
 
     translator = Translator()
     translator.reset()
-    result = translator.visit(ast.node)
+    visitNodes = translator.visit(ast.node)
+    result = translator.buildTranslation()
     print("Translator: %s\n"%result)
     print("####################################################################################\n")
 

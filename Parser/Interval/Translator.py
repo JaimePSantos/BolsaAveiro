@@ -14,15 +14,23 @@ LETTERS_DIGITS = LETTERS + DIGITS
 class Translator:
     'Class that evalutates the input.'
     def __init__(self):
-        self.lowerNumberList = NumberList()
-        self.upperNumberList = NumberList()
-        self.resultInterval = Interval()
-        self.intervalList = [Interval()]
-        self.intervalList.pop(0)
-        self.intervalNumberList = [NumberList()]
         self.varList = []
         self.intervalDict = {}
         self.varDict = {}
+        self.translation = ""
+
+    def buildTranslation(self):
+        intervals = ''
+        i = 0
+        for interval in self.intervalDict.values():
+            i+=1
+            intervals += "(" + str(interval) + ")"
+            if i == len(self.intervalDict):
+                break
+            else:
+                intervals += " ∧ "
+        builtTranslation = intervals + " -> " + self.translation
+        return builtTranslation
 
     def visit(self, node):
         'Template of the function to visit each method.'
@@ -47,16 +55,14 @@ class Translator:
         if node.op_tok.type in TT_INTERVALPLUS:
             interval1 = self.visit(node.left_node)
             interval2 = self.visit(node.right_node)
-            self.updateIntervalList()
-            return '(' + str(interval1)+ ' + '+ str(interval2) + ')'
+            translation = '(' + str(interval1)+ ' + '+ str(interval2) + ')'
+            self.translation = translation
+            return translation
 
         if node.op_tok.type in TT_INTERVALMULT:
             self.visit(node.left_node)
             self.visit(node.right_node)
             # self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
-            resultList = self.multIntervals()
-            self.resultInterval = Interval(resultList.min(),resultList.max()).set_pos()
-            self.updateIntervalList()
             return self.resultInterval
 
     def visit_UnaryOpNode(self,node):
@@ -66,14 +72,12 @@ class Translator:
         'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
         # print("Found LowerNumberNode")
         num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
-        self.lowerNumberList.appendNum(num)
         return num
 
     def visit_UpperNumberNode(self, node):
         'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
         # print("Found UpperNumberNode")
         num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
-        self.upperNumberList.appendNum(num)
         return num
 
 
@@ -88,11 +92,11 @@ class Translator:
         upper = self.visit(node.right_node)
         uniqueVar = self.makeUniqueVar()
         interval = TranslatedInterval(lower, upper,uniqueVar)
-        self.intervalDict[uniqueVar] = Interval(lower,upper)
-        return interval
+        self.intervalDict[uniqueVar] = interval
+        #TODO: Estou a retornar a uniquevar de maneira a que a traducao fique apenas a variavel nova gerada. Talvez esta nao seja a melhor maneiora.
+        return uniqueVar
 
     def visit_IntervalVarNode(self,node):
-        print("Visited IntervalVarNode")
         return node.tok.value
 
 
@@ -101,15 +105,26 @@ class Translator:
         rightNode = node.right_node
         visitLeftNode = self.visit(leftNode)
         visitRightNode = self.visit(rightNode)
-        #print(node.left_node.tok.type)
-        #print(node.right_node.tok)
-        translation = str(visitLeftNode) + " " + str(node.op_tok)+ " " + str(visitRightNode)
-        print(self.intervalDict)
-        print(node.op_tok.type)
+        translatedOpTok = ''
+        translation = ''
         if node.op_tok.type in [TT_ST,TT_GT,TT_GEQ,TT_SEQ]:
-            print("Bla")
-            self.varDict[leftNode] = visitRightNode.ineqVar
-        print(self.varDict)
+            if node.op_tok.type in TT_ST:
+                translatedOpTok = '<'
+            elif node.op_tok.type in TT_GT:
+                translatedOpTok = '>'
+            elif node.op_tok.type in TT_GEQ:
+                translatedOpTok = '>='
+            elif node.op_tok.type in TT_SEQ:
+                translatedOpTok = '<='
+            self.varDict[leftNode] = visitRightNode
+        elif node.op_tok.type in (TT_KEYWORD, 'AND'):
+            translatedOpTok = '∧'
+
+        if translatedOpTok is not None:
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        else:
+            translation = str(visitLeftNode) + " " + str(node.op_tok)+ " " + str(visitRightNode)
+        self.translation = translation
         return translation
 
     def visit_ProgOpNode(self,node):
@@ -119,29 +134,6 @@ class Translator:
         print(thing2.type)
         translation = str(thing1) + " " + str(node.op_tok) + " " + str(thing2)
         return translation
-
-    def addIntervals(self):
-        intervalList = self.intervalList
-        resultLower = intervalList[0].lowerNum + intervalList[1].lowerNum
-        resultUpper = intervalList[0].upperNum + intervalList[1].upperNum
-        self.resultInterval = Interval(resultLower,resultUpper).set_pos()
-        return self.resultInterval
-
-    def multIntervals(self):
-        '''
-        Generates the set of numbers resulted from interval multiplication.
-        :return:
-        '''
-        # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
-        # intervalList = NumberList(self.numberList).separatedIntervals()
-        intervalList = self.intervalList
-        resultList = [intervalList[0].lowerNum * intervalList[1].lowerNum, intervalList[0].lowerNum * intervalList[1].upperNum,
-                      intervalList[0].upperNum * intervalList[1].lowerNum, intervalList[0].upperNum * intervalList[1].upperNum]
-        return NumberList(resultList)
-
-    def updateIntervalList(self):
-        self.intervalList = []
-        self.intervalList.append(self.resultInterval)
 
     def makeUniqueVar(self):
         intervalVar = ''
@@ -222,86 +214,6 @@ class Number:
 
     def __repr__(self):
         return str(self.value)
-
-
-class NumberList:
-    '''
-    This class helps us keep track of the numbers present in each node so we can perform interval operations on them.
-    '''
-    def __init__(self,numberList=None):
-        self.numberList = []
-        if numberList is not None:
-            self.numberList = numberList
-
-    def appendNum(self, apNumber):
-        '''
-        Used to construct the appropriate list of numbers present in each node.
-        :param apNumber:
-        :return:
-        '''
-        return self.numberList.append(apNumber)
-
-    def addIntervals(self):
-        '''
-        Takes the list with either the lower limits or upper limits of the interval and sums the terms.
-        :return:
-        '''
-        resultNumber = Number(0)
-        for num in self.numberList:
-            resultNumber += num
-        return resultNumber
-
-    def multIntervals(self,intervalList):
-        '''
-        Generates the set of numbers resulted from interval multiplication.
-        :return:
-        '''
-        #TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
-        # intervalList = NumberList(self.numberList).separatedIntervals()
-        resultList = [intervalList[0][0]*intervalList[1][0], intervalList[0][0]*intervalList[1][1], intervalList[0][1]*intervalList[1][0],intervalList[0][1]*intervalList[1][1]]
-        return NumberList(resultList)
-
-    def negInterval(self):
-        #TODO: Definir -[a,b].
-        pass
-
-    def invInterval(self):
-        #TODO: Definir [a,b]^-1.
-        pass
-
-    def min(self):
-        '''
-        Minimum of a list so we can get the lower limit that resulted from the multiplication of intervals.
-        :return:
-        '''
-        minNumber = Number(sys.maxsize)
-        for num in self.numberList:
-            if minNumber >= num:
-                minNumber = num
-        return minNumber
-
-    def max(self):
-        '''
-        Maximum of a list so we can get the upper limit that resulted from the multiplication of intervals.
-        :return:
-        '''
-        maxNumber = Number(-sys.maxsize)
-        for num in self.numberList:
-            if maxNumber <= num:
-                maxNumber = num
-        return maxNumber
-
-    def extend(self,otherNumberList):
-        '''
-        Helper function so we can combine the upper limit list with the lower limit list.
-        :param otherNumberList:
-        :return:
-        '''
-        return NumberList(self.numberList + (otherNumberList.numberList))
-
-    def __repr__(self):
-        return str(self.numberList)
-
 
 class Interval:
     '''
