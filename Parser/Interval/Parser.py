@@ -216,9 +216,6 @@ class Parser:
             res.register_advancement()
             self.advance()
             right = res.register(func())
-            # print(type(left))
-            # print(type(right))
-            # print(op_tok)
             if res.error: return res
             if op_tok.type in TT_IN:
                 if type(left) is not UnaryForallOpNode:

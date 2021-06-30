@@ -2,7 +2,7 @@ import sys
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS,\
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
-    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX
+    TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode
@@ -22,6 +22,7 @@ class Translator:
     def buildTranslation(self):
         intervals = ''
         i = 0
+        builtTranslation = ''
         for interval in self.intervalDict.values():
             i+=1
             intervals += "(" + str(interval) + ")"
@@ -29,7 +30,11 @@ class Translator:
                 break
             else:
                 intervals += " ∧ "
-        builtTranslation = intervals + " -> " + self.translation
+        if intervals!='':
+            builtTranslation = intervals + " -> " + '( ' + self.translation + ' )'
+        else:
+            builtTranslation = self.translation
+
         return builtTranslation
 
     def visit(self, node):
@@ -66,7 +71,12 @@ class Translator:
             return self.resultInterval
 
     def visit_UnaryOpNode(self,node):
-        pass
+        visitNode = self.visit(node.node)
+        if node.op_tok.type in TT_NOT:
+            translation = '!' + "( " + str(visitNode) + " )"
+            self.translation=translation
+
+        return translation
 
     def visit_LowerNumberNode(self, node):
         'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
@@ -119,11 +129,14 @@ class Translator:
             self.varDict[leftNode] = visitRightNode
         elif node.op_tok.type in (TT_KEYWORD, 'AND'):
             translatedOpTok = '∧'
+        elif node.op_tok.type in (TT_IMPLIES):
+            translatedOpTok = '->'
 
-        if translatedOpTok is not None:
+        if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
             translation = str(visitLeftNode) + " " + str(node.op_tok)+ " " + str(visitRightNode)
+
         self.translation = translation
         return translation
 
@@ -134,6 +147,18 @@ class Translator:
         print(thing2.type)
         translation = str(thing1) + " " + str(node.op_tok) + " " + str(thing2)
         return translation
+
+    def visit_BoxPropNode(self,node):
+        print("Visited BoxPropNode")
+        for boxNodeElement,boxPropElement in zip(node.element_nodes,node.boxProp):
+            visitboxNodeElement = self.visit(boxNodeElement)
+            visitboxPropElement = self.visit(boxNodeElement)
+        translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str (visitboxPropElement)
+        self.translation = translation
+        return translation
+
+    def visit_ProgDifNode(self,node):
+        pass
 
     def makeUniqueVar(self):
         intervalVar = ''
@@ -146,7 +171,6 @@ class Translator:
                 continue
         if intervalVar == '':
             return -1
-
 
     def reset(self):
         '''
