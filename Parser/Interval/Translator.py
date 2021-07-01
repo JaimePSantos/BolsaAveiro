@@ -75,7 +75,13 @@ class Translator:
         if node.op_tok.type in TT_NOT:
             translation = '!' + "( " + str(visitNode) + " )"
             self.translation=translation
+        return translation
 
+    def visit_UnaryProgOpNode(self,node):
+        visitNode = self.visit(node.node)
+        if node.op_tok.type in TT_PROGTEST:
+            translation = '?' + "( " + str(visitNode) + " )"
+            self.translation=translation
         return translation
 
     def visit_LowerNumberNode(self, node):
@@ -131,34 +137,57 @@ class Translator:
             translatedOpTok = '∧'
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = '->'
-
         if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
             translation = str(visitLeftNode) + " " + str(node.op_tok)+ " " + str(visitRightNode)
-
         self.translation = translation
         return translation
 
     def visit_ProgOpNode(self,node):
         print("Visited program node")
-        thing1 = self.visit(node.left_node)
-        thing2 = self.visit(node.right_node)
-        print(thing2.type)
-        translation = str(thing1) + " " + str(node.op_tok) + " " + str(thing2)
+        leftNode = node.left_node
+        rightNode = node.right_node
+        visitLeftNode = self.visit(leftNode)
+        visitRightNode = self.visit(rightNode)
+        translatedOpTok = ''
+        if node.op_tok.type in TT_PROGASSIGN:
+            translatedOpTok = ':='
+        if translatedOpTok != '':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        else:
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+        self.translation = translation
         return translation
 
     def visit_BoxPropNode(self,node):
         print("Visited BoxPropNode")
         for boxNodeElement,boxPropElement in zip(node.element_nodes,node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
-            visitboxPropElement = self.visit(boxNodeElement)
+            visitboxPropElement = self.visit(boxPropElement)
         translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str (visitboxPropElement)
         self.translation = translation
         return translation
 
     def visit_ProgDifNode(self,node):
-        pass
+        print("Visited ProgDif node")
+        leftNode = node.left_node
+        rightNode = node.right_node
+        visitLeftNode = self.visit(leftNode)
+        visitRightNode = self.visit(rightNode)
+        translatedOpTok = ''
+        translation = ''
+        if node.op_tok.type in TT_PROGDIFASSIGN:
+            translatedOpTok = '='
+        if translatedOpTok != '':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        else:
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+        self.translation = translation
+        return translation
+
+    def visit_DifferentialVarNode(self,node):
+        return node.tok.value
 
     def makeUniqueVar(self):
         intervalVar = ''
