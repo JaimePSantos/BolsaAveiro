@@ -55,20 +55,19 @@ class Translator:
         :param node:
         :return:
         '''
-        # print("Found BinOpNode")
-        #TODO: Repensar a logica dos intervalos, talvez usar um no para o intervalo todo e depois dividi-lo em upper e lower.
         if node.op_tok.type in TT_INTERVALPLUS:
-            interval1 = self.visit(node.left_node)
-            interval2 = self.visit(node.right_node)
-            translation = '(' + str(interval1)+ ' + '+ str(interval2) + ')'
+            leftSum = self.visit(node.left_node)
+            rightSum = self.visit(node.right_node)
+            translation = str(leftSum)+ ' + ' + str(rightSum)
             self.translation = translation
             return translation
 
         if node.op_tok.type in TT_INTERVALMULT:
-            self.visit(node.left_node)
-            self.visit(node.right_node)
-            # self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
-            return self.resultInterval
+            leftMult = self.visit(node.left_node)
+            rightMult = self.visit(node.right_node)
+            translation = '(' + str(leftMult) + ' * ' + str(rightMult) + ')'
+            self.translation = translation
+            return translation
 
     def visit_UnaryOpNode(self,node):
         visitNode = self.visit(node.node)

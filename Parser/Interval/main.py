@@ -12,18 +12,18 @@ def run(fn, text):
         return None, error
     print("\nLEXER:\t %s\n"%tokens)
 
-    parser = Parser(tokens)
-    ast = parser.parse()
-    if ast.error:
-        return None, ast.error
-    print("PARSER:\t %s\n"%ast.node)
-
-    translator = Translator()
-    translator.reset()
-    visitNodes = translator.visit(ast.node)
-    result = translator.buildTranslation()
-    print("Translator: %s\n"%result)
-    print("####################################################################################\n")
+    # parser = Parser(tokens)
+    # ast = parser.parse()
+    # if ast.error:
+    #     return None, ast.error
+    # print("PARSER:\t %s\n"%ast.node)
+    #
+    # translator = Translator()
+    # translator.reset()
+    # visitNodes = translator.visit(ast.node)
+    # result = translator.buildTranslation()
+    # print("Translator: %s\n"%result)
+    # print("####################################################################################\n")
 
     # prettyParser = PrettyParser(tokens)
     # prettyAst = prettyParser.parse()

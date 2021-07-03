@@ -5,8 +5,8 @@ Parser
     define inverse interval;
     program assignment only needs : and not := , right box only needs } and not }];
     Better way of representing powers.
+    Division.
 
 Translator
-    Multiplication translation is not defined.
-    Are the addition parenthesis correct?
     Translate programs correctly.
+    Figure out how to detect and translate parenthesis.

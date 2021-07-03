@@ -2,7 +2,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
-    TT_DEBUG
+    TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND
 from Errors import IllegalCharError
 import string
 
@@ -175,6 +175,9 @@ class Lexer:
         if self.current_char == '=':
             self.advance()
             tok_type = TT_SEQ
+        elif self.current_char == '{':
+            self.advance()
+            tok_type = TT_LDIAMOND
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def makeGreaterThan(self):
