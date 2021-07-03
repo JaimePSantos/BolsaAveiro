@@ -3,7 +3,9 @@ Parser
     define diamond;
     define subtraction/inverse interval;
     define inverse interval;
-    program assignment only needs : and not := , right box only needs } and not }];
+    program assignment only needs : and not :=
+        right box only needs } and not }];
+            Must find a better way to deal with curly brackets. This also applies to diamond.
     Better way of representing powers.
     Division.
 
