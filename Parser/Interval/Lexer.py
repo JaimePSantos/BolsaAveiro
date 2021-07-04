@@ -80,8 +80,13 @@ class Lexer:
                 tokens.append(self.makeLessThan())
             elif self.current_char == '>':
                 tokens.append(self.makeGreaterThan())
-            elif self.current_char in ASSIGNMENT:
-                tokens.append(self.makeAssignment())
+            elif self.current_char == '=':
+                tokens.append(Token(TT_PROGDIFASSIGN, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == ':':
+                token, error = self.makeColon()
+                if error: return [], error
+                tokens.append(token)
             elif self.current_char == '!':
                 tokens.append(Token(TT_NOT, pos_start=self.pos))
                 self.advance()
@@ -158,6 +163,15 @@ class Lexer:
         elif id_str[0]=='=':
             tok_type = TT_PROGDIFASSIGN
         return Token(tok_type, id_str, pos_start, self.pos)
+
+    def makeColon(self):
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == '=':
+            tok_type = TT_PROGASSIGN
+            self.advance()
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
+        return None,ExpectedCharError(pos_start, self.pos, "'=' (after ':')" )
 
     def makeIdentifier(self):
         id_str = ''
