@@ -223,11 +223,11 @@ class Lexer:
         if self.current_char == ']':
             tok_type = TT_RBOX
             self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
         elif self.current_char == '>':
             tok_type = TT_RDIAMOND
             self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
         return None,ExpectedCharError(pos_start, self.pos, "']' or '>' (after '}')" )
 
     def makeHyphen(self):
