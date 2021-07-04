@@ -1,3 +1,11 @@
+Lexer
+    Change NOT token to be a keyword.
+    Change ProgUnion to something more elegant.
+    Implement division token.
+    Implement subtraction between intervals token.
+        '-' (interval) is the symmetric which is different from subtracting intervals or variables.
+    Implement inverse interval token.
+
 Parser
     IMPROVE FORALL;
     define diamond;
