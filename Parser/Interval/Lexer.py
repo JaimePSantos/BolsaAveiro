@@ -217,7 +217,6 @@ class Lexer:
         return Token(tok_type,pos_start=pos_start, pos_end=self.pos)
 
     def makeRCurly(self):
-        #tok_type = TT_DEBUG
         pos_start = self.pos.copy()
         self.advance()
         if self.current_char == ']':
@@ -231,7 +230,7 @@ class Lexer:
         return None,ExpectedCharError(pos_start, self.pos, "']' or '>' (after '}')" )
 
     def makeHyphen(self):
-        tok_type = TT_DEBUG
+        tok_type = TT_INTERVALMINUS
         pos_start = self.pos.copy()
         self.advance()
         if self.current_char == '>':

@@ -4,6 +4,7 @@ Lexer
     Implement division token.
     Implement subtraction between intervals token.
         '-' (interval) is the symmetric which is different from subtracting intervals or variables.
+            This might be something we need to solve on the parser. Not sure.
     Implement inverse interval token.
 
 Parser
@@ -18,5 +19,9 @@ Parser
     Division.
 
 Translator
-    Translate programs correctly.
     Figure out how to detect and translate parenthesis.
+    Fix possible bugs.
+
+Features
+    Translate to file.
+        Produce a valid .kyx file.
