@@ -3,7 +3,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
     TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND
-from Errors import IllegalCharError
+from Errors import IllegalCharError,ExpectedCharError
 import string
 
 DIGITS = '0123456789'
@@ -17,7 +17,7 @@ KEYWORDS = [
     'IN'
 ]
 ASSIGNMENT = ['=',':']
-RSQUARE = ['}',']']
+RSQUARE = [']']
 
 class Lexer:
     def __init__(self, fn, text):
@@ -51,6 +51,10 @@ class Lexer:
                 tokens.append(self.makeLSquare())
             elif self.current_char in RSQUARE:
                 tokens.append(self.makeRSquare())
+            elif self.current_char == '}':
+                token,error = self.makeRCurly()
+                if error: return [],error
+                tokens.append(token)
             elif self.current_char == ',':
                 tokens.append(Token(TT_SEPARATOR, pos_start=self.pos))
                 self.advance()
@@ -206,11 +210,25 @@ class Lexer:
             self.advance()
             if(id_str[0]==']'):
                 break;
-        if id_str[0]=='}':
-                tok_type = TT_RBOX
-        elif id_str[0]==']':
+        #if id_str[0]=='}':
+                #tok_type = TT_RBOX
+        if id_str[0]==']':
             tok_type = TT_UPPERLIM
         return Token(tok_type,pos_start=pos_start, pos_end=self.pos)
+
+    def makeRCurly(self):
+        #tok_type = TT_DEBUG
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == ']':
+            tok_type = TT_RBOX
+            self.advance()
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+        elif self.current_char == '>':
+            tok_type = TT_RDIAMOND
+            self.advance()
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+        return None,ExpectedCharError(pos_start, self.pos, "']' or '>' (after '}')" )
 
     def makeHyphen(self):
         tok_type = TT_DEBUG
