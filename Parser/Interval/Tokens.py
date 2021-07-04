@@ -41,7 +41,6 @@ TT_RDIAMOND = 'RDIAMOND'
 TT_IMPLIES = 'IMPLIES'
 TT_DEBUG = 'DEBUG'
 
-
 class Token:
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):
         self.type = type_

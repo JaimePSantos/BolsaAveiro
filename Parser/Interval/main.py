@@ -12,11 +12,11 @@ def run(fn, text):
         return None, error
     print("\nLEXER:\t %s\n"%tokens)
 
-    # parser = Parser(tokens)
-    # ast = parser.parse()
-    # if ast.error:
-    #     return None, ast.error
-    # print("PARSER:\t %s\n"%ast.node)
+    parser = Parser(tokens)
+    ast = parser.parse()
+    if ast.error:
+        return None, ast.error
+    print("PARSER:\t %s\n"%ast.node)
     #
     # translator = Translator()
     # translator.reset()

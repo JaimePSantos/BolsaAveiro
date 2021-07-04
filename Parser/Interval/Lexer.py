@@ -1,5 +1,5 @@
 from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_FORALL,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
     TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND
@@ -94,15 +94,9 @@ class Lexer:
                 tokens.append(Token(TT_PROGAND,pos_start=self.pos))
                 self.advance()
             elif self.current_char == '|':
-                if self.next_char == '|':
-                    tokens.append(Token(TT_PROGUNION,pos_start=self.pos))
-                    self.advance()
-                    self.advance()
-                else:
-                    pos_start = self.pos.copy()
-                    char = self.current_char
-                    self.advance()
-                    return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
+                token, error = self.makePipe()
+                if error: return [], error
+                tokens.append(token)
             elif self.current_char == '?':
                 tokens.append(Token(TT_PROGTEST, pos_start=self.pos))
                 self.advance()
@@ -141,6 +135,15 @@ class Lexer:
             return Token(TT_INT, int(num_str), pos_start, self.pos)
         else:
             return Token(TT_FLOAT, float(num_str), pos_start, self.pos)
+
+    def makePipe(self):
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == '|':
+            tok_type = TT_PROGUNION
+            self.advance()
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
+        return None,ExpectedCharError(pos_start, self.pos, "'|' (after '|')" )
 
     def makeLetter(self):
         post_start = self.pos.copy()

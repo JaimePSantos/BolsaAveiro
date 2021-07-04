@@ -59,9 +59,16 @@ class BoxNode:
         self.element_nodes = element_nodes
         self.pos_start = pos_start
         self.pos_end = pos_end
-
     def __repr__(self):
       return f'({{{self.element_nodes}}})'
+
+class DiamondNode:
+    def __init__(self, element_nodes, pos_start, pos_end):
+        self.element_nodes = element_nodes
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+    def __repr__(self):
+      return f'({self.element_nodes})'
 
 class BoxPropNode:
     def __init__(self, element_nodes,boxProp, pos_start, pos_end):
@@ -69,9 +76,21 @@ class BoxPropNode:
         self.boxProp = boxProp
         self.pos_start = pos_start
         self.pos_end = pos_end
-
     def __repr__(self):
-      return f'({{{self.element_nodes}}},{self.boxProp})'
+      elementStr = str(self.element_nodes)[1:-1]
+      boxPropStr = str(self.boxProp)[1:-1]
+      return f'([{{{elementStr}}}],{boxPropStr})'
+
+class DiamondPropNode:
+    def __init__(self, element_nodes,diamondProp, pos_start, pos_end):
+        self.element_nodes = element_nodes
+        self.diamondProp = diamondProp
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+    def __repr__(self):
+      elementStr = str(self.element_nodes)[1:-1]
+      diamondPropStr = str(self.diamondProp)[1:-1]
+      return f'(<{{{elementStr}}}>,{diamondPropStr})'
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):

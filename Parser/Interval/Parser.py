@@ -2,10 +2,11 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,\
-    TT_IMPLIES
+    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
-    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode
+    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode,DiamondNode,\
+    DiamondPropNode
 
 
 #######################################
@@ -46,6 +47,11 @@ class Parser:
             factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryForallOpNode(tok, factor))
+        elif self.current_tok.type in TT_LDIAMOND:
+            diamond = res.register(self.propDiamond())
+            if res.error: return res
+            success = res.success(diamond)
+            return success
         elif self.current_tok.type in TT_LBOX:
             box = res.register(self.propBox())
             if res.error: return res
@@ -125,8 +131,6 @@ class Parser:
     def intervalExpr(self):
         return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
 
-    #TODO: Decidir a prioridade de uma comparacao. Supostamente seria depois da soma, mas acho que nao queremos misturar os 2.
-    #TODO: Neste momento podemos somar props logicas com intervalos, nao sei se e suposto permitir isto.
     def propEq(self):
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
@@ -150,7 +154,7 @@ class Parser:
             if res.error:
                 return res.failure(InvalidSyntaxError(
                     pos_start, self.current_tok.pos_end,
-                    "Expected ']}', 'VAR', '+', '(', '{[' or 'NOT'"
+                    "Expected '}]', 'VAR', '+', '(', '{[' or 'NOT'"
                 ))
         if self.current_tok.type != TT_RBOX:
             return res.failure(InvalidSyntaxError(
@@ -169,6 +173,46 @@ class Parser:
         res.register_advancement()
         self.advance()
         return res.success(BoxPropNode(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
+
+    def propDiamond(self):
+        res = ParseResult()
+        element_nodes = []
+        diamondProp = []
+        pos_start = self.current_tok.pos_start.copy()
+        if self.current_tok.type != TT_LDIAMOND:
+            return res.failure(InvalidSyntaxError(
+                pos_start, self.current_tok.pos_end,
+                "Expected <{'"
+            ))
+        res.register_advancement()
+        self.advance()
+        if self.current_tok.type == TT_RDIAMOND:
+            res.register_advancement()
+            self.advance()
+        else:
+            element_nodes.append(res.register((self.progExpr())))
+            if res.error:
+                return res.failure(InvalidSyntaxError(
+                    pos_start, self.current_tok.pos_end,
+                    "Expected '}>', 'VAR', '+', '(', '<[' or 'NOT'"
+                ))
+        if self.current_tok.type != TT_RDIAMOND:
+            return res.failure(InvalidSyntaxError(
+                self.current_tok.pos_start, self.current_tok.pos_end,
+                "Expected ',' or '}' "
+            ))
+        elif self.current_tok.type == TT_RDIAMOND:
+            diamond = res.success(DiamondNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
+            self.advance()
+            diamondProp.append(res.register((self.propExpr())))
+            if res.error:
+                return res.failure(InvalidSyntaxError(
+                    pos_start, self.current_tok.pos_end,
+                    "Expected a proposition after diamond program."
+                ))
+        res.register_advancement()
+        self.advance()
+        return res.success(DiamondPropNode(element_nodes,diamondProp,pos_start,self.current_tok.pos_end.copy()))
 
     def propTerm(self):
         # TODO: TT_IN para o forall nao esta muito bom.
