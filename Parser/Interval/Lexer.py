@@ -49,8 +49,9 @@ class Lexer:
                 tokens.append(self.makeIdentifier())
             elif self.current_char == '[':
                 tokens.append(self.makeLSquare())
-            elif self.current_char in RSQUARE:
-                tokens.append(self.makeRSquare())
+            elif self.current_char == ']':
+                tokens.append(Token(TT_UPPERLIM, pos_start=self.pos))
+                self.advance()
             elif self.current_char == '}':
                 token,error = self.makeRCurly()
                 if error: return [],error
@@ -201,20 +202,6 @@ class Lexer:
             self.advance()
             tok_type = TT_LBOX
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
-
-    def makeRSquare(self):
-        id_str = ''
-        pos_start = self.pos.copy()
-        while self.current_char != None and self.current_char in RSQUARE:
-            id_str += self.current_char
-            self.advance()
-            if(id_str[0]==']'):
-                break;
-        #if id_str[0]=='}':
-                #tok_type = TT_RBOX
-        if id_str[0]==']':
-            tok_type = TT_UPPERLIM
-        return Token(tok_type,pos_start=pos_start, pos_end=self.pos)
 
     def makeRCurly(self):
         pos_start = self.pos.copy()
