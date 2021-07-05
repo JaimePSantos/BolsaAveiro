@@ -96,13 +96,11 @@ class Translator:
 
     def visit_LowerNumberNode(self, node):
         'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
-        # print("Found LowerNumberNode")
         num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
         return num
 
     def visit_UpperNumberNode(self, node):
         'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
-        # print("Found UpperNumberNode")
         num = Number(node.tok.value).set_pos(node.pos_start,node.pos_end)
         return num
 
@@ -113,7 +111,6 @@ class Translator:
         :param node:
         :return:
         '''
-        # print("Found SeperatorNode")
         lower = self.visit(node.left_node)
         upper = self.visit(node.right_node)
         uniqueVar = self.makeUniqueVar()
@@ -159,7 +156,6 @@ class Translator:
         return translation
 
     def visit_ProgOpNode(self,node):
-        print("Visited program node")
         leftNode = node.left_node
         rightNode = node.right_node
         visitLeftNode = self.visit(leftNode)
@@ -175,7 +171,6 @@ class Translator:
         return translation
 
     def visit_BoxPropNode(self,node):
-        print("Visited BoxPropNode")
         for boxNodeElement,boxPropElement in zip(node.element_nodes,node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
             visitboxPropElement = self.visit(boxPropElement)
@@ -184,7 +179,6 @@ class Translator:
         return translation
 
     def visit_ProgDifNode(self,node):
-        print("Visited ProgDif node")
         leftNode = node.left_node
         rightNode = node.right_node
         visitLeftNode = self.visit(leftNode)
