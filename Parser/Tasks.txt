@@ -1,8 +1,6 @@
 Lexer
     Change NOT token to be a keyword.
-    Change ProgUnion to something more elegant.
-    Implement division token.
-    Implement subtraction between intervals token.
+    Implement symmetric interval.
         '-' (interval) is the symmetric which is different from subtracting intervals or variables.
             This might be something we need to solve on the parser. Not sure.
     Implement inverse interval token.
@@ -10,10 +8,8 @@ Lexer
 
 Parser
     IMPROVE FORALL;
-    define subtraction/inverse interval;
     define inverse interval;
     Better way of representing powers.
-    Division.
     Implement Or.
 
 Translator
