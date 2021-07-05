@@ -143,11 +143,11 @@ class Translator:
                 translatedOpTok = '<='
             self.varDict[leftNode] = visitRightNode
         elif node.op_tok.matches(TT_KEYWORD, 'AND'):
-            translatedOpTok = '∧'
+            translatedOpTok = ' ∧ '
         elif node.op_tok.matches(TT_KEYWORD, 'OR'):
-            translatedOpTok = '∨'
+            translatedOpTok = ' ∨ '
         elif node.op_tok.type in (TT_IMPLIES):
-            translatedOpTok = '->'
+            translatedOpTok = ' -> '
         if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
