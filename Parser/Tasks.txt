@@ -4,13 +4,11 @@ Lexer
         '-' (interval) is the symmetric which is different from subtracting intervals or variables.
             This might be something we need to solve on the parser. Not sure.
     Implement inverse interval token.
-    Implement Or.
 
 Parser
     IMPROVE FORALL;
     define inverse interval;
     Better way of representing powers.
-    Implement Or.
 
 Translator
     Figure out how to detect and translate parenthesis.

@@ -145,8 +145,10 @@ class Translator:
             elif node.op_tok.type in TT_SEQ:
                 translatedOpTok = '<='
             self.varDict[leftNode] = visitRightNode
-        elif node.op_tok.type in (TT_KEYWORD, 'AND'):
+        elif node.op_tok.matches(TT_KEYWORD, 'AND'):
             translatedOpTok = '∧'
+        elif node.op_tok.matches(TT_KEYWORD, 'OR'):
+            translatedOpTok = '∨'
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = '->'
         if translatedOpTok != '':
