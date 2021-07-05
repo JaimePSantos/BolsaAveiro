@@ -129,7 +129,7 @@ class Parser:
         return self.bin_op(self.interval,TT_INTERVALMULT)
 
     def intervalExpr(self):
-        return self.bin_op(self.intervalTerm, TT_INTERVALPLUS)
+        return self.bin_op(self.intervalTerm, (TT_INTERVALPLUS,TT_INTERVALMINUS))
 
     def propEq(self):
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))

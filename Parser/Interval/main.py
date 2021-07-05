@@ -17,13 +17,13 @@ def run(fn, text):
     if ast.error:
         return None, ast.error
     print("PARSER:\t %s\n"%ast.node)
-    #
-    # translator = Translator()
-    # translator.reset()
-    # visitNodes = translator.visit(ast.node)
-    # result = translator.buildTranslation()
-    # print("Translator: %s\n"%result)
-    # print("####################################################################################\n")
+
+    translator = Translator()
+    translator.reset()
+    visitNodes = translator.visit(ast.node)
+    result = translator.buildTranslation()
+    print("Translator: %s\n"%result)
+    print("####################################################################################\n")
 
     # prettyParser = PrettyParser(tokens)
     # prettyAst = prettyParser.parse()

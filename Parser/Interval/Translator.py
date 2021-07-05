@@ -62,6 +62,13 @@ class Translator:
             self.translation = translation
             return translation
 
+        if node.op_tok.type in TT_INTERVALMINUS:
+            leftSub = self.visit(node.left_node)
+            rightSub = self.visit(node.right_node)
+            translation = str(leftSub)+ ' - ' + str(rightSub)
+            self.translation = translation
+            return translation
+
         if node.op_tok.type in TT_INTERVALMULT:
             leftMult = self.visit(node.left_node)
             rightMult = self.visit(node.right_node)
@@ -72,7 +79,7 @@ class Translator:
     def visit_UnaryOpNode(self,node):
         visitNode = self.visit(node.node)
         if node.op_tok.type in TT_NOT:
-            translation = '!' + "( " + str(visitNode) + " )"
+            translation = '!' + "(" + str(visitNode) + ")"
             self.translation=translation
         return translation
 
@@ -109,7 +116,9 @@ class Translator:
         interval = TranslatedInterval(lower, upper,uniqueVar)
         self.intervalDict[uniqueVar] = interval
         #TODO: Estou a retornar a uniquevar de maneira a que a traducao fique apenas a variavel nova gerada. Talvez esta nao seja a melhor maneiora.
-        return uniqueVar
+        translation = uniqueVar
+        self.translation = translation
+        return translation
 
     def visit_IntervalVarNode(self,node):
         return node.tok.value
