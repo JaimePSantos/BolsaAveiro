@@ -16,8 +16,6 @@ KEYWORDS = [
 	'NOT',
     'IN'
 ]
-ASSIGNMENT = ['=',':']
-RSQUARE = [']']
 
 class Lexer:
     def __init__(self, fn, text):
@@ -67,9 +65,9 @@ class Lexer:
             elif self.current_char == '*':
                 tokens.append(Token(TT_INTERVALMULT, pos_start=self.pos))
                 self.advance()
-            # elif self.current_char == '/':
-            #     tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
-            #     self.advance()
+            elif self.current_char == '/':
+                tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
+                self.advance()
             elif self.current_char == '(':
                 tokens.append(Token(TT_LPAREN, pos_start=self.pos))
                 self.advance()

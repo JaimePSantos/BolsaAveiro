@@ -61,18 +61,22 @@ class Translator:
             translation = str(leftSum)+ ' + ' + str(rightSum)
             self.translation = translation
             return translation
-
         if node.op_tok.type in TT_INTERVALMINUS:
             leftSub = self.visit(node.left_node)
             rightSub = self.visit(node.right_node)
             translation = str(leftSub)+ ' - ' + str(rightSub)
             self.translation = translation
             return translation
-
         if node.op_tok.type in TT_INTERVALMULT:
             leftMult = self.visit(node.left_node)
             rightMult = self.visit(node.right_node)
             translation = '(' + str(leftMult) + ' * ' + str(rightMult) + ')'
+            self.translation = translation
+            return translation
+        if node.op_tok.type in TT_INTERVALDIV:
+            leftDiv = self.visit(node.left_node)
+            rightDiv = self.visit(node.right_node)
+            translation = '(' + str(leftDiv) + ' / ' + str(rightDiv) + ')'
             self.translation = translation
             return translation
 

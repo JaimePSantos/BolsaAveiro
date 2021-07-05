@@ -126,7 +126,7 @@ class Parser:
         return self.bin_op(self.atom, (TT_SEPARATOR), True)
 
     def intervalTerm(self):
-        return self.bin_op(self.interval,TT_INTERVALMULT)
+        return self.bin_op(self.interval,(TT_INTERVALMULT,TT_INTERVALDIV))
 
     def intervalExpr(self):
         return self.bin_op(self.intervalTerm, (TT_INTERVALPLUS,TT_INTERVALMINUS))
