@@ -1,19 +1,24 @@
 Lexer
-    Change NOT token to be a keyword.
-    Implement symmetric interval.
+    Change NOT token to be a keyword;
+    Implement symmetric interval;
         '-' (interval) is the symmetric which is different from subtracting intervals or variables.
-            This might be something we need to solve on the parser. Not sure.
+            This might be something we need to solve on the parser. Not sure;
     Implement inverse interval token.
 
 Parser
-    IMPROVE FORALL;
+    !IMPROVE FORALL;!
     define inverse interval;
-    Better way of representing powers.
+    Better way of representing powers;
+    Had to switch the priority of  AND and IMPLIES because we couldnt do an assignment (program) AND another
+        assignment nor could we say that (this program) AND (that program) IMPLIES (something) because AND and
+        IMPLIES were exclusive for propositions. Must find out if these operations are in the correct priority
+        or if we need to create a separate assignment that is not a program.
 
 Translator
-    Figure out how to detect and translate parenthesis.
-    Fix possible bugs.
+    Figure out how to detect and translate parenthesis;
+    Fix possible bugs;
+    Forall node is not translated yet;
 
 Features
-    Translate to file.
-        Produce a valid .kyx file.
+    Translate to file
+        Produce a valid .kyx file;

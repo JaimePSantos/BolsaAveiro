@@ -34,7 +34,6 @@ class Translator:
             builtTranslation = intervals + " -> " + '( ' + self.translation + ' )'
         else:
             builtTranslation = self.translation
-
         return builtTranslation
 
     def visit(self, node):
@@ -175,6 +174,14 @@ class Translator:
             visitboxNodeElement = self.visit(boxNodeElement)
             visitboxPropElement = self.visit(boxPropElement)
         translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str (visitboxPropElement)
+        self.translation = translation
+        return translation
+
+    def visit_DiamondPropNode(self,node):
+        for diamondNodeElement,diamondPropElement in zip(node.element_nodes,node.diamondProp):
+            visitDiamondNodeElement = self.visit(diamondNodeElement)
+            visitDiamondPropElement = self.visit(diamondPropElement)
+        translation = '< ' + str(visitDiamondNodeElement) + ' > ' + str (visitDiamondPropElement)
         self.translation = translation
         return translation
 

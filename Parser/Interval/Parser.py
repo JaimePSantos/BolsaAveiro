@@ -29,7 +29,7 @@ class Parser:
             self.current_tok = self.tokens[self.tok_idx]
 
     def parse(self):
-        res = self.progExpr()
+        res = self.propExpr()
         if not res.error and self.current_tok.type != TT_EOF:
             failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                                                      "Expected an interval operation."))
@@ -134,6 +134,26 @@ class Parser:
     def propEq(self):
         return self.prop_bin_op(self.intervalExpr,(TT_GT,TT_GEQ,TT_SEQ,TT_ST))
 
+    #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
+    #TODO: A prioridade do assignment está esquisita. É válido fazer o AND proposicional de 2 programas?
+    def progEq(self):
+        return self.prog_bin_op(self.propEq,(TT_PROGASSIGN,TT_PROGDIFASSIGN))
+
+    def progAnd(self):
+        return self.prog_bin_op(self.progEq,(TT_PROGAND))
+
+    def progExpr(self):
+        return self.prog_bin_op(self.progAnd,(TT_PROGUNION,TT_PROGSEQUENCE))
+
+    #TODO: Estas operacoes podem ser feitas entre programas?
+    def propTerm(self):
+        # TODO: TT_IN para o forall nao esta muito bom.
+        return self.prop_bin_op(self.progExpr, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD, 'IN')))
+
+    def propExpr(self):
+        return self.prop_bin_op(self.propTerm,(TT_IMPLIES,))
+
+
     def propBox(self):
         res = ParseResult()
         element_nodes = []
@@ -214,22 +234,6 @@ class Parser:
         self.advance()
         return res.success(DiamondPropNode(element_nodes,diamondProp,pos_start,self.current_tok.pos_end.copy()))
 
-    def propTerm(self):
-        # TODO: TT_IN para o forall nao esta muito bom.
-        return self.prop_bin_op(self.propEq, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD, 'IN')))
-
-    def propExpr(self):
-        return self.prop_bin_op(self.propTerm,(TT_IMPLIES,))
-
-    #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
-    def progEq(self):
-        return self.prog_bin_op(self.propExpr,(TT_PROGASSIGN,TT_PROGDIFASSIGN))
-
-    def progAnd(self):
-        return self.prog_bin_op(self.progEq,(TT_PROGAND))
-
-    def progExpr(self):
-        return self.prog_bin_op(self.progAnd,(TT_PROGUNION,TT_PROGSEQUENCE))
 
     ###################################
 
