@@ -21,11 +21,13 @@ def runFile(filename):
 def main():
     while True:
         text = input('Intervals > ')
+        text = text.strip()
         if text == "q":
             print("Exiting...")
             break
         elif text == 'run':
             fn = input('Enter file name: ')
+            fn = fn.strip()
             runFile(fn)
             continue
         result, error = run('<stdin>', text)

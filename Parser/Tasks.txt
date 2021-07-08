@@ -7,6 +7,7 @@ Lexer
 
 Parser
     !IMPROVE FORALL;!
+    !improve restrictions!
     define inverse interval;
     Better way of representing powers;
     Had to switch the priority of  AND and IMPLIES because we couldnt do an assignment (program) AND another

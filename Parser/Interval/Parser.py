@@ -2,7 +2,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,\
-    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND
+    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode,DiamondNode,\
@@ -70,6 +70,7 @@ class Parser:
             self.advance()
             factor = res.register(self.propTerm())
             if res.error: return res
+            #TODO: Nao sei se esta restricao e necessaria.
             # if type(factor) is not PropOpNode:
             #     return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
             #                                          "Can only perform test action on propositions."))
@@ -154,7 +155,7 @@ class Parser:
         return self.prog_bin_op(self.propEq,(TT_PROGASSIGN,TT_PROGDIFASSIGN))
 
     def progAnd(self):
-        return self.prog_bin_op(self.progEq,(TT_PROGAND))
+        return self.prog_bin_op(self.progEq,(TT_PROGAND,TT_COMMA))
 
     def progExpr(self):
         return self.prog_bin_op(self.progAnd,(TT_PROGUNION,TT_PROGSEQUENCE))
@@ -298,20 +299,17 @@ class Parser:
             res.register_advancement()
             self.advance()
             right = res.register(func())
-            # print(type(left))
-            # print(type(right))
-            # print(op_tok)
             if op_tok.type in TT_PROGDIFASSIGN:
                 if type(left) is not DifferentialVarNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not a differential variable.'))
                 elif not (isinstance(right, SeparatorNode) or isinstance(right, IntervalVarNode) or isinstance(right,UnaryOpNode)):
-                    print(type(right))
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                           f'{str(right)} is not an interval or interval variable.'))
                 else:
                     left = ProgDifNode(left,op_tok,right)
                     return res.success(left)
+
             if op_tok.type in TT_PROGASSIGN:
                 if type(left) is not IntervalVarNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
@@ -323,7 +321,8 @@ class Parser:
                 if type(right) is not PropOpNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(right)} is not a proposition.'))
-                elif type(left) is not ProgDifNode:
+                #TODO: ProgOpNode agora pode ser uma equacao diferencial. Esta restricao nao e suficiente.
+                elif not(isinstance(left,ProgDifNode) or isinstance(left,ProgOpNode)):
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not a differential equation.'))
             if res.error: return res
