@@ -6,7 +6,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode,DiamondNode,\
-    DiamondPropNode,NumberNode
+    DiamondPropNode,NumberNode,TestProgNode
 
 
 #######################################
@@ -64,17 +64,22 @@ class Parser:
             if res.error: return res
             success = res.success(box)
             return success
+        # elif self.current_tok.type in TT_PROGTEST:
+        #     tok = self.current_tok
+        #     res.register_advancement()
+        #     self.advance()
+        #     factor = res.register(self.propTerm())
+        #     if res.error: return res
+        #     #TODO: Nao sei se esta restricao e necessaria.
+        #     # if type(factor) is not PropOpNode:
+        #     #     return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
+        #     #                                          "Can only perform test action on propositions."))
+        #     return res.success(UnaryProgOpNode(tok, factor))
         elif self.current_tok.type in TT_PROGTEST:
-            tok = self.current_tok
-            res.register_advancement()
-            self.advance()
-            factor = res.register(self.propTerm())
+            progTest = res.register(self.progTest())
             if res.error: return res
-            #TODO: Nao sei se esta restricao e necessaria.
-            # if type(factor) is not PropOpNode:
-            #     return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
-            #                                          "Can only perform test action on propositions."))
-            return res.success(UnaryProgOpNode(tok, factor))
+            success = res.success(progTest)
+            return success
         elif self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
             tok = self.current_tok
@@ -248,6 +253,38 @@ class Parser:
         self.advance()
         return res.success(DiamondPropNode(element_nodes,diamondProp,pos_start,self.current_tok.pos_end.copy()))
 
+    def progTest(self):
+        res = ParseResult()
+        element_nodes = []
+        pos_start = self.current_tok.pos_start.copy()
+        self.advance()
+        if self.current_tok.type != TT_LPAREN:
+            return res.failure(InvalidSyntaxError(
+                pos_start, self.current_tok.pos_end,
+                "Expected '('"
+            ))
+        res.register_advancement()
+        self.advance()
+        if self.current_tok.type == TT_RPAREN:
+            res.register_advancement()
+            self.advance()
+        else:
+            element_nodes.append(res.register((self.propExpr())))
+            if res.error:
+                #TODO: Melhorar este erro.
+                return res.failure(InvalidSyntaxError(
+                    pos_start, self.current_tok.pos_end,
+                    "Expected some other operation"
+                ))
+        if self.current_tok.type != TT_RPAREN:
+            return res.failure(InvalidSyntaxError(
+                self.current_tok.pos_start, self.current_tok.pos_end,
+                "Expected ')' "
+            ))
+
+        res.register_advancement()
+        self.advance()
+        return res.success(TestProgNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
 
     ###################################
 
@@ -303,7 +340,7 @@ class Parser:
                 if type(left) is not DifferentialVarNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not a differential variable.'))
-                elif not (isinstance(right, SeparatorNode) or isinstance(right, IntervalVarNode) or isinstance(right,UnaryOpNode)):
+                elif not (isinstance(right, SeparatorNode) or isinstance(right, IntervalVarNode) or isinstance(right,UnaryOpNode) or isinstance(right,BinOpNode)):
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                           f'{str(right)} is not an interval or interval variable.'))
                 else:
@@ -358,38 +395,6 @@ class ParseResult:
     if not self.error or self.last_registered_advance_count == 0:
       self.error = error
     return self
-
-#######################################
-# CONTEXT
-#######################################
-
-class Context:
-  def __init__(self, display_name, parent=None, parent_entry_pos=None):
-    self.display_name = display_name
-    self.parent = parent
-    self.parent_entry_pos = parent_entry_pos
-    self.symbol_table = None
-
-#######################################
-# SYMBOL TABLE
-#######################################
-
-class SymbolTable:
-  def __init__(self, parent=None):
-    self.symbols = {}
-    self.parent = parent
-
-  def get(self, name):
-    value = self.symbols.get(name, None)
-    if value == None and self.parent:
-      return self.parent.get(name)
-    return value
-
-  def set(self, name, value):
-    self.symbols[name] = value
-
-  def remove(self, name):
-    del self.symbols[name]
 
 
 

@@ -12,6 +12,7 @@ Parser
         IMPLIES were exclusive for propositions. Must find out if these operations are in the correct priority
         or if we need to create a separate assignment that is not a program.
     implement *
+    might have to implement a node for parenthesis so the translator can eat it correctly.
 
 Translator
     Figure out how to detect and translate parenthesis;

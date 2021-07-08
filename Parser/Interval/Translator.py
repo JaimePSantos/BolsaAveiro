@@ -198,6 +198,13 @@ class Translator:
         self.translation = translation
         return translation
 
+    def visit_TestProgNode(self,node):
+        for progTestNodeElement in node.element_nodes:
+            visitprogTestNodeElement = self.visit(progTestNodeElement)
+        translation = '( ' + str(visitprogTestNodeElement) + ' )'
+        self.translation = translation
+        return translation
+
     def visit_ProgDifNode(self,node):
         leftNode = node.left_node
         rightNode = node.right_node
