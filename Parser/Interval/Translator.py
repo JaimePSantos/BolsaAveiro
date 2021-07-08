@@ -54,6 +54,7 @@ class Translator:
         :param node:
         :return:
         '''
+        translation = ''
         if node.op_tok.type in TT_INTERVALPLUS:
             leftSum = self.visit(node.left_node)
             rightSum = self.visit(node.right_node)
@@ -81,9 +82,14 @@ class Translator:
 
     def visit_UnaryOpNode(self,node):
         visitNode = self.visit(node.node)
+        translation = ''
         if node.op_tok.type in TT_NOT:
             translation = '!' + "(" + str(visitNode) + ")"
             self.translation=translation
+        if node.op_tok.type in TT_INTERVALPLUS:
+            translation = '+' + "(" + str(visitNode) + ")"
+        if node.op_tok.type in TT_INTERVALMINUS:
+            translation = '-' + "(" + str(visitNode) + ")"
         return translation
 
     def visit_UnaryProgOpNode(self,node):
