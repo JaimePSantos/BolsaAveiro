@@ -3,15 +3,19 @@
 ? (x > 0) ; (x'=-x, y'=-y & (0<x) )
 
 #bio10
-?(2<x AND x<4 AND 0<y AND y<2);( x'= 5-x , y'=-y AND (2 < x AND x < 4 AND 0<y AND y<2))
+?(2<x AND x<4 AND 0<y AND y<2);( x'= 5-x , y'=-y & (2 < x AND x < 4 AND 0<y AND y<2))
 
 #bio20
-#?(4<x&0<y&y<2);(x'=5-x,y'=3-y&(4<x&0<y&y<2))
+?( 4 < x AND 0<y AND y<2 ) ; ( x'=5-x , y'=3-y & ( 4<x AND 0 <y AND y < 2 ) )
+
 #bio11
-#?(2<x&x<4&2<y);(x'=-x,y'=-y&(2<x&x<4&2<y))
+?( 2 < x AND x < 4 AND 2 < y ) ; ( x' = -x , y' = -y & ( 2 < x AND x < 4 AND 2 < y ))
+
 #bio21
-#?(4<x&2<y);(x'=-x,y'=3-y&(4<x&2<y))
+?( 4 < x AND 2 < y ) ; ( x' = -x , y'=3 - y & ( 4 < x AND 2 < y ))
+
 #bio
-#(bio00 U bio10 U bio20 U bio11 U bio21)*
+(? (x > 0) ; (x'=-x, y'=-y & (0<x) ) || ?(2<x AND x<4 AND 0<y AND y<2);( x'= 5-x , y'=-y & (2 < x AND x < 4 AND 0<y AND y<2)) || ?( 4 < x AND 0<y AND y<2 ) ; ( x'=5-x , y'=3-y & ( 4<x AND 0 <y AND y < 2 ) ) || ?( 2 < x AND x < 4 AND 2 < y ) ; ( x' = -x , y' = -y & ( 2 < x AND x < 4 AND 2 < y )) || ?( 4 < x AND 2 < y ) ; ( x' = -x , y'=3 - y & ( 4 < x AND 2 < y )))
+
 #Formula, qualquer coisa como
-#[x:=(5,6),y:=(3,4)][bio]->x>2
+#[x:=(5,6),y:=(3,4)] [bio]->x>2

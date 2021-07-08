@@ -175,6 +175,12 @@ class Translator:
             translatedOpTok = ':='
         elif node.op_tok.type in TT_COMMA:
             translatedOpTok = ','
+        elif node.op_tok.type in TT_PROGSEQUENCE:
+            translatedOpTok = ';'
+        elif node.op_tok.type in TT_PROGAND:
+            translatedOpTok = '&&'
+        elif node.op_tok.type in TT_PROGUNION:
+            translatedOpTok = ' U '
         if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
@@ -201,7 +207,7 @@ class Translator:
     def visit_TestProgNode(self,node):
         for progTestNodeElement in node.element_nodes:
             visitprogTestNodeElement = self.visit(progTestNodeElement)
-        translation = '( ' + str(visitprogTestNodeElement) + ' )'
+        translation = '?( ' + str(visitprogTestNodeElement) + ' )'
         self.translation = translation
         return translation
 

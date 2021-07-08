@@ -24,3 +24,7 @@ Translator
 Features
     Translate to file
         Produce a valid .kyx file;
+
+
+Code
+    Refactor propBox, propDiamond, progTest since they are very similar.
