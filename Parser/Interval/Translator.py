@@ -30,7 +30,7 @@ class Translator:
             if i == len(self.intervalDict):
                 break
             else:
-                intervals += " ∧ "
+                intervals += " & "
         if intervals!='':
             builtTranslation = intervals + " -> " + '( ' + self.translation + ' )'
         else:
@@ -120,16 +120,20 @@ class Translator:
         lower = self.visit(node.left_node)
         upper = self.visit(node.right_node)
         uniqueVar = self.makeUniqueVar()
-        interval = TranslatedInterval(lower, upper,uniqueVar)
-        self.intervalDict[uniqueVar] = interval
-        #TODO: Estou a retornar a uniquevar de maneira a que a traducao fique apenas a variavel nova gerada. Talvez esta nao seja a melhor maneiora.
-        translation = uniqueVar
+        if not(isinstance(lower,Number)):
+            newLower = [int(s) for s in list(lower) if s.isdigit()][0]
+            lower = Number(newLower).set_pos(node.pos_start,node.pos_end)
+            interval = TranslatedInterval(lower, upper, uniqueVar,True)
+            self.intervalDict[uniqueVar] = interval
+        else:
+            interval = TranslatedInterval(lower, upper,uniqueVar)
+            self.intervalDict[uniqueVar] = interval
+        translation = interval.ineqVar
         self.translation = translation
         return translation
 
     def visit_IntervalVarNode(self,node):
         return node.tok.value
-
 
     def visit_PropOpNode(self,node):
         leftNode = node.left_node
@@ -149,7 +153,7 @@ class Translator:
                 translatedOpTok = '<='
             self.varDict[leftNode] = visitRightNode
         elif node.op_tok.matches(TT_KEYWORD, 'AND'):
-            translatedOpTok = ' ∧ '
+            translatedOpTok = ' & '
         elif node.op_tok.matches(TT_KEYWORD, 'OR'):
             translatedOpTok = ' ∨ '
         elif node.op_tok.type in (TT_IMPLIES):
@@ -324,16 +328,21 @@ class TranslatedInterval:
     '''
     This class helps us represent the interval that resulted from an operation and keep track of errors.
     '''
-    def __init__(self,lowerNum=None,upperNum=None,ineqVar=None):
+    def __init__(self,lowerNum=None,upperNum=None,ineqVar=None,symmetric=None):
         if lowerNum and upperNum is not None:
             self.lowerNum = lowerNum
             self.upperNum = upperNum
-            self.ineqVar = ineqVar
+            self.symmetric = symmetric
+            if self.symmetric is True:
+                self.ineqVar = "-"+ineqVar
+            else:
+                self.ineqVar = ineqVar
             self.set_pos()
             self.set_lims()
         else:
             self.lowerNum = None
             self.upperNum = None
+            self.symmetric = None
 
     def set_pos(self):
         '''
@@ -345,11 +354,13 @@ class TranslatedInterval:
         return self
 
     def set_lims(self):
-        self.lowerLim = str(self.lowerNum) + '<=' + str(self.ineqVar)
+        self.lowerLim = str(self.lowerNum) + '<=' + self.ineqVar
         self.upperLim = str(self.ineqVar) + '<=' + str(self.upperNum)
 
     def __repr__(self):
-        return self.lowerLim + ' ∧ ' + self.upperLim
+        return self.lowerLim + ' & ' + self.upperLim
+
+
 
 class RTResult:
     def __init__(self):
