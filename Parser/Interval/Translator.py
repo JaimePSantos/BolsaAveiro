@@ -204,6 +204,9 @@ class Translator:
     def visit_DifferentialVarNode(self,node):
         return node.tok.value
 
+    def visit_NumberNode(self,node):
+        return node.tok.value
+
     def makeUniqueVar(self):
         intervalVar = ''
         for var in LETTERS:

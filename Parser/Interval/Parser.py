@@ -6,7 +6,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode,DiamondNode,\
-    DiamondPropNode
+    DiamondPropNode,NumberNode
 
 
 #######################################
@@ -47,6 +47,13 @@ class Parser:
             factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryForallOpNode(tok, factor))
+        elif self.current_tok.type in (TT_INTERVALPLUS, TT_INTERVALMINUS):
+            tok = self.current_tok
+            res.register_advancement()
+            self.advance()
+            factor = res.register(self.atom())
+            if res.error: return res
+            return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in TT_LDIAMOND:
             diamond = res.register(self.propDiamond())
             if res.error: return res
@@ -61,11 +68,11 @@ class Parser:
             tok = self.current_tok
             res.register_advancement()
             self.advance()
-            factor = res.register(self.propExpr())
+            factor = res.register(self.propTerm())
             if res.error: return res
-            if type(factor) is not PropOpNode:
-                return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
-                                                     "Can only perform test action on propositions."))
+            # if type(factor) is not PropOpNode:
+            #     return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end,
+            #                                          "Can only perform test action on propositions."))
             return res.success(UnaryProgOpNode(tok, factor))
         elif self.current_tok.type in TT_NOT:
             #TODO: Nao tenho a certeza se este NOT esta correto.
@@ -92,6 +99,13 @@ class Parser:
                 res.register_advancement()
                 self.advance()
                 return success
+            else:
+                success=res.success(NumberNode(tokTemp))
+                res.register_advancement()
+                #TODO: Por alguma razao a proxima linha tem de estar comentada para o programa funcar.
+                # self.advance()
+                return success
+
         elif self.current_tok.type in TT_IDENTIFIER:
             success = res.success(IntervalVarNode(self.current_tok))
             if res.error: return res
@@ -152,7 +166,6 @@ class Parser:
 
     def propExpr(self):
         return self.prop_bin_op(self.propTerm,(TT_IMPLIES,))
-
 
     def propBox(self):
         res = ParseResult()
@@ -292,8 +305,8 @@ class Parser:
                 if type(left) is not DifferentialVarNode:
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                      f'{str(left)} is not a differential variable.'))
-                elif not (isinstance(right, SeparatorNode) or isinstance(right, IntervalVarNode)):
-                    # print(type(right))
+                elif not (isinstance(right, SeparatorNode) or isinstance(right, IntervalVarNode) or isinstance(right,UnaryOpNode)):
+                    print(type(right))
                     return res.failure(InvalidSyntaxError(op_tok.pos_start, op_tok.pos_end,
                                                           f'{str(right)} is not an interval or interval variable.'))
                 else:

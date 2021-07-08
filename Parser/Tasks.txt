@@ -13,6 +13,8 @@ Parser
         assignment nor could we say that (this program) AND (that program) IMPLIES (something) because AND and
         IMPLIES were exclusive for propositions. Must find out if these operations are in the correct priority
         or if we need to create a separate assignment that is not a program.
+    implement way of adding "," and having multiple differential assignments.
+    implement *
 
 Translator
     Figure out how to detect and translate parenthesis;
