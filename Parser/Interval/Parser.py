@@ -191,7 +191,7 @@ class Parser:
                     "Expected '}]', 'VAR', '+', '(', '{[' or 'NOT'"
                 ))
         #TODO: Este proximo if permite que nao fechemos os parentises.
-        if self.current_tok.type != TT_RPAREN and self.current_tok.type != TT_EOF:
+        if self.current_tok.type != TT_RPAREN:
             print("Current Token: %s" % self.current_tok)
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
@@ -232,6 +232,8 @@ class Parser:
             box = res.success(BoxNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
             self.advance()
             boxProp.append(res.register((self.propExpr())))
+            if self.current_tok.type == TT_RPAREN:
+                return res.success(BoxPropNode(element_nodes, boxProp, pos_start, self.current_tok.pos_end.copy()))
             if res.error:
                 return res.failure(InvalidSyntaxError(
                     pos_start, self.current_tok.pos_end,
