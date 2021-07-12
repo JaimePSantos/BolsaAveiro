@@ -197,10 +197,8 @@ class Parser:
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 "Expected  ')' "
             ))
-        print("Next Token: %s" % self.next_tok)
         res.register_advancement()
         self.advance()
-        print("Current Token2: %s" % self.current_tok)
         return res.success(ParenthesisNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
 
     def propBox(self):
