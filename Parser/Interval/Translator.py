@@ -189,9 +189,10 @@ class Translator:
         return translation
 
     def visit_BoxPropNode(self,node):
-        for boxNodeElement in node.element_nodes:
+        for boxNodeElement, boxPropElement in zip(node.element_nodes, node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
-        translation = '[ ' + str(visitboxNodeElement) + ' ] '
+            visitboxPropElement = self.visit(boxPropElement)
+        translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str(visitboxPropElement)
         self.translation = translation
         return translation
 

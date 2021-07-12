@@ -78,22 +78,16 @@ class DiamondNode:
     def __repr__(self):
       return f'({self.element_nodes})'
 
-class TestNode:
-    def __init__(self, element_nodes, pos_start, pos_end):
-        self.element_nodes = element_nodes
-        self.pos_start = pos_start
-        self.pos_end = pos_end
-    def __repr__(self):
-      return f'({self.element_nodes})'
-
 class BoxPropNode:
-    def __init__(self, element_nodes, pos_start, pos_end):
+    def __init__(self, element_nodes, boxProp, pos_start, pos_end):
         self.element_nodes = element_nodes
         self.pos_start = pos_start
         self.pos_end = pos_end
+        self.boxProp = boxProp
     def __repr__(self):
       elementStr = str(self.element_nodes)[1:-1]
-      return f'([{{{elementStr}}}])'
+      boxPropStr = str(self.boxProp)[1:-1]
+      return f'([{{{elementStr}}}],{boxPropStr})'
 
 class DiamondPropNode:
     def __init__(self, element_nodes, pos_start, pos_end):

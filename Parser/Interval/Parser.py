@@ -27,10 +27,13 @@ class Parser:
     def update_current_tok(self):
         if self.tok_idx >= 0 and self.tok_idx < len(self.tokens):
             self.current_tok = self.tokens[self.tok_idx]
+        if self.tok_idx >= 0 and self.tok_idx < len(self.tokens)-1:
+            self.next_tok = self.tokens[self.tok_idx+1]
 
     def parse(self):
         res = self.propExpr()
         if not res.error and self.current_tok.type != TT_EOF:
+            print("Error token: %s"%self.current_tok.type)
             failure = res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                                                      "Expected an interval operation."))
             return failure
@@ -187,18 +190,23 @@ class Parser:
                     pos_start, self.current_tok.pos_end,
                     "Expected '}]', 'VAR', '+', '(', '{[' or 'NOT'"
                 ))
-        if self.current_tok.type != TT_RPAREN:
+        #TODO: Este proximo if permite que nao fechemos os parentises.
+        if self.current_tok.type != TT_RPAREN and self.current_tok.type != TT_EOF:
+            print("Current Token: %s" % self.current_tok)
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "Expected ',' or '}' "
+                "Expected  ')' "
             ))
+        print("Next Token: %s" % self.next_tok)
         res.register_advancement()
         self.advance()
+        print("Current Token2: %s" % self.current_tok)
         return res.success(ParenthesisNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
 
     def propBox(self):
         res = ParseResult()
         element_nodes = []
+        boxProp = []
         pos_start = self.current_tok.pos_start.copy()
         if self.current_tok.type != TT_LBOX:
             return res.failure(InvalidSyntaxError(
@@ -222,9 +230,18 @@ class Parser:
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 "Expected ',' or '}' "
             ))
+        elif self.current_tok.type == TT_RBOX:
+            box = res.success(BoxNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
+            self.advance()
+            boxProp.append(res.register((self.propExpr())))
+            if res.error:
+                return res.failure(InvalidSyntaxError(
+                    pos_start, self.current_tok.pos_end,
+                    "Expected a proposition after box program."
+                ))
         res.register_advancement()
         self.advance()
-        return res.success(BoxPropNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
+        return res.success(BoxPropNode(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
 
     def propDiamond(self):
         res = ParseResult()
