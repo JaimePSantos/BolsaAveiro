@@ -189,18 +189,16 @@ class Translator:
         return translation
 
     def visit_BoxPropNode(self,node):
-        for boxNodeElement,boxPropElement in zip(node.element_nodes,node.boxProp):
+        for boxNodeElement in node.element_nodes:
             visitboxNodeElement = self.visit(boxNodeElement)
-            visitboxPropElement = self.visit(boxPropElement)
-        translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str (visitboxPropElement)
+        translation = '[ ' + str(visitboxNodeElement) + ' ] '
         self.translation = translation
         return translation
 
     def visit_DiamondPropNode(self,node):
-        for diamondNodeElement,diamondPropElement in zip(node.element_nodes,node.diamondProp):
+        for diamondNodeElement in node.element_nodes:
             visitDiamondNodeElement = self.visit(diamondNodeElement)
-            visitDiamondPropElement = self.visit(diamondPropElement)
-        translation = '< ' + str(visitDiamondNodeElement) + ' > ' + str (visitDiamondPropElement)
+        translation = '< ' + str(visitDiamondNodeElement) + ' > '
         self.translation = translation
         return translation
 
@@ -208,6 +206,13 @@ class Translator:
         for progTestNodeElement in node.element_nodes:
             visitprogTestNodeElement = self.visit(progTestNodeElement)
         translation = '?( ' + str(visitprogTestNodeElement) + ' )'
+        self.translation = translation
+        return translation
+
+    def visit_ParenthesisNode(self,node):
+        for parenNodeElement in node.element_nodes:
+            visitparenNodeElement = self.visit(parenNodeElement)
+        translation = '( ' + str(visitparenNodeElement) + ' )'
         self.translation = translation
         return translation
 

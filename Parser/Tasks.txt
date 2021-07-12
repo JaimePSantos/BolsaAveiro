@@ -12,7 +12,8 @@ Parser
         IMPLIES were exclusive for propositions. Must find out if these operations are in the correct priority
         or if we need to create a separate assignment that is not a program.
     implement *
-    might have to implement a node for parenthesis so the translator can eat it correctly.
+    Parenthesis nodes might cause problems with restrictions in nodes.
+    Diamond and Box need a comma or something in order to work. Must change this but not sure how.
 
 Translator
     Figure out how to detect and translate parenthesis;

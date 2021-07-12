@@ -189,7 +189,8 @@ class Lexer:
         while self.current_char != None and self.current_char in LETTERS_DIGITS + '_':
             id_str += self.current_char
             self.advance()
-        if id_str in KEYWORDS:
+        lowerKW = [x.lower() for x in KEYWORDS]
+        if id_str.lower() in lowerKW:
             tok_type = TT_KEYWORD
         elif '\'' in id_str:
             tok_type = TT_IDENTIFIERDIF

@@ -87,26 +87,31 @@ class TestNode:
       return f'({self.element_nodes})'
 
 class BoxPropNode:
-    def __init__(self, element_nodes,boxProp, pos_start, pos_end):
+    def __init__(self, element_nodes, pos_start, pos_end):
         self.element_nodes = element_nodes
-        self.boxProp = boxProp
         self.pos_start = pos_start
         self.pos_end = pos_end
     def __repr__(self):
       elementStr = str(self.element_nodes)[1:-1]
-      boxPropStr = str(self.boxProp)[1:-1]
-      return f'([{{{elementStr}}}],{boxPropStr})'
+      return f'([{{{elementStr}}}])'
 
 class DiamondPropNode:
-    def __init__(self, element_nodes,diamondProp, pos_start, pos_end):
+    def __init__(self, element_nodes, pos_start, pos_end):
         self.element_nodes = element_nodes
-        self.diamondProp = diamondProp
         self.pos_start = pos_start
         self.pos_end = pos_end
     def __repr__(self):
       elementStr = str(self.element_nodes)[1:-1]
-      diamondPropStr = str(self.diamondProp)[1:-1]
-      return f'(<{{{elementStr}}}>,{diamondPropStr})'
+      return f'(<{{{elementStr}}}>)'
+
+class ParenthesisNode:
+    def __init__(self, element_nodes, pos_start, pos_end):
+        self.element_nodes = element_nodes
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+    def __repr__(self):
+      elementStr = str(self.element_nodes)[1:-1]
+      return f'({elementStr})'
 
 class TestProgNode:
     def __init__(self, element_nodes, pos_start, pos_end):
