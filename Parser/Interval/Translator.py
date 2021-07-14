@@ -197,9 +197,10 @@ class Translator:
         return translation
 
     def visit_DiamondPropNode(self,node):
-        for diamondNodeElement in node.element_nodes:
+        for diamondNodeElement,diamondPropElement in zip(node.element_nodes,node.diamondProp):
             visitDiamondNodeElement = self.visit(diamondNodeElement)
-        translation = '< ' + str(visitDiamondNodeElement) + ' > '
+            visitDiamondPropElement = self.visit(diamondPropElement)
+        translation = '< ' + str(visitDiamondNodeElement) + ' > ' + str(visitDiamondPropElement)
         self.translation = translation
         return translation
 

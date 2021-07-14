@@ -36,10 +36,15 @@
 
 #x'=[1,2] & (x>y AND i>j)
 #Box( [{x'=1}] ( [{y'=2}] (x>y AND y<x)))
+
+#Wrapper nodes
 [{x'=1}] ( [{ y'=1 }] ( x>y ) )
-#[{x'=1}] (( ( x>y ) ))
 [{x'=1}] ( [{ y'=1 }] ( x>y ) )  -> x > y
 
+<{x'=1}> ( <{ y'=1 }> ( x>y ) )
+<{x'=1}> ( <{ y'=1 }> ( x>y ) )  -> x > y
+
+?(x >[1,2] AND i>j)
 
 #<{x'=1}>,<{y'=2}>, (x>y AND y<x)
 #Exemplos Daniel

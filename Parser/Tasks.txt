@@ -13,8 +13,6 @@ Parser
         or if we need to create a separate assignment that is not a program.
     implement *
     Parenthesis nodes might cause problems with restrictions in nodes.
-    Diamond and Box need a comma or something in order to work. Must change this but not sure how.
-    Make a single function for progtest, diamond, box and parenthesis.
 
 Translator
     Figure out how to detect and translate parenthesis;
