@@ -3,7 +3,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
-    TT_COMMA
+    TT_COMMA,TT_NDREP
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode
@@ -160,8 +160,6 @@ class Translator:
             translatedOpTok = ' ∨ '
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = ' -> '
-
-
         if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
@@ -216,9 +214,17 @@ class Translator:
         return translation
 
     def visit_ParenthesisNode(self,node):
+        translation = ''
         for parenNodeElement in node.element_nodes:
             visitparenNodeElement = self.visit(parenNodeElement)
-        translation = '( ' + str(visitparenNodeElement) + ' )'
+        if node.zeroAryNode:
+            for zAryNodeElement in node.zeroAryNode:
+                visitZAryNodeElement = self.visit(zAryNodeElement)
+            if visitZAryNodeElement.type in TT_NDREP:
+                translatedZAryElement = '*'
+                translation = '( ' + str(visitparenNodeElement) + ' )' + str(translatedZAryElement)
+        else:
+            translation = '( ' + str(visitparenNodeElement) + ' )'
         self.translation = translation
         return translation
 
@@ -246,10 +252,13 @@ class Translator:
 
     def visit_UnaryForallOpNode(self,node):
         visitNode = self.visit(node.node)
-        translation = ''
         translation = '\\forall '+ str(visitNode)
         self.translation = translation
         return translation
+
+    def visit_ZeroAryNode(self,node):
+        # print("Tok %s"%node.tok)
+        return node.tok
 
     def makeUniqueVar(self):
         intervalVar = ''

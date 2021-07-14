@@ -7,7 +7,7 @@ Parser
     inverse interval;
             Might not be the most correct implementation in the parser level.
     Better way of representing powers;
-    implement *
+    implement a better version of *
     Parenthesis nodes might cause problems with restrictions in nodes.
 
 Translator

@@ -112,13 +112,20 @@ class DiamondPropNode:
       return f'(<{{{elementStr}}}>,{diamondPropStr})'
 
 class ParenthesisNode:
-    def __init__(self, element_nodes, pos_start, pos_end):
+    def __init__(self, element_nodes, pos_start, pos_end,zeroAryNode=None):
         self.element_nodes = element_nodes
         self.pos_start = pos_start
         self.pos_end = pos_end
+        if zeroAryNode is not None:
+            self.zeroAryNode = zeroAryNode
+
     def __repr__(self):
       elementStr = str(self.element_nodes)[1:-1]
-      return f'({elementStr})'
+      if self.zeroAryNode is not None:
+          zAryElementStr = str(self.zeroAryNode)[1:-1]
+          return f'(({elementStr}){zAryElementStr})'
+      else:
+          return f'({elementStr})'
 
 class TestProgNode:
     def __init__(self, element_nodes, pos_start, pos_end):
@@ -179,9 +186,16 @@ class UnaryOpNode:
         self.node = node
         self.pos_start = self.op_tok.pos_start
         self.pos_end = node.pos_end
-
     def __repr__(self):
         return f'({self.op_tok}, {self.node})'
+
+class ZeroAryNode:
+    def __init__(self, tok):
+        self.tok = tok
+        self.pos_start = self.tok.pos_start
+        self.pos_end = self.tok.pos_end
+    def __repr__(self):
+        return f'{self.tok}'
 
 class UnaryProgOpNode:
     def __init__(self, op_tok, node):

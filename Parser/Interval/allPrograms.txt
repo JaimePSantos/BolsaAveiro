@@ -32,6 +32,9 @@ x'=[1,2] & (x>y AND i>j)
 x:=y ; x'=[1,2] & (x>z AND i>j AND w > l) ; y' = [3,4] & (x > y)
 x:=y || x := z ; x'=[1,2]
 
+(  x:=y ; x:=z ; ( [{(x:=k)**}](x>y)))**
+
+
 #Exemplos Daniel
 x<=[1,3] -> [{x'=[1,2]}] x>[1,1]
 ?(x > 0 AND x>y)

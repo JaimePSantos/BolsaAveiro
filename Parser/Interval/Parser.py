@@ -6,7 +6,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,ProgDifNode,UnaryForallOpNode,BoxPropNode,DiamondPropNode,NumberNode,\
-    TestProgNode,ParenthesisNode,ForallPropNode
+    TestProgNode,ParenthesisNode,ForallPropNode,ZeroAryNode
 
 
 #######################################
@@ -160,6 +160,7 @@ class Parser:
         res = ParseResult()
         element_nodes = []
         boxProp = []
+        zeroAryNode = []
         pos_start = self.current_tok.pos_start.copy()
         if unaryOp:
             self.advance()
@@ -175,12 +176,15 @@ class Parser:
             self.advance()
         else:
             element_nodes.append(res.register((self.progExpr())))
+            if self.next_tok.type == TT_NDREP:
+                self.advance()
+                zeroAryNode.append(ZeroAryNode(self.current_tok))
             if res.error:
                 return res.failure(InvalidSyntaxError(
                     pos_start, self.current_tok.pos_end,
                     "Expected '{[' , '}]' , 'VAR', '+', '(', 'NOT', '}>' or '<{"
                 ))
-        if self.current_tok.type != secondWrapperToken:
+        if self.current_tok.type != secondWrapperToken and self.current_tok.type != TT_NDREP:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 "Expected ',' or '"+str(secondWrapperToken)+"'"
@@ -198,7 +202,10 @@ class Parser:
         res.register_advancement()
         self.advance()
         if unaryOp or (unaryOp is not None):
-            return res.success(node(element_nodes,pos_start, self.current_tok.pos_end.copy()))
+            if node == ParenthesisNode:
+                return res.success(node(element_nodes, pos_start, self.current_tok.pos_end.copy(),zeroAryNode))
+            else:
+                return res.success(node(element_nodes,pos_start, self.current_tok.pos_end.copy()))
         return res.success(node(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
 
     ###################################
