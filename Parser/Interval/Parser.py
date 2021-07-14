@@ -5,8 +5,8 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
-    UnaryOpNode,DifferentialVarNode,UnaryProgOpNode,ProgDifNode,UnaryForallOpNode,BoxNode,BoxPropNode,DiamondNode,\
-    DiamondPropNode,NumberNode,TestProgNode,ParenthesisNode
+    UnaryOpNode,DifferentialVarNode,ProgDifNode,UnaryForallOpNode,BoxPropNode,DiamondPropNode,NumberNode,\
+    TestProgNode,ParenthesisNode,ForallPropNode
 
 
 #######################################
@@ -50,6 +50,11 @@ class Parser:
             factor = res.register(self.propEq())
             if res.error: return res
             return res.success(UnaryForallOpNode(tok, factor))
+        # if self.current_tok.type in TT_FORALL:
+        #     forall = res.register(self.makeWrapperNode(ForallPropNode,TT_FORALL,(TT_KEYWORD,'IN')))
+        #     if res.error: return res
+        #     success = res.success(forall)
+        #     return success
         elif self.current_tok.type in (TT_INTERVALPLUS, TT_INTERVALMINUS):
             tok = self.current_tok
             res.register_advancement()
@@ -138,12 +143,11 @@ class Parser:
 
     def propTerm(self):
         # TODO: TT_IN para o forall nao esta muito bom.
-        return self.prop_bin_op(self.propEq, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD, 'IN')))
+        return self.prop_bin_op(self.propEq, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'), (TT_KEYWORD,'IN')))
 
     def propExpr(self):
         return self.prop_bin_op(self.propTerm,(TT_IMPLIES,))
-    #TODO: Descobrir se podemos fazer um assignment de proposicoes a variaveis.
-    #TODO: A prioridade do assignment está esquisita. É válido fazer o AND proposicional de 2 programas?
+
     def progEq(self):
         return self.prog_bin_op(self.propExpr,(TT_PROGASSIGN,TT_PROGDIFASSIGN))
 
@@ -182,7 +186,7 @@ class Parser:
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 "Expected ',' or '"+str(secondWrapperToken)+"'"
             ))
-        elif self.current_tok.type == secondWrapperToken and (secondWrapperToken==TT_RBOX or secondWrapperToken==TT_RDIAMOND):
+        elif (self.current_tok.type == secondWrapperToken) and (secondWrapperToken==TT_RBOX or secondWrapperToken==TT_RDIAMOND):
             self.advance()
             boxProp.append(res.register((self.progExpr())))
             if self.current_tok.type == TT_RPAREN:

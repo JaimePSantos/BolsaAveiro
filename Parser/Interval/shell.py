@@ -25,7 +25,7 @@ def main():
         if text == "q":
             print("Exiting...")
             break
-        elif text == 'run':
+        elif text.lower() == 'run'.lower():
             fn = input('Enter file name: ')
             fn = fn.strip()
             runFile(fn)

@@ -7,17 +7,11 @@ Parser
     inverse interval;
             Might not be the most correct implementation in the parser level.
     Better way of representing powers;
-    Had to switch the priority of  AND and IMPLIES because we couldnt do an assignment (program) AND another
-        assignment nor could we say that (this program) AND (that program) IMPLIES (something) because AND and
-        IMPLIES were exclusive for propositions. Must find out if these operations are in the correct priority
-        or if we need to create a separate assignment that is not a program.
     implement *
     Parenthesis nodes might cause problems with restrictions in nodes.
 
 Translator
-    Figure out how to detect and translate parenthesis;
     Fix possible bugs;
-    Forall node is not translated yet;
     inverse interval;
             The translation is not the best. Improve.
 
@@ -27,4 +21,3 @@ Features
 
 
 Code
-    Refactor propBox, propDiamond, progTest since they are very similar.

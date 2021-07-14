@@ -154,10 +154,14 @@ class Translator:
             self.varDict[leftNode] = visitRightNode
         elif node.op_tok.matches(TT_KEYWORD, 'AND'):
             translatedOpTok = ' & '
+        elif node.op_tok.matches(TT_KEYWORD, 'IN'):
+            translatedOpTok = '  '
         elif node.op_tok.matches(TT_KEYWORD, 'OR'):
             translatedOpTok = ' ∨ '
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = ' -> '
+
+
         if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
@@ -239,6 +243,13 @@ class Translator:
 
     def visit_NumberNode(self,node):
         return node.tok.value
+
+    def visit_UnaryForallOpNode(self,node):
+        visitNode = self.visit(node.node)
+        translation = ''
+        translation = '\\forall '+ str(visitNode)
+        self.translation = translation
+        return translation
 
     def makeUniqueVar(self):
         intervalVar = ''
