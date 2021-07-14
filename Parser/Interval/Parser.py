@@ -2,7 +2,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,\
-    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA
+    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA,TT_NDREP
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,ProgDifNode,UnaryForallOpNode,BoxPropNode,DiamondPropNode,NumberNode,\
@@ -83,7 +83,6 @@ class Parser:
             success = res.success(paren)
             return success
         elif self.current_tok.type in TT_NOT:
-            #TODO: Nao tenho a certeza se este NOT esta correto.
             tok = self.current_tok
             res.register_advancement()
             self.advance()
@@ -201,143 +200,6 @@ class Parser:
         if unaryOp or (unaryOp is not None):
             return res.success(node(element_nodes,pos_start, self.current_tok.pos_end.copy()))
         return res.success(node(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
-
-    # def propBox(self):
-    #     res = ParseResult()
-    #     element_nodes = []
-    #     boxProp = []
-    #     pos_start = self.current_tok.pos_start.copy()
-    #     if self.current_tok.type != TT_LBOX:
-    #         return res.failure(InvalidSyntaxError(
-    #             pos_start, self.current_tok.pos_end,
-    #             "Expected {['"
-    #         ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     if self.current_tok.type == TT_RBOX:
-    #         res.register_advancement()
-    #         self.advance()
-    #     else:
-    #         element_nodes.append(res.register((self.propExpr())))
-    #         if res.error:
-    #             return res.failure(InvalidSyntaxError(
-    #                 pos_start, self.current_tok.pos_end,
-    #                 "Expected '}]', 'VAR', '+', '(', '{[' or 'NOT'"
-    #             ))
-    #     if self.current_tok.type != TT_RBOX:
-    #         return res.failure(InvalidSyntaxError(
-    #             self.current_tok.pos_start, self.current_tok.pos_end,
-    #             "Expected ',' or '}' "
-    #         ))
-    #     elif self.current_tok.type == TT_RBOX:
-    #         box = res.success(BoxNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
-    #         self.advance()
-    #         boxProp.append(res.register((self.propExpr())))
-    #         if self.current_tok.type == TT_RPAREN:
-    #             return res.success(BoxPropNode(element_nodes, boxProp, pos_start, self.current_tok.pos_end.copy()))
-    #         if res.error:
-    #             return res.failure(InvalidSyntaxError(
-    #                 pos_start, self.current_tok.pos_end,
-    #                 "Expected a proposition after box program."
-    #             ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     return res.success(BoxPropNode(element_nodes,boxProp,pos_start,self.current_tok.pos_end.copy()))
-    #
-    # def propDiamond(self):
-    #     res = ParseResult()
-    #     element_nodes = []
-    #     pos_start = self.current_tok.pos_start.copy()
-    #     if self.current_tok.type != TT_LDIAMOND:
-    #         return res.failure(InvalidSyntaxError(
-    #             pos_start, self.current_tok.pos_end,
-    #             "Expected <{'"
-    #         ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     if self.current_tok.type == TT_RDIAMOND:
-    #         res.register_advancement()
-    #         self.advance()
-    #     else:
-    #         element_nodes.append(res.register((self.propExpr())))
-    #         if res.error:
-    #             return res.failure(InvalidSyntaxError(
-    #                 pos_start, self.current_tok.pos_end,
-    #                 "Expected '}>', 'VAR', '+', '(', '<[' or 'NOT'"
-    #             ))
-    #     if self.current_tok.type != TT_RDIAMOND:
-    #         return res.failure(InvalidSyntaxError(
-    #             self.current_tok.pos_start, self.current_tok.pos_end,
-    #             "Expected ',' or '}' "
-    #         ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     return res.success(DiamondPropNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
-    #
-    # def progTest(self):
-    #     res = ParseResult()
-    #     element_nodes = []
-    #     pos_start = self.current_tok.pos_start.copy()
-    #     self.advance()
-    #     if self.current_tok.type != TT_LPAREN:
-    #         return res.failure(InvalidSyntaxError(
-    #             pos_start, self.current_tok.pos_end,
-    #             "Expected '('"
-    #         ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     if self.current_tok.type == TT_RPAREN:
-    #         res.register_advancement()
-    #         self.advance()
-    #     else:
-    #         element_nodes.append(res.register((self.propExpr())))
-    #         if res.error:
-    #             #TODO: Melhorar este erro.
-    #             return res.failure(InvalidSyntaxError(
-    #                 pos_start, self.current_tok.pos_end,
-    #                 "Expected some other operation"
-    #             ))
-    #     if self.current_tok.type != TT_RPAREN:
-    #         return res.failure(InvalidSyntaxError(
-    #             self.current_tok.pos_start, self.current_tok.pos_end,
-    #             "Expected ')' "
-    #         ))
-    #
-    #     res.register_advancement()
-    #     self.advance()
-    #     return res.success(TestProgNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
-    #
-    # def makeParenthesisNode(self):
-    #     res = ParseResult()
-    #     element_nodes = []
-    #     pos_start = self.current_tok.pos_start.copy()
-    #     if self.current_tok.type != TT_LPAREN:
-    #         return res.failure(InvalidSyntaxError(
-    #             pos_start, self.current_tok.pos_end,
-    #             "Expected {['"
-    #         ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     if self.current_tok.type == TT_RPAREN:
-    #         res.register_advancement()
-    #         self.advance()
-    #     else:
-    #         element_nodes.append(res.register((self.propExpr())))
-    #         if res.error:
-    #             return res.failure(InvalidSyntaxError(
-    #                 pos_start, self.current_tok.pos_end,
-    #                 "Expected '}]', 'VAR', '+', '(', '{[' or 'NOT'"
-    #             ))
-    #     #TODO: Este proximo if permite que nao fechemos os parentises.
-    #     if self.current_tok.type != TT_RPAREN:
-    #         print("Current Token: %s" % self.current_tok)
-    #         return res.failure(InvalidSyntaxError(
-    #             self.current_tok.pos_start, self.current_tok.pos_end,
-    #             "Expected  ')' "
-    #         ))
-    #     res.register_advancement()
-    #     self.advance()
-    #     return res.success(ParenthesisNode(element_nodes,pos_start,self.current_tok.pos_end.copy()))
 
     ###################################
 

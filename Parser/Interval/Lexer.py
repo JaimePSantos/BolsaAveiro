@@ -2,7 +2,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_FORALL,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
-    TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA
+    TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA,TT_NDREP
 from Errors import IllegalCharError,ExpectedCharError
 import string
 
@@ -36,7 +36,6 @@ class Lexer:
     def makeTokens(self):
         tokens = []
         while self.current_char != None:
-            # print("Current char: %s\t"%self.current_char)
             if self.current_char in ' \t':
                 self.advance()
             elif self.current_char in ' \n':
@@ -62,8 +61,7 @@ class Lexer:
             elif self.current_char == '-':
                 tokens.append(self.makeHyphen())
             elif self.current_char == '*':
-                tokens.append(Token(TT_INTERVALMULT, pos_start=self.pos))
-                self.advance()
+                tokens.append(self.makeAsterisk())
             elif self.current_char == '/':
                 tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
                 self.advance()
@@ -250,6 +248,14 @@ class Lexer:
             tok_type = TT_IMPLIES
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
+    def makeAsterisk(self):
+        tok_type = TT_INTERVALMULT
+        pos_start = self.pos.copy()
+        self.advance()
+        if self.current_char == '*':
+            self.advance()
+            tok_type = TT_NDREP
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
 class Position:
     def __init__(self, idx, ln, col, fn, ftxt):

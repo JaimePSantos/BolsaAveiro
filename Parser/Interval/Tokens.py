@@ -41,6 +41,7 @@ TT_RDIAMOND = 'RDIAMOND'
 TT_IMPLIES = 'IMPLIES'
 TT_DEBUG = 'DEBUG'
 TT_COMMA = 'COMMA'
+TT_NDREP = 'NDREP'
 
 class Token:
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):
