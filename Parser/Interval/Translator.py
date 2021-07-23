@@ -194,7 +194,7 @@ class Translator:
         for boxNodeElement, boxPropElement in zip(node.element_nodes, node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
             visitboxPropElement = self.visit(boxPropElement)
-        translation = '[{ ' + str(visitboxNodeElement) + ' }] ' + str(visitboxPropElement)
+        translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str(visitboxPropElement)
         self.translation = translation
         return translation
 
@@ -202,7 +202,7 @@ class Translator:
         for diamondNodeElement,diamondPropElement in zip(node.element_nodes,node.diamondProp):
             visitDiamondNodeElement = self.visit(diamondNodeElement)
             visitDiamondPropElement = self.visit(diamondPropElement)
-        translation = '<{ ' + str(visitDiamondNodeElement) + ' }> ' + str(visitDiamondPropElement)
+        translation = '< ' + str(visitDiamondNodeElement) + ' > ' + str(visitDiamondPropElement)
         self.translation = translation
         return translation
 
