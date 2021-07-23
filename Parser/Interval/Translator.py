@@ -185,6 +185,8 @@ class Translator:
             translatedOpTok = ' ++ '
         if translatedOpTok != '':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        elif translatedOpTok == ':=':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
         else:
             translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
@@ -253,7 +255,7 @@ class Translator:
         if node.op_tok.type in TT_PROGDIFASSIGN:
             translatedOpTok = '='
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = "{ "+str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)+" }"
         else:
             translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
