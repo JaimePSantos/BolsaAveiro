@@ -2,11 +2,11 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_AND,TT_FORALL,TT_BOX,\
     TT_LPAREN, TT_RPAREN,TT_INTERVALVAR,TT_PROGTEST, TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,\
-    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA,TT_NDREP
+    TT_IMPLIES,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA,TT_NDREP,TT_LCURLYBRACK,TT_RCURLYBRACK
 from Errors import InvalidSyntaxError
 from Nodes import LowerNumberNode,UpperNumberNode,IntervalVarNode,SeparatorNode,BinOpNode,PropOpNode,ProgOpNode,\
     UnaryOpNode,DifferentialVarNode,ProgDifNode,UnaryForallOpNode,BoxPropNode,DiamondPropNode,NumberNode,\
-    TestProgNode,ParenthesisNode,ForallPropNode,ZeroAryNode
+    TestProgNode,ParenthesisNode,ForallPropNode,ZeroAryNode,CurlyParenthesisNode
 
 
 #######################################
@@ -81,6 +81,11 @@ class Parser:
             paren = res.register(self.makeWrapperNode(ParenthesisNode,TT_LPAREN,TT_RPAREN,False))
             if res.error: return res
             success = res.success(paren)
+            return success
+        elif self.current_tok.type in TT_LCURLYBRACK:
+            curl = res.register(self.makeWrapperNode(CurlyParenthesisNode,TT_LCURLYBRACK,TT_RCURLYBRACK,False))
+            if res.error: return res
+            success = res.success(curl)
             return success
         elif self.current_tok.type in TT_NOT:
             tok = self.current_tok
@@ -202,7 +207,7 @@ class Parser:
         res.register_advancement()
         self.advance()
         if unaryOp or (unaryOp is not None):
-            if node == ParenthesisNode:
+            if (node == ParenthesisNode or node == CurlyParenthesisNode):
                 return res.success(node(element_nodes, pos_start, self.current_tok.pos_end.copy(),zeroAryNode))
             else:
                 return res.success(node(element_nodes,pos_start, self.current_tok.pos_end.copy()))

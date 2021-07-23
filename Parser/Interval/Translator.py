@@ -228,6 +228,21 @@ class Translator:
         self.translation = translation
         return translation
 
+    def visit_CurlyParenthesisNode(self,node):
+        translation = ''
+        for parenNodeElement in node.element_nodes:
+            visitparenNodeElement = self.visit(parenNodeElement)
+        if node.zeroAryNode:
+            for zAryNodeElement in node.zeroAryNode:
+                visitZAryNodeElement = self.visit(zAryNodeElement)
+            if visitZAryNodeElement.type in TT_NDREP:
+                translatedZAryElement = '*'
+                translation = '{ ' + str(visitparenNodeElement) + ' }' + str(translatedZAryElement)
+        else:
+            translation = '{ ' + str(visitparenNodeElement) + ' }'
+        self.translation = translation
+        return translation
+
     def visit_ProgDifNode(self,node):
         leftNode = node.left_node
         rightNode = node.right_node

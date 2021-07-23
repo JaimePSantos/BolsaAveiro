@@ -42,6 +42,8 @@ TT_IMPLIES = 'IMPLIES'
 TT_DEBUG = 'DEBUG'
 TT_COMMA = 'COMMA'
 TT_NDREP = 'NDREP'
+TT_RCURLYBRACK = 'RCURLYBRACK'
+TT_LCURLYBRACK = 'LCURLYBRACK'
 
 class Token:
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):

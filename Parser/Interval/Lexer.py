@@ -2,7 +2,7 @@ from Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARA
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV,TT_GEQ,TT_SEQ,TT_GT,TT_ST,TT_NOT,TT_FORALL,\
     TT_LPAREN, TT_RPAREN,Token,TT_INTERVALVAR,TT_PROGTEST,TT_PROGAND,TT_PROGUNION,TT_PROGSEQUENCE,TT_PROGASSIGN,\
     TT_DIFFERENTIALVAR,TT_PROGDIFASSIGN,TT_IN,TT_KEYWORD,TT_IDENTIFIER,TT_IDENTIFIERDIF,TT_LBOX,TT_RBOX,TT_IMPLIES,\
-    TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA,TT_NDREP
+    TT_DEBUG,TT_LDIAMOND,TT_RDIAMOND,TT_COMMA,TT_NDREP,TT_RCURLYBRACK,TT_LCURLYBRACK
 from Errors import IllegalCharError,ExpectedCharError
 import string
 
@@ -53,6 +53,9 @@ class Lexer:
                 token,error = self.makeRCurly()
                 if error: return [],error
                 tokens.append(token)
+            elif self.current_char == '{':
+                tokens.append(Token(TT_LCURLYBRACK, pos_start=self.pos))
+                self.advance()
             elif self.current_char == ',':
                 tokens.append(self.makeComma())
             elif self.current_char == '+':
@@ -228,6 +231,7 @@ class Lexer:
 
     def makeRCurly(self):
         pos_start = self.pos.copy()
+        tok_type = TT_RCURLYBRACK
         self.advance()
         if self.current_char == ']':
             tok_type = TT_RBOX
@@ -237,7 +241,8 @@ class Lexer:
             tok_type = TT_RDIAMOND
             self.advance()
             return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
-        return None,ExpectedCharError(pos_start, self.pos, "']' or '>' (after '}')" )
+        #return None,ExpectedCharError(pos_start, self.pos, "']' or '>' (after '}')" )
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
 
     def makeHyphen(self):
         tok_type = TT_INTERVALMINUS

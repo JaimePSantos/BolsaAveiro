@@ -127,6 +127,22 @@ class ParenthesisNode:
       else:
           return f'({elementStr})'
 
+class CurlyParenthesisNode:
+    def __init__(self, element_nodes, pos_start, pos_end,zeroAryNode=None):
+        self.element_nodes = element_nodes
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+        if zeroAryNode is not None:
+            self.zeroAryNode = zeroAryNode
+
+    def __repr__(self):
+      elementStr = str(self.element_nodes)[1:-1]
+      if self.zeroAryNode is not None:
+          zAryElementStr = str(self.zeroAryNode)[1:-1]
+          return f'{{{elementStr}{zAryElementStr}}}'
+      else:
+          return f'({elementStr})'
+
 class TestProgNode:
     def __init__(self, element_nodes, pos_start, pos_end):
         self.element_nodes = element_nodes
