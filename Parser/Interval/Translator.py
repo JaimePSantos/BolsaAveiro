@@ -90,7 +90,7 @@ class Translator:
         if node.op_tok.type in TT_INTERVALPLUS:
             translation = '+' + "(" + str(visitNode) + ")"
         if node.op_tok.type in TT_INTERVALMINUS:
-            translation = '-' + "(" + str(visitNode) + ")"
+            translation = '-' + str(visitNode)
         return translation
 
     def visit_UnaryProgOpNode(self,node):
@@ -183,10 +183,14 @@ class Translator:
             translatedOpTok = '&'
         elif node.op_tok.type in TT_PROGUNION:
             translatedOpTok = ' ++ '
-        if translatedOpTok != '':
+        if translatedOpTok != '' and translatedOpTok!=':=' and translatedOpTok!=';':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         elif translatedOpTok == ':=':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
+            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
+            translation = self.removeRepeated(firstTranslation, ';')
+        elif translatedOpTok==';':
+            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = self.removeRepeated(firstTranslation, ';')
         else:
             translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
@@ -211,7 +215,7 @@ class Translator:
     def visit_TestProgNode(self,node):
         for progTestNodeElement in node.element_nodes:
             visitprogTestNodeElement = self.visit(progTestNodeElement)
-        translation = '?( ' + str(visitprogTestNodeElement) + ' )'
+        translation = '?' + str(visitprogTestNodeElement)
         self.translation = translation
         return translation
 
@@ -255,7 +259,7 @@ class Translator:
         if node.op_tok.type in TT_PROGDIFASSIGN:
             translatedOpTok = '='
         if translatedOpTok != '':
-            translation = "{ "+str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)+" }"
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
             translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
@@ -288,6 +292,22 @@ class Translator:
                 continue
         if intervalVar == '':
             return -1
+
+    def removeRepeated(self,translation,symbol):
+        j = 1
+        k = []
+        charList = translation.split()
+        print(charList)
+        for i in range(len(charList)):
+            if charList[i] == symbol:
+                j+=1
+            if j>1:
+                k.append(i)
+                j-=1
+        for num in k:
+            charList[num] = ''
+        processedString = ''.join(charList)
+        return processedString
 
     def reset(self):
         '''
