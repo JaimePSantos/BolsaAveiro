@@ -9,11 +9,13 @@ Parser
     Better way of representing powers;
     implement a better version of *
     Parenthesis nodes might cause problems with restrictions in nodes.
+    ';' at the end of box doesnt work.
 
 Translator
     Fix possible bugs;
     inverse interval;
             The translation is not the best. Improve.
+    The way to deal with ';' at the end of box is not good.
 
 Features
     Translate to file

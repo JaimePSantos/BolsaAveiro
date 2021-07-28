@@ -186,8 +186,7 @@ class Translator:
         if translatedOpTok != '' and translatedOpTok!=':=' and translatedOpTok!=';':
             translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         elif translatedOpTok == ':=':
-            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
-            translation = self.removeRepeated(firstTranslation, ';')
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
         elif translatedOpTok==';':
             firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
             translation = self.removeRepeated(firstTranslation, ';')
@@ -215,7 +214,7 @@ class Translator:
     def visit_TestProgNode(self,node):
         for progTestNodeElement in node.element_nodes:
             visitprogTestNodeElement = self.visit(progTestNodeElement)
-        translation = '?' + str(visitprogTestNodeElement)
+        translation = '?( ' + str(visitprogTestNodeElement) + " );"
         self.translation = translation
         return translation
 
@@ -297,7 +296,6 @@ class Translator:
         j = 1
         k = []
         charList = translation.split()
-        print(charList)
         for i in range(len(charList)):
             if charList[i] == symbol:
                 j+=1
@@ -306,7 +304,7 @@ class Translator:
                 j-=1
         for num in k:
             charList[num] = ''
-        processedString = ''.join(charList)
+        processedString = ' '.join(charList)
         return processedString
 
     def reset(self):

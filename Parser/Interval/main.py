@@ -7,6 +7,14 @@ import datetime as dt
 import time
 import textwrap as tw
 
+def prettyPrint(text,linebreak):
+    printingResult = text.split()
+    for i in range(len(printingResult)-1):
+        if(printingResult[i+1] in linebreak):
+            printingResult[i]+='\n\t\t'
+    printingResult = ' '.join(printingResult)
+    return printingResult
+
 def run(fn, text):
     start_time = time.time()
     lexer = Lexer(fn, text)
@@ -25,20 +33,14 @@ def run(fn, text):
     translator.reset()
     visitNodes = translator.visit(ast.node)
     result = translator.buildTranslation()
-    # wrapper = tw.TextWrapper()
-    # wrapper.subsequent_indent= "\t\t"
-    # printingResult = wrapper.fill(result)
-    printingResult = result.split()
-    for i in range(len(printingResult)-1):
-        if(printingResult[i+1]=='++' or printingResult[i+1]=='->'):
-            printingResult[i]+='\n\t\t'
-    printingResult = ' '.join(printingResult)
+    printingInput =  prettyPrint(text,['||','->'])
+    printingResult = prettyPrint(result,['++','->'])
     dateTime = str(dt.datetime.now())
     print("")
     print("")
     print("## idDL2dDL v0.1 ################################")
     print("")
-    print("Input in interval dDL:\n\t> %s"%text)
+    print("Input in interval dDL:\n\t> %s"%printingInput)
     print("Output in dDL:\n\t> %s"%printingResult)
     print("")
     executionTime = time.time() - start_time
