@@ -46,16 +46,9 @@ def run(fn, text):
     executionTime = time.time() - start_time
     print("## "+dateTime+" ##################")
     print("## Execution time: %s s"%round(executionTime,6) +" ##################")
-
-    # prettyParser = PrettyParser(tokens)
-    # prettyAst = prettyParser.parse()
-    # if ast.error:
-    #     return None, ast.error
-    # print("PRETTYPARSER: %s\n"%prettyAst.node)
-
     # interpreter = Interpreter()
     # interpreter.reset()
     # result = interpreter.visit(ast.node)
     # print("INTERPRETER: %s\n"%result)
 
-    return "",None
+    return result,None

@@ -1,0 +1,8 @@
+Theorem " test2"
+
+Problem
+
+(1<=a & a<=2) -> ( x := a; )
+
+End.
+End.
