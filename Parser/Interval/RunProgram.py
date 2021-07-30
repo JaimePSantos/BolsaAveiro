@@ -5,7 +5,6 @@ from Parser import Parser
 from PrettyParser import PrettyParser
 import datetime as dt
 import time
-import textwrap as tw
 
 def prettyPrint(text,linebreak):
     printingResult = text.split()
@@ -24,8 +23,7 @@ def resultsString(input,output,time):
                     "Input in interval dDL:\n\t> " + printingInput +
                     "\nOutput in dDL:\n\t> " + printingResult +
                     "\n\n## " + dateTime + " ##################" +
-                    "\n## Execution time: %s s"%round(executionTime,6) +" ##################\n")
-
+                    "\n## Execution time: " + str(round(executionTime,6)) +"s ###################\n")
     return resultString
 
 def run(fn, input):

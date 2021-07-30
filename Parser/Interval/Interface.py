@@ -1,4 +1,4 @@
-from main import run
+from RunProgram import run
 import pathlib as pl
 import os.path
 def runFile(filename):
@@ -22,6 +22,17 @@ def runFile(filename):
                 resultList.append(result)
     return resultList
 
+def writeFile(fileName,filePath,result,multipleLines,writeMethod):
+    with open(filePath, writeMethod) as f:
+        f.write("Theorem \" " + fileName + ' \"\n\nProblem\n\n')
+        if multipleLines:
+            for line in result:
+                f.write(line + '\n')
+        else:
+            f.write(result + '\n')
+        f.write("\nEnd.")
+        f.write("\nEnd.")
+
 def printToFile(result,multipleLines):
     fileName = input('\tFile name? > ')
     fileNameKX = fileName + '.kyx'
@@ -30,27 +41,14 @@ def printToFile(result,multipleLines):
     if resultFile.is_file():
         rewrite = input('\t'+fileName+' already exists. Rewrite file? y/n > ').lower()
         if rewrite:
-            with open(filePath, 'w') as f:
-                f.write("Theorem \" "+fileName + ' \"\n\nProblem\n\n')
-                if multipleLines:
-                    for line in result:
-                        f.write(line + '\n')
-                else:
-                    f.write(result+'\n')
-                f.write("\nEnd.")
-                f.write("\nEnd.")
+            writeFile(fileName,filePath,result,multipleLines,'w')
+            print("File at %s successfully rewritten.\n"%filePath)
             return filePath
         else:
             printToFile(result)
-    with open(filePath,'a') as f:
-        f.write("Theorem \" " + fileName + '\"\n\nProblem\n\n')
-        if multipleLines:
-            for line in result:
-                f.write(line + '\n')
-        else:
-            f.write(result + '\n')
-        f.write("\nEnd.")
-        f.write("\nEnd.")
+    else:
+        writeFile(fileName, filePath, result, multipleLines, 'a')
+        print("File at %s successfully created.\n" % filePath)
     return filePath
 
 
