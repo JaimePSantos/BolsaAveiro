@@ -15,9 +15,22 @@ def prettyPrint(text,linebreak):
     printingResult = ' '.join(printingResult)
     return printingResult
 
-def run(fn, text):
+def resultsString(input,output,time):
+    printingInput =  prettyPrint(input,['||','->'])
+    printingResult = prettyPrint(output,['++','->'])
+    dateTime = str(dt.datetime.now())
+    executionTime = time
+    resultString = ("\n\n## idDL2dDL v0.1 ################################\n\n"
+                    "Input in interval dDL:\n\t> " + printingInput +
+                    "\nOutput in dDL:\n\t> " + printingResult +
+                    "\n\n## " + dateTime + " ##################" +
+                    "\n## Execution time: %s s"%round(executionTime,6) +" ##################\n")
+
+    return resultString
+
+def run(fn, input):
     start_time = time.time()
-    lexer = Lexer(fn, text)
+    lexer = Lexer(fn, input)
     tokens, error = lexer.makeTokens()
     if error:
         return None, error
@@ -32,23 +45,14 @@ def run(fn, text):
     translator = Translator()
     translator.reset()
     visitNodes = translator.visit(ast.node)
-    result = translator.buildTranslation()
-    printingInput =  prettyPrint(text,['||','->'])
-    printingResult = prettyPrint(result,['++','->'])
-    dateTime = str(dt.datetime.now())
-    print("")
-    print("")
-    print("## idDL2dDL v0.1 ################################")
-    print("")
-    print("Input in interval dDL:\n\t> %s"%printingInput)
-    print("Output in dDL:\n\t> %s"%printingResult)
-    print("")
+    output = translator.buildTranslation()
     executionTime = time.time() - start_time
-    print("## "+dateTime+" ##################")
-    print("## Execution time: %s s"%round(executionTime,6) +" ##################")
+    printingResults = resultsString(input,output,executionTime)
+    print(printingResults)
+
     # interpreter = Interpreter()
     # interpreter.reset()
     # result = interpreter.visit(ast.node)
     # print("INTERPRETER: %s\n"%result)
 
-    return result,None
+    return output,None

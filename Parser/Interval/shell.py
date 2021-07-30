@@ -7,24 +7,20 @@ def runFile(filename):
     resultFile = pl.Path(filePath)
     if not(resultFile):
         return False
-    try:
-        with open(filePath) as f:
-            text = f.readlines()
-            for line in text:
-                if '#' in line:
-                    continue
-                if line == '\n':
-                    continue
-                result, error = run(filename, line)
-                if error:
-                    print(error.as_string())
-                    break
-                else:
-                    #print(result)
-                    resultList.append(result)
-        return resultList
-    except Exception as e:
-        print(e)
+    with open(filePath) as f:
+        text = f.readlines()
+        for line in text:
+            if '#' in line:
+                continue
+            if line == '\n':
+                continue
+            result, error = run(filename, line)
+            if error:
+                print(error.as_string())
+                break
+            else:
+                resultList.append(result)
+    return resultList
 
 def printToFile(result,multipleLines):
     fileName = input('\tFile name? > ')
@@ -34,34 +30,28 @@ def printToFile(result,multipleLines):
     if resultFile.is_file():
         rewrite = input('\t'+fileName+' already exists. Rewrite file? y/n > ').lower()
         if rewrite:
-            try:
-                with open(filePath, 'w') as f:
-                    f.write("Theorem \" "+fileName + '\"\n\nProblem\n\n')
-                    if multipleLines:
-                        for line in result:
-                            f.write(line + '\n')
-                    else:
-                        f.write(result+'\n')
-                    f.write("\nEnd.")
-                    f.write("\nEnd.")
-                return filePath
-            except Exception as e:
-                print(e)
+            with open(filePath, 'w') as f:
+                f.write("Theorem \" "+fileName + ' \"\n\nProblem\n\n')
+                if multipleLines:
+                    for line in result:
+                        f.write(line + '\n')
+                else:
+                    f.write(result+'\n')
+                f.write("\nEnd.")
+                f.write("\nEnd.")
+            return filePath
         else:
             printToFile(result)
-    try:
-        with open(filePath,'a') as f:
-            f.write("Theorem \" " + fileName + '\"\n\nProblem\n\n')
-            if multipleLines:
-                for line in result:
-                    f.write(line + '\n')
-            else:
-                f.write(result + '\n')
-            f.write("\nEnd.")
-            f.write("\nEnd.")
-        return filePath
-    except Exception as e:
-        print(e)
+    with open(filePath,'a') as f:
+        f.write("Theorem \" " + fileName + '\"\n\nProblem\n\n')
+        if multipleLines:
+            for line in result:
+                f.write(line + '\n')
+        else:
+            f.write(result + '\n')
+        f.write("\nEnd.")
+        f.write("\nEnd.")
+    return filePath
 
 
 def main():
