@@ -88,10 +88,10 @@ def main():
             print(error.as_string())
         else:
             print(result)
-        toFile = input('Generate file with results? y/n > ').lower()
-        if toFile == 'y'.lower():
-            printToFile(result,False)
-            continue
-        else:
-            continue
+            toFile = input('Generate file with results? y/n > ').lower()
+            if toFile == 'y'.lower():
+                printToFile(result,False)
+                continue
+            else:
+                continue
 main()
