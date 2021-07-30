@@ -51,15 +51,26 @@ def printToFile(result,multipleLines):
         print("File at %s successfully created.\n" % filePath)
     return filePath
 
+def availableCommands():
+    availableCmds = ('Commands:' +
+                     '\n    -> help: lists available commands.'+
+                     '\n    -> q: exits the program.'+
+                     '\n    -> run: prompts for a file of formulas to be translated.\n')
+    return availableCmds
+
 
 def main():
     resultList = []
+    print('Starting idDL2dDL... \nType "help" for available commands.')
     while True:
         text = input('Intervals > ')
         text = text.strip()
         if text == "q":
             print("Exiting...")
             break
+        elif text.lower() == 'help'.lower():
+            print(availableCommands())
+            continue
         elif text.lower() == 'run'.lower():
             fn = input('Enter file name: ')
             fn = fn.strip()
