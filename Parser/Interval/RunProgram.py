@@ -32,25 +32,44 @@ def run(fn, input):
     tokens, error = lexer.makeTokens()
     if error:
         return None, error
-    # print("\nLEXER:\t %s\n"%tokens)
+    print("\nLEXER:\t %s\n"%tokens)
 
     parser = Parser(tokens)
     ast = parser.parse()
     if ast.error:
         return None, ast.error
-    # print("PARSER:\t %s\n"%ast.node)
+    print("PARSER:\t %s\n"%ast.node)
 
-    translator = Translator()
-    translator.reset()
-    visitNodes = translator.visit(ast.node)
-    output = translator.buildTranslation()
-    executionTime = time.time() - start_time
-    printingResults = resultsString(input,output,executionTime)
-    print(printingResults)
+    #translator = Translator()
+    #translator.reset()
+    #visitNodes = translator.visit(ast.node)
+    #output = translator.buildTranslation()
+    #executionTime = time.time() - start_time
+    #printingResults = resultsString(input,output,executionTime)
+    #print(printingResults)
 
     # interpreter = Interpreter()
     # interpreter.reset()
     # result = interpreter.visit(ast.node)
     # print("INTERPRETER: %s\n"%result)
+
+    #return output,None
+    return 0,None
+
+def runGUI(fn, input):
+    lexer = Lexer(fn, input)
+    tokens, error = lexer.makeTokens()
+    if error:
+        return None, error
+
+    parser = Parser(tokens)
+    ast = parser.parse()
+    if ast.error:
+        return None, ast.error
+
+    translator = Translator()
+    translator.reset()
+    visitNodes = translator.visit(ast.node)
+    output = translator.buildTranslation()
 
     return output,None
