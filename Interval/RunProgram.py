@@ -2,7 +2,6 @@ from Lexer import Lexer
 from Translator import Translator
 from Interpreter import Interpreter
 from Parser import Parser
-from PrettyParser import PrettyParser
 import datetime as dt
 import time
 
