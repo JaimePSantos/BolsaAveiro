@@ -225,8 +225,12 @@ class Parser:
             res.register_advancement()
             self.advance()
             right = res.register(func())
+            print(type(right))
             if res.error: return res
             if Separator:
+                if not(isinstance(right,UpperNumberNode)):
+                    return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                                                   "Expected a number followed by a ']'."))
                 left = SeparatorNode(left, op_tok, right)
             else:
                 left = BinOpNode(left, op_tok, right)

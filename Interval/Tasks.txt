@@ -9,9 +9,7 @@ Parser
     Better way of representing powers;
     implement a better version of *
     Parenthesis nodes might cause problems with restrictions in nodes.
-    ';' at the end of box doesnt work.
-    [1,2 doesnt throw an error, it crashes the program.
-
+    [1,a will match the ',' with comma and not separator, night be an issue.
 Translator
     Fix possible bugs;
     inverse interval;
@@ -19,6 +17,8 @@ Translator
     The way to deal with ';' at the end of box is not good.
 
 GUI
+    Refactor into classes.
+    History of translations.
     Error handling.
     Read from file.
     Print to file.
