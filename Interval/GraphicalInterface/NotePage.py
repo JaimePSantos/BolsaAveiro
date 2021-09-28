@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from Tools import UnderConstruction
+import	tkinter.messagebox as MessageBox
 
 class BasicNotepage(tk.Frame):
     def __init__(self, parent, camera=None, cancel=None, ok=None,

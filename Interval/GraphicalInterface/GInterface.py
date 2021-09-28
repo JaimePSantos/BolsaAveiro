@@ -33,7 +33,7 @@ class IntervalInterface(tk.Frame):
         frame1.rowconfigure(2, weight=1)
         frame1.columnconfigure(0, weight=1)
 
-        # ------------ Notebook with all camera control pages -----------
+        # ------------ Notebook with translation options. -----------
         frame1 = ttk.Frame(master, padding=(5, 5, 5, 5))
         frame1.grid(row=0, column=0, sticky="NSEW")
         frame1.rowconfigure(2, weight=1)

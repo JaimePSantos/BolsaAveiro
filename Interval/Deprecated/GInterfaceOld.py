@@ -161,9 +161,6 @@ class BasicTranslation(BasicNotepage):
         self.textEntry = myEntryFrame(f1, 10, 0, 0, 'W')
 
 
-
-
-
 def UnderConstruction(window):
     tk.Label(window, text='UNDER CONSTRUCTION', font=('Arial', 14, ('bold')),
              anchor='center').grid(row=0, column=0, sticky='EW')
