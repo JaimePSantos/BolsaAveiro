@@ -41,7 +41,7 @@ class IntervalInterface(tk.Frame):
         self.AlwaysPreview = False
 
         n = ttk.Notebook(frame1, padding=(5, 5, 5, 5))
-        n.grid(row=1, column=0, rowspan=2, sticky=(tk.N, tk.E, tk.W, tk.S))
+        n.grid(row=1, column=0, rowspan=1,columnspan=5, sticky=(tk.N, tk.E, tk.W, tk.S))
         n.columnconfigure(0, weight=1)
         n.enable_traversal()
 
