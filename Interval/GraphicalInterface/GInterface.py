@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 #from Tools import
 from NotePage import BasicNotepage
-from BasicTranslation import BasicTranslation
+from BasicTranslationFrame import BasicTranslation
+from FileFrame import FileTranslation
 import os
 import sys
 sys.path.append('../')
@@ -46,7 +47,9 @@ class IntervalInterface(tk.Frame):
         n.enable_traversal()
 
         self.basicTranslation = BasicTranslation(n)
+        self.fileTranslation = FileTranslation(n)
         n.add(self.basicTranslation, text='Basic', underline=0)
+        n.add(self.fileTranslation, text='File', underline=0)
 
 
 win = tk.Tk()

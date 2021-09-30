@@ -71,4 +71,4 @@ def runGUI(fn, input):
     visitNodes = translator.visit(ast.node)
     output = translator.buildTranslation()
 
-    return output,None
+    return output
