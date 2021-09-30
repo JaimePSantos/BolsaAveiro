@@ -225,7 +225,7 @@ class Parser:
             res.register_advancement()
             self.advance()
             right = res.register(func())
-            print(type(right))
+            #print(type(right))
             if res.error: return res
             if Separator:
                 if not(isinstance(right,UpperNumberNode)):
