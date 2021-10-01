@@ -18,15 +18,14 @@ Translator
     The way to deal with ';' at the end of box is not good.
 
 GUI
+    Print to file.
     History of translations.
     Error handling.
-    Print to file.
+    Refactor Basic and File translation.
+    Tooltips.
+    Images for buttons?
     Improve visual quality.
     Make it accessible through main.py
-    Tooltips.
-    Rearrange File translation.
-    Images for buttons?
-    Refactor Basic and File translation.
 
 Features
     Make so that if an input file has multiple programs, generate multiple files.

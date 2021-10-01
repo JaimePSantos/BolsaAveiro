@@ -7,7 +7,7 @@ def UnderConstruction(window):
 
 def myLabelFrame(f, row, col, text,colspan,rowspan,stick='NEWS',py=5, pad=(5, 5, 5, 5)):
     l = ttk.LabelFrame(f, text=text, padding=pad)
-    l.grid(row=row, column=col, sticky=stick, columnspan=colspan,rowspan=rowspan, pady=py)
+    #l.grid(row=row, column=col, sticky=stick, columnspan=colspan,rowspan=rowspan, pady=py)
     return l
 
 def myEntryFrame(f, row, col, width, stick, colspan):
@@ -29,3 +29,8 @@ def myScrollBar(f,row,col,stick):
     scrollbar = tk.Scrollbar(f)
     scrollbar.grid(row=row,column=col,sticky=stick)
     return scrollbar
+
+def myFrame(f,side,fill,expand):
+    myF = tk.Frame(f)
+    myF.pack(side=side,fill=fill,expand=expand)
+    return myF

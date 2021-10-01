@@ -54,5 +54,5 @@ class IntervalInterface(tk.Frame):
 
 win = tk.Tk()
 app = IntervalInterface(win, title="idl")
-win.minsize(1024, 768)
+win.minsize(900, 768)
 win.mainloop()

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from Tools import UnderConstruction, myLabelFrame, myEntryFrame, myButton,myTextFrame,myScrollBar
+from Tools import UnderConstruction, myLabelFrame, myEntryFrame, myButton,myTextFrame,myScrollBar,myFrame
 from NotePage import BasicNotepage
 import sys
 sys.path.append('../')
@@ -11,21 +11,37 @@ class FileTranslation(BasicNotepage):
     def BuildPage(self):
         # --- File loading frame ---
         f1 = myLabelFrame(self,0, 0,  colspan=2,rowspan=3, text='Text from file')
-        self.loadButton = myButton(f1,row=2,col=0,command=self.openFile,rowspan=1,colspan=1,sticky='W',text='Load', bg='white',fg='black',font=('Arial',12),relief='raised')
-        self.translationButton = myButton(f1,row=1,col=1,command=self.translate,rowspan=2,colspan=1,sticky='W',text='Translate', bg='white',fg='black',font=('Arial',12),relief='raised')
-        self.path = myEntryFrame(f1,row=2,col=2,width=50,stick='W',colspan=1)
-        self.loadedText = myTextFrame(f1,row=0, col=0, width=99,height = 13 , stick='W',colspan=100)
-        self.scrollBar = myScrollBar(f1,0,101,'ns')
+        f1.pack(side='top',fill='both',expand=True)
+
+        controls = myFrame(f1,side='bottom',fill='both',expand=True)
+        txtFrame = myFrame(f1,side='top',fill='both',expand=True)
+
+        self.loadedText = myTextFrame(txtFrame,row=0, col=0, width=99,height = 13 , stick='W',colspan=100)
+        self.scrollBar = myScrollBar(txtFrame,row=0,col=100,stick='ns')
         self.loadedText.config(yscrollcommand=self.scrollBar.set)
         self.scrollBar.config(command=self.loadedText.yview)
 
+        self.loadButton = myButton(controls,row=1,col=0,command=self.openFile,rowspan=1,colspan=1,sticky='W',text='Load', bg='white',fg='black',font=('Arial',12),relief='raised')
+        self.translationButton = myButton(controls,row=1,col=1,command=self.translate,rowspan=1,colspan=1,sticky='W',text='Translate', bg='white',fg='black',font=('Arial',12),relief='raised')
+        self.path = myEntryFrame(controls,row=1,col=2,width=30,stick='W',colspan=1)
+
+
         # --- Translated Frame ---
-        f2 = myLabelFrame(f1, row=4, col=0, colspan=2, rowspan=3, text='Translated Text')
-        self.translatedText = myTextFrame(f2, row=4, col=0, width=99, height=13, stick='W', colspan=100)
+        f2 = myLabelFrame(self, row=4, col=0, colspan=2, rowspan=3, text='Translated Text')
+        f2.pack(side='top',fill='both',expand=True)
+
+        controls2 = myFrame(f2,side='bottom',fill='both',expand=True)
+        txtFrame2 = myFrame(f2,side='top',fill='both',expand=True)
+
+        self.translatedText = myTextFrame(txtFrame2, row=4, col=0, width=99, height=13, stick='W', colspan=100)
         self.translatedText.config(state=tk.DISABLED)
-        self.clearButton = myButton(f2, row=5, col=0, command=self.clear, rowspan=1, colspan=1, sticky='W',
+        self.scrollBar2 = myScrollBar(txtFrame2,row=4,col=100,stick='ns')
+        self.translatedText.config(yscrollcommand=self.scrollBar2.set)
+        self.scrollBar2.config(command=self.translatedText.yview)
+
+        self.clearButton = myButton(controls2, row=5, col=0, command=self.clear, rowspan=1, colspan=1, sticky='W',
                                     text='Clear', bg='white', fg='black', font=('Arial', 12), relief='raised')
-        self.clipboardButton = myButton(f2, row=5, col=1, command=self.copyToClipboard, rowspan=1, colspan=1,
+        self.clipboardButton = myButton(controls2, row=5, col=1, command=self.copyToClipboard, rowspan=1, colspan=1,
                                         sticky='W', text='Copy', bg='white', fg='black', font=('Arial', 12),
                                         relief='raised')
 
