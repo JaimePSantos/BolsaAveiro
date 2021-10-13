@@ -31,5 +31,5 @@ more).
 
 Navigate to **/Interval/GraphicalInterface** and run
 `python GInterface`.
-![Basic translation page.](/Resources/basicGUI.png "Basic Translation.")
+![Basic translation page.](/Resources/basicGUI.png =100x20)
 
