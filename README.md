@@ -9,9 +9,9 @@ the graphical user interface.
    AST) as output.
 3. The translator is fed an AST as input, and returns a translated string as output. This is achieved by *visit*
    methods, whose purpose is to enter a node of the AST and perform a proper evaluation and translation of its contents.
-4. The rudimentary GUI compiles the functionality of the aforementioned modules in a page for user inputed
-   translation, and in a page for loading files with translatable formulas, in order to provide the user a simple way of
-   performing translations.
+4. The rudimentary GUI compiles the functionality of the aforementioned modules in a page for user inputed translation,
+   and in a page for loading files with translatable formulas, in order to provide the user a simple way of performing
+   translations.
 
 Structure of the program follows [this](https://github.com/davidcallanan/py-myopl-code) respository.
 
@@ -27,10 +27,60 @@ A single translation can be made by simply typing the desired formula in this pr
 more).
 
 ## GUI
+
 **_!UNDER CONSTRUCTION!_**
 
 Navigate to **/Interval/GraphicalInterface** and run
 `python GInterface`.
 
+### Basic Translation Page
+
 <img src="/Resources/basicGUI.png" width="500">
+
+- The *text for translation* text box allows you to type the desired formula(s) for translation.
+- The *translate* button translates the text in the first text box.
+- The *translated text* text box displays the translated text.
+- The *clear* button clears all input and output.
+- The *copy* button copies the translated text to the clipboard.
+- The *save* button prompts to user to save the translated text to a *.kyx* file.
+    - If only one formula is translated, then it will be saved with a file name and location chosen by the user.
+    - If multiple formulas are entered, the user will have the option to either save all the translations in a single *
+      .kyx* file (not recommended since KX can only handle one program at a time), or to choose a base file name and
+      generate multiple files for each translated program.
+
+### File Translation Page
+
+<img src="/Resources/fileGUI.png" width="500">
+
+- The *load* button prompts the user to enter a file with formulas ready for translation.
+- All other buttons function the same as above.
+
+## TODO
+
+### Lexer
+
+- Change `NOT` token to be a keyword;
+
+### Parser
+- **!IMPROVE `FORALL`!**
+- **!improve restrictions!**
+- **!Inverse interval!**
+- Better way of representing powers
+- Implement a better version of `*`
+- Parenthesis nodes might cause problems with restrictions
+- `[1,a` will match `,` with comma and not separator, might be an issue
+
+### Translator  
+- **!Inverse interval!** 
+- The way to deal with ';' at the end of box is not good.
+
+### GUI 
+- **!Error handling!** 
+- History of translations
+- Tooltips
+- Explore PanedWindow instead of Notepage(?)
+- Images for buttons(?) 
+- Improve visual quality
+- Make it accessible through main.py 
+- Refactor Basic and File translation pages
 
