@@ -32,5 +32,5 @@ more).
 Navigate to **/Interval/GraphicalInterface** and run
 `python GInterface`.
 
-<img src="/Resources/basicGUI.png" width="500" height="600">
+<img src="/Resources/basicGUI.png" width="500">
 
