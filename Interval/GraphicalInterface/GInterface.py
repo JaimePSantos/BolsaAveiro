@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
-#from Tools import
+# from Tools import
 from NotePage import BasicNotepage
 from BasicTranslationFrame import BasicTranslation
 from FileFrame import FileTranslation
 import os
 import sys
+
 sys.path.append('../')
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
@@ -17,12 +18,13 @@ import tkinter.messagebox as MessageBox
 base_folder = os.path.dirname(__file__)
 bgPath = base_folder + '/Resources/background2.png'
 
+
 class IntervalInterface(tk.Frame):
     def __init__(self, root, title):
         tk.Frame.__init__(self, root)
         self.root = root
         self.title = title
-        self.root.title = title
+        self.root.title(title)
 
         master = root
         master.rowconfigure(0, weight=1)
@@ -42,7 +44,7 @@ class IntervalInterface(tk.Frame):
         self.AlwaysPreview = False
 
         n = ttk.Notebook(frame1, padding=(5, 5, 5, 5))
-        n.grid(row=1, column=0, rowspan=1,columnspan=5, sticky=(tk.N, tk.E, tk.W, tk.S))
+        n.grid(row=1, column=0, rowspan=1, columnspan=5, sticky=(tk.N, tk.E, tk.W, tk.S))
         n.columnconfigure(0, weight=1)
         n.enable_traversal()
 
@@ -53,6 +55,6 @@ class IntervalInterface(tk.Frame):
 
 
 win = tk.Tk()
-app = IntervalInterface(win, title="idl")
+app = IntervalInterface(win, title="idDL2DL")
 win.minsize(900, 768)
 win.mainloop()
