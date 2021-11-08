@@ -28,32 +28,36 @@ more).
 
 ## GUI
 
-**_!UNDER CONSTRUCTION!_**
+**_UNDER CONSTRUCTION_**
 
 Navigate to **/Interval/GraphicalInterface** and run
 `python GInterface`.
 
-### Basic Translation Page
+### Translation Page
 
-<img src="/Resources/basicGUI.png" width="500">
+<img src="/Resources/TranslationGUI.png" width="500">
 
-- The *text for translation* text box allows you to type the desired formula(s) for translation.
-- The *translate* button translates the text in the first text box.
-- The *translated text* text box displays the translated text.
-- The *clear* button clears all input and output.
-- The *copy* button copies the translated text to the clipboard.
-- The *save* button prompts to user to save the translated text to a *.kyx* file.
+#### Menu
+- The `File` separator allows the user to
+    - Load formulas to be translated. (`ctrl+l`)
+    - Save the translated formulas to a file. (`ctrl+s`)
+    - Exit the program. (`ctrl+q`)
+- The `Help` separator allows the user to access
+    - Program instructions. (*github readme*)
+    - Program documentation. (*WiP*)
+
+#### Buttons
+- The `Begin Translating` text box allows you to type the desired formula(s) for translation.
+- The `translate` button translates the text in the first text box.
+- The `Translated Text` text box displays the translated text.
+- The `clear` button clears all input and output.
+- The `copy` button copies the translated text to the clipboard.
+- The `save` button prompts to user to save the translated text to a *.kyx* file.
     - If only one formula is translated, then it will be saved with a file name and location chosen by the user.
     - If multiple formulas are entered, the user will have the option to either save all the translations in a single *
       .kyx* file (not recommended since KX can only handle one program at a time), or to choose a base file name and
       generate multiple files for each translated program.
-
-### File Translation Page
-
-<img src="/Resources/fileGUI.png" width="500">
-
-- The *load* button prompts the user to enter a file with formulas ready for translation.
-- All other buttons function the same as above.
+- The `load` button prompts the user to enter a file with formulas ready for translation.
 
 ## TODO
 

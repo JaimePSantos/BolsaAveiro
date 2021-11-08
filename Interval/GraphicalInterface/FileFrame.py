@@ -14,7 +14,7 @@ base_folder = os.path.join(os.path.dirname(__file__, ), '..')
 class FileTranslation(BasicNotepage):
     def BuildPage(self):
         # --- File loading frame ---
-        f1 = myLabelFrame(self, 0, 0, colspan=2, rowspan=3, text='Text from file')
+        f1 = myLabelFrame(self, 0, 0, colspan=2, rowspan=3, text='Begin Translating')
         f1.pack(side='top', fill='both', expand=True)
 
         controls = myFrame(f1, side='bottom', fill='both', expand=True)
@@ -134,7 +134,7 @@ class FileTranslation(BasicNotepage):
         if btn is not None:
             btn.delete('1.0', tk.END)
         else:
-            self.loadedText.delete(0, tk.END)
+            self.loadedText.delete('1.0', tk.END)
             self.translatedText.delete('1.0', tk.END)
 
     def copyToClipboard(self):
