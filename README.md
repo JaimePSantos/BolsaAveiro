@@ -59,6 +59,9 @@ Navigate to **/Interval/GraphicalInterface** and run
       generate multiple files for each translated program.
 - The `load` button prompts the user to enter a file with formulas ready for translation.
 
+### History Page
+#### Under Construction...
+
 ## TODO
 
 ### Lexer
