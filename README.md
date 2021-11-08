@@ -66,21 +66,25 @@ Navigate to **/Interval/GraphicalInterface** and run
 - Change `NOT` token to be a keyword;
 
 ### Parser
-- **!IMPROVE `FORALL`!**
-- **!improve restrictions!**
-- **!Inverse interval!**
+- **Improve `FORALL`**
+- **Improve restrictions**
+- **Inverse interval**
 - Better way of representing powers
 - Implement a better version of `*`
 - Parenthesis nodes might cause problems with restrictions
 - `[1,a` will match `,` with comma and not separator, might be an issue
 
 ### Translator  
-- **!Inverse interval!** 
+- **Inverse interval** 
 - The way to deal with ';' at the end of box is not good.
 
 ### GUI 
-- **!Error handling!**: Translation Errors; Closing File Load prompt when no file is selected.
-- History of translations
+- **Error handling**
+   - Translation Errors
+   - Closing File Load prompt when no file is selected
+- **History of translations**
+   - Persistent history or simple session specific history?
+   - Create GUI page
 - Tooltips
 - Explore PanedWindow instead of Notepage(?)
 - Images for buttons(?) 
