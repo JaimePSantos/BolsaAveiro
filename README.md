@@ -75,7 +75,7 @@ Navigate to **/Interval/GraphicalInterface** and run
 - The way to deal with ';' at the end of box is not good.
 
 ### GUI 
-- **!Error handling!** 
+- **!Error handling!**: Translation Errors; Closing File Load prompt when no file is selected.
 - History of translations
 - Tooltips
 - Explore PanedWindow instead of Notepage(?)

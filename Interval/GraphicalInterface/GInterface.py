@@ -4,6 +4,7 @@ from tkinter import ttk
 from NotePage import BasicNotepage
 from BasicTranslationFrame import BasicTranslation
 from FileFrame import FileTranslation
+from HistoryFrame import HistoryTranslation
 import os
 import sys
 
@@ -48,11 +49,34 @@ class IntervalInterface(tk.Frame):
         n.columnconfigure(0, weight=1)
         n.enable_traversal()
 
-        self.basicTranslation = BasicTranslation(n)
+        #self.basicTranslation = BasicTranslation(n)
         self.fileTranslation = FileTranslation(n)
-        n.add(self.basicTranslation, text='Basic', underline=0)
+        self.translationHistory = HistoryTranslation(n)
+        #n.add(self.basicTranslation, text='Basic', underline=0)
         n.add(self.fileTranslation, text='File', underline=0)
+        n.add(self.translationHistory,text='History', underline=0)
 
+        # --------------------------- Menu ------------------------------
+
+        menubar = tk.Menu(root,
+                          foreground='black', background='#F0F0F0', activebackground='#86ABD9',
+                          activeforeground='white')
+        filemenu = tk.Menu(menubar, tearoff=0, foreground='black', background='#F0F0F0',
+                           activebackground='#86ABD9', activeforeground='white')
+        filemenu.add_command(label="Load", underline=0,
+                             compound='left', accelerator='Ctrl+L',
+                             command=self.fileTranslation.openFile)
+        root.bind_all('<Control-l>',lambda e: self.fileTranslation.openFile())
+        filemenu.add_command(label="Quit", underline=0,
+                             compound='left', accelerator='Ctrl+Q',
+                             command=lambda e=None: self.quitProgram(e))
+        filemenu.add_separator()
+        menubar.add("cascade", label='File', underline=0, menu=filemenu)
+        root.config(menu=menubar)
+
+    def quitProgram(self, event):
+        if MessageBox.askyesno("Quit PiCamera", "Exit %s?" % self.title):
+            self.master.destroy()
 
 win = tk.Tk()
 app = IntervalInterface(win, title="idDL2DL")
