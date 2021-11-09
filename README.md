@@ -46,6 +46,7 @@ Navigate to `/Interval/GraphicalInterface/` and run
 #### Buttons
 - The `Begin Translating` text box allows you to type the desired formula(s) for translation.
 - The `translate` button translates the text in the first text box.
+- The `load` button prompts the user to enter a file with formulas ready for translation.
 - The `Translated Text` text box displays the translated text.
 - The `clear` button clears all input and output.
 - The `copy` button copies the translated text to the clipboard.
@@ -54,7 +55,6 @@ Navigate to `/Interval/GraphicalInterface/` and run
     - If multiple formulas are entered, the user will have the option to either save all the translations in a single *
       .kyx* file (not recommended since KX can only handle one program at a time), or to choose a base file name and
       generate multiple files for each translated program.
-- The `load` button prompts the user to enter a file with formulas ready for translation.
 
 ### History Page
 #### Under Construction...
