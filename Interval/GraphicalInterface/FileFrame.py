@@ -7,12 +7,15 @@ import sys
 sys.path.append('../')
 import os
 from Interval.RunProgram import runGUI
+from ast import literal_eval
+
 
 base_folder = os.path.join(os.path.dirname(__file__, ), '..')
 
 
 class FileTranslation(BasicNotepage):
     def BuildPage(self):
+        self.history = {}
         # --- File loading frame ---
         f1 = myLabelFrame(self, 0, 0, colspan=2, rowspan=3, text='Begin Translating')
         f1.pack(side='top', fill='both', expand=True)
@@ -144,6 +147,20 @@ class FileTranslation(BasicNotepage):
     def runTranslation(self, input):
         return runGUI('<stdin>', input)
 
+    def clearInput(self,inputList):
+        for input in inputList:
+            if ('#' in input):
+                inputList.remove(input)
+            elif(input=='\n' or input==''):
+                inputList.remove(input)
+        return inputList
+
+    def getHistory(self):
+        return self.history
+
+    def clearHistory(self):
+        self.history={}
+
     def runMultipleTranslations(self, inputs):
         inputList = inputs.split('\n')
         inputList.pop()
@@ -155,4 +172,6 @@ class FileTranslation(BasicNotepage):
                 continue
             else:
                 outputList.append(runGUI('<stdin>', input))
+
+        self.history[repr(self.clearInput(inputList))] = outputList
         return outputList

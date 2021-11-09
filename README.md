@@ -61,6 +61,7 @@ Navigate to **/Interval/GraphicalInterface** and run
 
 ### History Page
 #### Under Construction...
+- Because we're using dictionaries to store the history of commands, there will be no repeated commands in the history.
 
 ## TODO
 
@@ -87,7 +88,8 @@ Navigate to **/Interval/GraphicalInterface** and run
    - Closing File Load prompt when no file is selected.
 - **History of translations**
    - Persistent history or simple session specific history?;
-   - Create GUI page.
+   - Create GUI page;
+   - Prevent empty entries.
 - Tooltips;
 - Explore PanedWindow instead of Notepage(?);
 - Images for buttons(?);
