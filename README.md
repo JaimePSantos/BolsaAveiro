@@ -16,7 +16,7 @@ Structure of the program follows [this](https://github.com/davidcallanan/py-myop
 
 ## How to run in console
 
-Navigate to **/Interval** folder and run `python main`.
+Navigate to `/Interval/` folder and run `python main`.
 
 Type *help* for commands.
 
@@ -27,7 +27,7 @@ more).
 
 **_UNDER CONSTRUCTION_**
 
-Navigate to **/Interval/GraphicalInterface** and run
+Navigate to `/Interval/GraphicalInterface/` and run
 `python GInterface`.
 
 ### Translation Page
