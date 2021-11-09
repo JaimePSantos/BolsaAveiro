@@ -3,12 +3,11 @@
 The implementation of **idDL2dDL** is structured in four parts, namely the *lexer*, the *parser*, the *translator* and
 the graphical user interface.
 
-1. The lexer, as the name suggests, performs the lexical analysis of the expressions provided as input, which is the
+1. The lexer performs the lexical analysis of the expressions provided as input, which is the
    process of converting a sequence of characters into *tokens*.
-2. The parser is then called to perform a syntactic analysis over these tokens, and returns an abstract syntax tree (
-   AST) as output.
+2. The parser is then called to perform a syntactic analysis over these tokens, and returns an abstract syntax tree (AST) as output.
 3. The translator is fed an AST as input, and returns a translated string as output. This is achieved by *visit*
-   methods, whose purpose is to enter a node of the AST and perform a proper evaluation and translation of its contents.
+   methods, whose purpose is evaluate and translate the content of the nodes that compose the AST.
 4. The rudimentary GUI compiles the functionality of the aforementioned modules in a page for user inputed translation,
    and in a page for loading files with translatable formulas, in order to provide the user a simple way of performing
    translations.
