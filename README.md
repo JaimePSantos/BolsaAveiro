@@ -45,9 +45,11 @@ Navigate to `/Interval/GraphicalInterface/` and run
     - Program instructions. (*github readme*)
     - Program documentation. (*WiP*)
 
-#### Buttons
+#### Text Boxes
 - The `Begin Translating` text box allows you to type the desired formula(s) for translation.
 - The `translate` button translates the text in the first text box.
+
+#### Buttons
 - The `load` button prompts the user to enter a file with formulas ready for translation.
 - The `Translated Text` text box displays the translated text.
 - The `clear` button clears all input and output.
