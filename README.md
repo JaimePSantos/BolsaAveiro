@@ -37,24 +37,24 @@ Navigate to `/Interval/GraphicalInterface/` and run
 <img src="/Resources/TranslationGUI.png" width="500">
 
 #### Menu
--`File`: allows the user to
+- `File`: allows the user to
     - Load formulas to be translated. (`ctrl+l`)
     - Save the translated formulas to a file. (`ctrl+s`)
     - Exit the program. (`ctrl+q`)
--`Help`: allows the user to access
+- `Help`: allows the user to access
     - Program instructions. (*github readme*)
     - Program documentation. (*WiP*)
 
 #### Text Boxes
--`Begin Translating`: allows you to type the desired formula(s) for translation.
--`Translated Text`: displays the translated text.
+- `Begin Translating`: allows you to type the desired formula(s) for translation.
+- `Translated Text`: displays the translated text.
 
 #### Buttons
--`Translate`: translates the text in the first text box.
--`Load`: prompts the user to enter a file with formulas ready for translation.
--`Clear`: clears all input and output.
--`Copy`: copies the translated text to the clipboard.
--`Save`: prompts the user to save the translated text to a `.kyx` file.
+- `Translate`: translates the text in the first text box.
+- `Load`: prompts the user to enter a file with formulas ready for translation.
+- `Clear`: clears all input and output.
+- `Copy`: copies the translated text to the clipboard.
+- `Save`: prompts the user to save the translated text to a `.kyx` file.
     - If only one formula is translated, then it will be saved with a file name and location chosen by the user.
     - If multiple formulas are entered, the user will have the option to either save all the translations in a single `.kyx` file (not recommended since KX can only handle one program at a time), or to choose a base file name and
       generate multiple files for each translated program.
