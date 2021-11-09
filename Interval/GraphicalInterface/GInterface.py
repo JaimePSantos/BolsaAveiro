@@ -50,10 +50,10 @@ class IntervalInterface(tk.Frame):
         n.columnconfigure(0, weight=1)
         n.enable_traversal()
 
-        #self.basicTranslation = BasicTranslation(n)
+        # self.basicTranslation = BasicTranslation(n)
         self.fileTranslation = FileTranslation(n)
-        self.translationHistory = HistoryTranslation(n)
-        #n.add(self.basicTranslation, text='Basic', underline=0)
+        self.translationHistory = HistoryTranslation(n,self.fileTranslation)
+        # n.add(self.basicTranslation, text='Basic', underline=0)
         n.add(self.fileTranslation, text='Translation', underline=0)
         n.add(self.translationHistory,text='History', underline=0)
 
