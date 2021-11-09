@@ -1,5 +1,7 @@
 # PROJECT: idDL2DL
 
+Provides the ability to convert from the interval notation of Differential Dynamic Logic (dDL), to regular Dynamic Logic formulas.
+
 The implementation of **idDL2dDL** is structured in four parts, namely the *lexer*, the *parser*, the *translator* and
 the graphical user interface.
 
