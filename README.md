@@ -8,7 +8,7 @@ the graphical user interface.
 2. The parser is then called to perform a syntactic analysis over these tokens, and returns an abstract syntax tree (AST) as output.
 3. The translator is fed an AST as input, and returns a translated string as output. This is achieved by *visit*
    methods, whose purpose is evaluate and translate the content of the nodes that compose the AST.
-4. The rudimentary GUI compiles the functionality of the aforementioned modules in a an application that allows the user to either input the formulas directly, or load them from a file. The user is then able to save these translations as a `.kyx` file, ready to be used in [KeYmaera X](https://github.com/LS-Lab/KeYmaeraX-release). It also provides a page with the history of translated formulas.
+4. The rudimentary GUI compiles the functionality of the aforementioned modules in a an application that allows the user to either input the formulas directly, or load them from a file. The user is then able to save these translations as a single, or multiple `.kyx` files, ready to be used in [KeYmaera X](https://github.com/LS-Lab/KeYmaeraX-release). It also provides a page with the history of translated formulas.
 
 Structure of the program follows [this](https://github.com/davidcallanan/py-myopl-code) respository.
 
