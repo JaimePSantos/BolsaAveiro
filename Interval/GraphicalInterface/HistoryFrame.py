@@ -24,4 +24,4 @@ class HistoryTranslation(HistoryNotepage):
                                           relief='raised')
 
     def testPrint(self):
-        print(self.fileTranslation.translatedText)
+        pass

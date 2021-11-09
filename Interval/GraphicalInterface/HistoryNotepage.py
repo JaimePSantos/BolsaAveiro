@@ -4,8 +4,8 @@ from Tools import UnderConstruction
 import	tkinter.messagebox as MessageBox
 
 class HistoryNotepage(tk.Frame):
-    def __init__(self, parent, camera=None, cancel=None, ok=None,
-                 rowconfig=False, colconfig=True, data=None):
+    def __init__(self, parent,fileTranslation, camera=None, cancel=None, ok=None,
+                 rowconfig=False, colconfig=True, data=None, ):
         ttk.Frame.__init__(self, parent, padding=(10, 10, 10, 10))
         self.grid(sticky='NSEW')
         if colconfig is True:
@@ -17,11 +17,11 @@ class HistoryNotepage(tk.Frame):
         self.OkButton = ok
         self.data = data
         self.init = True  # disable SomethingChanged
-        self.BuildPage()
+        self.BuildPage(fileTranslation)
         self.init = False
         self.Changed = False
 
-    def BuildPage(self):  # MUST Overide this!
+    def BuildPage(self,fileTranslation):  # MUST Overide this!
         UnderConstruction(self)
 
     def SomethingChanged(self, val):  # Can override but call super!
