@@ -8,9 +8,7 @@ the graphical user interface.
 2. The parser is then called to perform a syntactic analysis over these tokens, and returns an abstract syntax tree (AST) as output.
 3. The translator is fed an AST as input, and returns a translated string as output. This is achieved by *visit*
    methods, whose purpose is evaluate and translate the content of the nodes that compose the AST.
-4. The rudimentary GUI compiles the functionality of the aforementioned modules in a page for user inputed translation,
-   and in a page for loading files with translatable formulas, in order to provide the user a simple way of performing
-   translations.
+4. The rudimentary GUI compiles the functionality of the aforementioned modules in a an application that allows the user to either input the formulas, or load them from a file. It also provides a history of translated formulas.
 
 Structure of the program follows [this](https://github.com/davidcallanan/py-myopl-code) respository.
 
