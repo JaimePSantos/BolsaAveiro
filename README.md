@@ -54,8 +54,7 @@ Navigate to `/Interval/GraphicalInterface/` and run
 - The `copy` button copies the translated text to the clipboard.
 - The `save` button prompts to user to save the translated text to a *.kyx* file.
     - If only one formula is translated, then it will be saved with a file name and location chosen by the user.
-    - If multiple formulas are entered, the user will have the option to either save all the translations in a single *
-      .kyx* file (not recommended since KX can only handle one program at a time), or to choose a base file name and
+    - If multiple formulas are entered, the user will have the option to either save all the translations in a single `.kyx` file (not recommended since KX can only handle one program at a time), or to choose a base file name and
       generate multiple files for each translated program.
 
 ### History Page
