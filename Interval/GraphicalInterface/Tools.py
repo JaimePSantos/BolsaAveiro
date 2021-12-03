@@ -20,6 +20,11 @@ def myTextFrame(f,row,col,width,height,stick,colspan,bg=None,fg=None,bd=None,fon
     textTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan)
     return textTxt
 
+def myListBoxFrame(f,row,col,width,height,stick,colspan,bg=None,fg=None,bd=None,font=None,yscrollcommand=None,xscrollcommand=None):
+    textTxt = tk.Listbox(f, width=width,height=height,bg=bg,fg=fg,bd=bd,font=font,yscrollcommand=yscrollcommand,xscrollcommand=xscrollcommand)
+    textTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan)
+    return textTxt
+
 def myButton(f,row,col,command,rowspan,colspan,sticky,text,bg=None,fg=None,font=None,bd=None,relief=None):
     myButton = tk.Button(f,text=text,command=command,bg=bg,fg=fg,font=font,bd=bd,relief=relief)
     myButton.grid(row=row,column=col,rowspan=rowspan,columnspan=colspan,sticky=sticky)
