@@ -33,7 +33,7 @@ class FileTranslation(BasicNotepage):
         self.translationButton = myButton(controls, row=1, col=1, command=self.translate, rowspan=1, colspan=1,
                                           sticky='W', text='Translate', bg='white', fg='black', font=('Arial', 12),
                                           relief='raised')
-        self.path = myEntryFrame(controls, row=1, col=2, width=30, stick='W', colspan=1)
+        self.path = myEntryFrame(controls, row=1, col=2, width=79, stick='W', colspan=1)
 
         # --- Translated Frame ---
         f2 = myLabelFrame(self, row=4, col=0, colspan=2, rowspan=3, text='Translated Text')

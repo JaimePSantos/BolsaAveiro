@@ -61,7 +61,7 @@ Navigate to `/Interval/GraphicalInterface/` and run
 
 ### History Page
 #### Under Construction...
-- Because we're using dictionaries to store the history of commands, there will be no repeated commands in the history.
+- History page built, must update readme.
 
 ## TODO
 
@@ -83,17 +83,18 @@ Navigate to `/Interval/GraphicalInterface/` and run
 - The way to deal with ';' at the end of box is not good.
 
 ### GUI 
-- **Error handling**
+- History of translations
+   - Persistent history or simple session specific history?;
+   - Must add extra scrollbars;
+   - Remove refresh button;
+   - Update Readme.
+- Error handling
    - Translation Errors;
    - Closing File Load prompt when no file is selected.
-- **History of translations**
-   - Persistent history or simple session specific history?;
-   - Create GUI page;
-   - Prevent empty entries.
 - Tooltips;
 - Explore PanedWindow instead of Notepage(?);
 - Images for buttons(?);
 - Improve visual quality;
 - Make it accessible through main.py; 
-- Refactor Basic and File translation pages;s
+- Refactor Basic and File translation pages;
 
