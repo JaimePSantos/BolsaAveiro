@@ -54,6 +54,7 @@ class IntervalInterface(tk.Frame):
         self.translationHistory = HistoryTranslation(n,self.fileTranslation)
         n.add(self.fileTranslation, text='Translation', underline=0)
         n.add(self.translationHistory,text='History', underline=0)
+        n.bind("<<NotebookTabChanged>>",lambda e: self.translationHistory.refreshHistory())
 
         # --------------------------- Menu ------------------------------
 
