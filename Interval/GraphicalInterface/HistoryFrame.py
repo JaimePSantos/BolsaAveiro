@@ -2,14 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 from Tools import UnderConstruction, myLabelFrame, myEntryFrame, myButton, \
     myTextFrame, myScrollBar, myFrame, myListBoxFrame
-from NotePage import BasicNotepage
-from FileFrame import FileTranslation
 from HistoryNotepage import HistoryNotepage
 import sys
 
 sys.path.append('../')
 import os
-from Interval.RunProgram import runGUI
 from ast import literal_eval
 
 base_folder = os.path.join(os.path.dirname(__file__, ), '..')
@@ -22,6 +19,7 @@ class HistoryTranslation(HistoryNotepage):
 
         txtFrame = myFrame(f1, side='top', fill='both', expand=True)
         self.translationListBox = myListBoxFrame(txtFrame, row=0, col=0, width=99, height=13, stick='W', colspan=100)
+        self.translationListBox.bind('<<ListboxSelect>>', self.showTranslation)
 
         controls = myFrame(f1, side='bottom', fill='both', expand=True)
         self.fileTranslation = fileTranslation
@@ -55,8 +53,7 @@ class HistoryTranslation(HistoryNotepage):
                 self.translationHistory[key] = value
         self.translationListBox.delete(0, tk.END)
         for k,v in self.translationHistory.items():
-            print(v)
-            self.translationListBox.insert(tk.END,v)
+            self.translationListBox.insert(tk.END,k)
 
 
     def testPrint(self):
@@ -69,3 +66,15 @@ class HistoryTranslation(HistoryNotepage):
         self.translationHistory = {}
         self.fileTranslation.clearHistory()
         self.refreshHistory()
+
+    def showTranslation(self,event):
+        """ handle item selected event
+        """
+        # get selected indices
+        self.translatedText.config(state=tk.NORMAL)
+        self.translatedText.delete("1.0", tk.END)
+        selectedIndex = self.translationListBox.curselection()
+        # get selected items
+        selectedTranslation = ",".join([self.translationListBox.get(i) for i in selectedIndex])
+        self.translatedText.insert(tk.END,self.translationHistory[selectedTranslation]+'\n')
+        self.translatedText.config(state=tk.DISABLED)
