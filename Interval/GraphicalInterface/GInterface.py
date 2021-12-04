@@ -51,10 +51,12 @@ class IntervalInterface(tk.Frame):
         n.enable_traversal()
 
         self.fileTranslation = FileTranslation(n)
-        self.translationHistory = HistoryTranslation(n,self.fileTranslation)
+        self.translationHistory = HistoryTranslation(n)
+        self.fileTranslation.setTranslationHistory(self.translationHistory)
+        self.translationHistory.setFileTranslation(self.fileTranslation)
         n.add(self.fileTranslation, text='Translation', underline=0)
         n.add(self.translationHistory,text='History', underline=0)
-        n.bind("<<NotebookTabChanged>>",lambda e: self.translationHistory.refreshHistory())
+        # n.bind("<<NotebookTabChanged>>",lambda e: self.translationHistory.refreshHistory())
 
         # --------------------------- Menu ------------------------------
 

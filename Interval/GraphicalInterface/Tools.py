@@ -30,9 +30,9 @@ def myButton(f,row,col,command,rowspan,colspan,sticky,text,bg=None,fg=None,font=
     myButton.grid(row=row,column=col,rowspan=rowspan,columnspan=colspan,sticky=sticky)
     return myButton
 
-def myScrollBar(f,row,col,stick):
-    scrollbar = tk.Scrollbar(f)
-    scrollbar.grid(row=row,column=col,sticky=stick)
+def myScrollBar(f,row,col,stick,orient='vertical',columnspan=3):
+    scrollbar = tk.Scrollbar(f,orient=orient)
+    scrollbar.grid(row=row,column=col,sticky=stick,columnspan=columnspan)
     return scrollbar
 
 def myFrame(f,side,fill,expand):

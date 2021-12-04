@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from Tools import UnderConstruction, myLabelFrame, myEntryFrame, myButton, \
     myTextFrame, myScrollBar, myFrame, myListBoxFrame
 from HistoryNotepage import HistoryNotepage
@@ -13,7 +12,7 @@ base_folder = os.path.join(os.path.dirname(__file__, ), '..')
 
 
 class HistoryTranslation(HistoryNotepage):
-    def BuildPage(self, fileTranslation):
+    def BuildPage(self):
         # --- File loading frame ---
         f1 = myLabelFrame(self, 0, 0, colspan=2, rowspan=3, text='History')
         f1.pack(side='top', fill='both', expand=True)
@@ -28,14 +27,16 @@ class HistoryTranslation(HistoryNotepage):
         self.clearButton = myButton(controls, row=1, col=3, command=self.clearHistory, rowspan=1, colspan=1,
                                     sticky='W', text='Clear', bg='white', fg='black', font=('Arial', 12),
                                     relief='raised')
-        txtFrame = myFrame(f1, side='top', fill='both', expand=True)
-        self.translationListBox = myListBoxFrame(txtFrame, row=0, col=0, width=99, height=13, stick='W', colspan=100)
-        self.translationListBox.bind('<<ListboxSelect>>', self.showTranslation)
+        self.txtFrame = myFrame(f1, side='top', fill='both', expand=True)
+        self.translationListBox = myListBoxFrame(self.txtFrame, row=0, col=0, width=99, height=13, stick='W', colspan=100)
+        self.scrollBar = myScrollBar(self.txtFrame, row=1, col=0, stick='ew',orient='horizontal',columnspan=100)
+        self.translationListBox.config(xscrollcommand=self.scrollBar.set)
+        self.translationListBox.bind('<<ListboxSelect>>', lambda e : self.showTranslation)
+        self.translationListBox.bind('<Double-Button-1>',lambda e : self.listboxCopy())
+        self.scrollBar.config(command=self.translationListBox.xview)
 
-        self.fileTranslation = fileTranslation
         self.translationHistoryCatcher = {}
         self.translationHistory = {}
-        self.translationHistoryDisplay = {}
 
         f2 = myLabelFrame(f1, row=4, col=0, colspan=2, rowspan=3, text='Translation')
         f2.pack(side='bottom', fill='both', expand=True)
@@ -63,18 +64,32 @@ class HistoryTranslation(HistoryNotepage):
         self.translatedText.delete("1.0", tk.END)
         self.translatedText.config(state=tk.DISABLED)
 
-    def showTranslation(self, event):
-        if not self.translationHistory:
-            return
-        self.translatedText.config(state=tk.NORMAL)
-        self.translatedText.delete("1.0", tk.END)
+    def selectItem(self):
         # get selected indices
         selectedIndex = self.translationListBox.curselection()
         # get selected items
         selectedTranslation = ",".join([self.translationListBox.get(i) for i in selectedIndex])
-        selectedTranslation = selectedTranslation[3:] # To remove the index inserted in the history box.
-        if self.translationHistory:
-            self.translatedText.insert(tk.END, self.translationHistory[selectedTranslation] + '\n')
-        else:
+        selectedTranslation = selectedTranslation[3:]  # To remove the index inserted in the history box.
+        return selectedTranslation
+
+    def showTranslation(self):
+        if not self.translationHistory:
             return
+        self.translatedText.config(state=tk.NORMAL)
+        self.translatedText.delete("1.0", tk.END)
+        selectedTranslation = self.selectItem()
+        try:
+            self.translatedText.insert(tk.END, self.translationHistory[selectedTranslation] + '\n')
+        except tk.TclError:
+            pass
         self.translatedText.config(state=tk.DISABLED)
+
+    def listboxCopy(self):
+        self.translationListBox.clipboard_clear()
+        selected = self.translationListBox.get(tk.ANCHOR)
+        selected = selected[3:]
+        tk.messagebox.showinfo("Copied!","Selection copied.")
+        self.translationListBox.clipboard_append(selected)
+
+    def setFileTranslation(self,fileTranslation):
+        self.fileTranslation = fileTranslation

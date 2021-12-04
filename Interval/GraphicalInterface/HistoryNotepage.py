@@ -4,7 +4,7 @@ from Tools import UnderConstruction
 import	tkinter.messagebox as MessageBox
 
 class HistoryNotepage(tk.Frame):
-    def __init__(self, parent,fileTranslation, camera=None, cancel=None, ok=None,
+    def __init__(self, parent, camera=None, cancel=None, ok=None,
                  rowconfig=False, colconfig=True, data=None, ):
         ttk.Frame.__init__(self, parent, padding=(10, 10, 10, 10))
         self.grid(sticky='NSEW')
@@ -17,7 +17,7 @@ class HistoryNotepage(tk.Frame):
         self.OkButton = ok
         self.data = data
         self.init = True  # disable SomethingChanged
-        self.BuildPage(fileTranslation)
+        self.BuildPage()
         self.init = False
         self.Changed = False
 

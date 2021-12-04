@@ -132,6 +132,7 @@ class FileTranslation(BasicNotepage):
             self.translatedText.insert(tk.END, transl)
             self.translatedText.insert(tk.END, "\n")
         self.translatedText.config(state=tk.DISABLED)
+        self.translationHistory.refreshHistory()
 
     def clear(self, btn=None):
         if btn is not None:
@@ -175,3 +176,6 @@ class FileTranslation(BasicNotepage):
 
         self.history[repr(self.clearInput(inputList))] = outputList
         return outputList
+
+    def setTranslationHistory(self,translationHistory):
+        self.translationHistory = translationHistory
