@@ -93,7 +93,7 @@ class IntervalInterface(tk.Frame):
         root.config(menu=menubar)
 
     def quitProgram(self, event):
-        if MessageBox.askyesno("Quit PiCamera", "Exit %s?" % self.title):
+        if MessageBox.askyesno("Quit", "Exit %s?" % self.title):
             self.master.destroy()
 
     def intervalLangDocs(self,event):
