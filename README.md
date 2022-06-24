@@ -18,7 +18,7 @@ Structure of the program follows [this](https://github.com/davidcallanan/py-myop
 
 ## How to run in console
 
-Navigate to `/Interval/` folder and run `python main`.
+Navigate to `/idDL2DL/` folder and run `python main`.
 
 Type *help* for commands.
 
@@ -28,9 +28,11 @@ more).
 ## GUI
 
 **_UNDER CONSTRUCTION_**
+### Pycharm (recommended)
+Install [Pycharm](https://www.jetbrains.com/pycharm/), navigate to the `/idDL2DL/` folder and run `gui-main.py`  
 
-Navigate to `/Interval/GraphicalInterface/` and run
-`python GInterface`.
+### Alternative
+You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idDL2DL/` folder and `python gui-main.py`  
 
 ### Translation Page
 
