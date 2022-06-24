@@ -65,15 +65,59 @@ You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idD
 #### Under Construction...
 - History page built, must update readme.
 
+## The Language
+### Basic Expressions
+#### Sum and subtraction
+[1,2] + [3,4] - [5,6]
+#### Multiplication and division
+[1,2] / ([3,4] * [5,6])
+
+### Dynamic Logic Formulas
+#### LT, LTE and Conjunction
+[1,2] < [2,3] AND [3,4] <= [5,6]
+#### GT, GTE and Disjunction
+[2,3] > [1,2] OR [5,6] >= [3,4]
+#### Assignment
+x := [5,6]
+#### Negation (!)
+!(x < [2,3] AND y > [1,2])
+#### Implication (->)
+x >= [5,6] AND (y <= [1,2]) -> x > y
+#### Universal Quantifier ($ ... IN ...)
+$ x IN (x*x) -> x >= 0
+#### Modality - box ( [{ ... }] ) and differential assignment (x'=...)
+\[{ x := [1,2] ; y:=[0,1] ; {x'=x-1} }\] (x>0 AND  y>=0)
+#### Modality - diamond ( <{ .. }> ) -- NAO TENHO A CERTEZA DESTE EXEMPLO
+\<{ x := [1,2] ; y:=[0,1] ; {x'=x-1} }\> (x>0 AND  y>=0)
+
+### Hybrid Program Expressions
+#### Sequential Composition ( ... ; ... )
+x > [5,6] ; y < [1,2] -> x > y
+#### Continuous Evolution ( (x'=...) & (...) ) - MAU EXEMPLO
+(x'=-x, y'=-y & (0<x))
+#### State test/check ( ?(...) )
+? (x > 0) ; (x'=-x, y'=-y & (0<x))
+#### Non-deterministic choice ( ... || ... )
+x:=y || x := z
+#### Non-deterministic repetition ( (...)** ) - MAU EXEMPLO
+(x:=y || x := z)**
+
 ## TODO
 
 ### Lexer
 
+- **Implement bi-implication**
+- **Implement Existential quantifier**
+- **Implement Non-deterministic assignment**
 - Change `NOT` token to be a keyword;
 
+
 ### Parser
-- Save parsed text as an object for easier integration with the GUI;
+- **Implement bi-implication**
+- **Implement Existential quantifier**
+- **Implement Non-deterministic assignment**
 - **Inverse interval**;
+- Save parsed text as an object for easier integration with the GUI;
 - Better way of representing powers;
 - Implement a better version of `*`;
 - Parenthesis nodes might cause problems with restrictions;
