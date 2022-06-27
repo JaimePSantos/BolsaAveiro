@@ -66,13 +66,13 @@ You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idD
 - History page built, must update readme.
 
 ## The Language
-### Basic Expressions
+### <ins>Basic Expressions</ins>
 #### Sum and subtraction
 `[1,2] + [3,4] - [5,6]`
 #### Multiplication and division
 `[1,2] / ([3,4] * [5,6])`
 
-### First Order Logic Formulas
+### <ins>First Order Logic Formulas</ins>
 #### LT, LTE and Conjunction
 `[1,2] < [2,3] AND [3,4] <= [5,6]`
 #### GT, GTE and Disjunction
@@ -84,7 +84,7 @@ You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idD
 #### Universal Quantifier ($ ... IN ...)
 `$ x IN (x*x) -> x >= 0`
 
-### Hybrid Program Expressions
+### <ins>Hybrid Program Expressions</ins>
 #### Discrete Assignment
 `x := [0,1]`
 #### Continuous Evolution ( (x'=...) & (...) )
@@ -98,7 +98,7 @@ You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idD
 #### Non-deterministic repetition ( (...)** )
 `(? (x > 0) ; x:=y || x := z)**`
 
-### Modalities
+### <ins>Modalities</ins>
 #### Modality - box ( [{ ... }] ) and differential assignment (x'=...)
 `\[{ x := [1,2] ; {x'=x-1} }\] (x>0)`
 #### Modality - diamond ( <{ .. }> )
