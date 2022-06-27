@@ -68,42 +68,43 @@ You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idD
 ## The Language
 ### Basic Expressions
 #### Sum and subtraction
-[1,2] + [3,4] - [5,6]
+`[1,2] + [3,4] - [5,6]`
 #### Multiplication and division
-[1,2] / ([3,4] * [5,6])
+`[1,2] / ([3,4] * [5,6])`
 
-### Dynamic Logic Formulas
+### First Order Logic Formulas
 #### LT, LTE and Conjunction
-[1,2] < [2,3] AND [3,4] <= [5,6]
+`[1,2] < [2,3] AND [3,4] <= [5,6]`
 #### GT, GTE and Disjunction
-[2,3] > [1,2] OR [5,6] >= [3,4]
-#### Assignment
-x := [5,6]
+`[2,3] > [1,2] OR [5,6] >= [3,4]`
 #### Negation (!)
-!(x < [2,3] AND y > [1,2])
+`!(x < [2,3] AND y > [1,2])`
 #### Implication (->)
-x >= [5,6] AND (y <= [1,2]) -> x > y
+`x >= [5,6] AND (y <= [1,2]) -> x > y`
 #### Universal Quantifier ($ ... IN ...)
-$ x IN (x*x) -> x >= 0
-#### Modality - box ( [{ ... }] ) and differential assignment (x'=...)
-\[{ x := [1,2] ; y:=[0,1] ; {x'=x-1} }\] (x>0 AND  y>=0)
-#### Modality - diamond ( <{ .. }> ) -- NAO TENHO A CERTEZA DESTE EXEMPLO
-\<{ x := [1,2] ; y:=[0,1] ; {x'=x-1} }\> (x>0 AND  y>=0)
+`$ x IN (x*x) -> x >= 0`
 
 ### Hybrid Program Expressions
+#### Discrete Assignment
+`x := [0,1]`
+#### Continuous Evolution ( (x'=...) & (...) )
+`(x'=-x, y'=-y & (0<x))`
 #### Sequential Composition ( ... ; ... )
-x > [5,6] ; y < [1,2] -> x > y
-#### Continuous Evolution ( (x'=...) & (...) ) - MAU EXEMPLO
-(x'=-x, y'=-y & (0<x))
+`x := [6,6] ; y := [1,2]`
 #### State test/check ( ?(...) )
-? (x > 0) ; (x'=-x, y'=-y & (0<x))
+`? (x > 0) ; (x'=-x, y'=-y & (0<x))`
 #### Non-deterministic choice ( ... || ... )
-x:=y || x := z
-#### Non-deterministic repetition ( (...)** ) - MAU EXEMPLO
-(x:=y || x := z)**
+`x:=y || x := z`
+#### Non-deterministic repetition ( (...)** )
+`(? (x > 0) ; x:=y || x := z)**`
+
+### Modalities
+#### Modality - box ( [{ ... }] ) and differential assignment (x'=...)
+`\[{ x := [1,2] ; {x'=x-1} }\] (x>0)`
+#### Modality - diamond ( <{ .. }> )
+`\<{ x := [1,2] ; y:=[0,1] }\> (x>0 AND  y>=0)`
 
 ## TODO
-
 ### Lexer
 
 - **Implement bi-implication**
