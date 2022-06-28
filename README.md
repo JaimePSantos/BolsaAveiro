@@ -67,41 +67,41 @@ You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idD
 
 ## The Language
 ### <ins>Basic Expressions</ins>
-#### Sum and subtraction
+##### Sum and subtraction
 `[1,2] + [3,4] - [5,6]`
-#### Multiplication and division
+##### Multiplication and division
 `[1,2] / ([3,4] * [5,6])`
 
 ### <ins>First Order Logic Formulas</ins>
-#### LT, LTE and Conjunction
+##### LT, LTE and Conjunction
 `[1,2] < [2,3] AND [3,4] <= [5,6]`
-#### GT, GTE and Disjunction
+##### GT, GTE and Disjunction
 `[2,3] > [1,2] OR [5,6] >= [3,4]`
-#### Negation (!)
+##### Negation (!)
 `!(x < [2,3] AND y > [1,2])`
-#### Implication (->)
+##### Implication (->)
 `x >= [5,6] AND (y <= [1,2]) -> x > y`
-#### Universal Quantifier ($ ... IN ...)
+##### Universal Quantifier ($ ... IN ...)
 `$ x IN (x*x) -> x >= 0`
 
 ### <ins>Hybrid Program Expressions</ins>
-#### Discrete Assignment
+##### Discrete Assignment
 `x := [0,1]`
-#### Continuous Evolution ( (x'=...) & (...) )
+##### Continuous Evolution ( (x'=...) & (...) )
 `(x'=-x, y'=-y & (0<x))`
-#### Sequential Composition ( ... ; ... )
+##### Sequential Composition ( ... ; ... )
 `x := [6,6] ; y := [1,2]`
-#### State test/check ( ?(...) )
+##### State test/check ( ?(...) )
 `? (x > 0) ; (x'=-x, y'=-y & (0<x))`
-#### Non-deterministic choice ( ... || ... )
+##### Non-deterministic choice ( ... || ... )
 `x:=y || x := z`
-#### Non-deterministic repetition ( (...)** )
+##### Non-deterministic repetition ( (...)** )
 `(? (x > 0) ; x:=y || x := z)**`
 
 ### <ins>Modalities</ins>
-#### Modality - box ( [{ ... }] ) and differential assignment (x'=...)
+##### Modality - box ( [{ ... }] ) and differential assignment (x'=...)
 `\[{ x := [1,2] ; {x'=x-1} }\] (x>0)`
-#### Modality - diamond ( <{ .. }> )
+##### Modality - diamond ( <{ .. }> )
 `\<{ x := [1,2] ; y:=[0,1] }\> (x>0 AND  y>=0)`
 
 ## TODO
