@@ -1,9 +1,9 @@
 import datetime as dt
 import time
 
-from idDL2DL.core.Lexer import Lexer
-from idDL2DL.core.Parser import Parser
-from idDL2DL.core.Translator import Translator
+from core.Lexer import Lexer
+from core.Parser import Parser
+from core.Translator import Translator
 
 
 def prettyPrint(text, linebreak):

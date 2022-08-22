@@ -5,10 +5,10 @@ import webbrowser
 from tkinter import ttk
 
 # from Tools import
-from idDL2DL.gui.FileFrame import FileTranslation
-from idDL2DL.gui.HistoryFrame import HistoryTranslation
+from gui.FileFrame import FileTranslation
+from gui.HistoryFrame import HistoryTranslation
 
-sys.path.append('../')
+sys.path.append('../idDL2DL/')
 import tkinter.messagebox as MessageBox
 
 base_folder = os.path.dirname(__file__)

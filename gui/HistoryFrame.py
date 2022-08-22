@@ -2,15 +2,15 @@ import re
 import sys
 import tkinter as tk
 
-from idDL2DL.gui.HistoryNotepage import HistoryNotepage
-from idDL2DL.gui.Tools import myLabelFrame, myButton, \
+from gui.HistoryNotepage import HistoryNotepage
+from gui.Tools import myLabelFrame, myButton, \
     myTextFrame, myScrollBar, myFrame, myListBoxFrame
 
-sys.path.append('../')
+sys.path.append('../idDL2DL/')
 import os
 from ast import literal_eval
 
-base_folder = os.path.join(os.path.dirname(__file__, ), '..')
+base_folder = os.path.join(os.path.dirname(__file__, ), '../idDL2DL')
 
 
 class HistoryTranslation(HistoryNotepage):
