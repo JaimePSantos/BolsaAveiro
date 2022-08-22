@@ -5,7 +5,8 @@ from Interval.Core.RunProgram import run
 
 def runFile(filename):
     resultList = []
-    filePath = str(pl.Path().resolve()) + '\\InputFiles' + '\\' + filename + '.txt'
+    filePath = str(pl.Path().resolve()) + \
+        '\\InputFiles' + '\\' + filename + '.txt'
     resultFile = pl.Path(filePath)
     if not (resultFile):
         return False
@@ -40,10 +41,14 @@ def writeFile(fileName, filePath, result, multipleLines, writeMethod):
 def printToFile(result, multipleLines):
     fileName = input('\tFile name? > ')
     fileNameKX = fileName + '.kyx'
-    filePath = str(pl.Path().resolve()) + '\\OutputFiles' + '\\' + fileNameKX
+    filePath = str(pl.Path().resolve()) + \
+        '\\OutputFiles' + '\\' + fileNameKX
     resultFile = pl.Path(filePath)
     if resultFile.is_file():
-        rewrite = input('\t' + fileName + ' already exists. Rewrite file? y/n > ').lower()
+        rewrite = input(
+            '\t' +
+            fileName +
+            ' already exists. Rewrite file? y/n > ').lower()
         if rewrite:
             writeFile(fileName, filePath, result, multipleLines, 'w')
             print("File at %s successfully rewritten.\n" % filePath)
@@ -57,10 +62,11 @@ def printToFile(result, multipleLines):
 
 
 def availableCommands():
-    availableCmds = ('Commands:' +
-                     '\n    -> help: lists available commands.' +
-                     '\n    -> q: exits the program.' +
-                     '\n    -> run: prompts for a file of formulas to be translated.\n')
+    availableCmds = (
+        'Commands:' +
+        '\n    -> help: lists available commands.' +
+        '\n    -> q: exits the program.' +
+        '\n    -> run: prompts for a file of formulas to be translated.\n')
     return availableCmds
 
 

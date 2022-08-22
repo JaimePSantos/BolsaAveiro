@@ -27,12 +27,15 @@ class HistoryNotepage(tk.Frame):
         UnderConstruction(self)
 
     def SomethingChanged(self, val):  # Can override but call super!
-        if self.init: return
+        if self.init:
+            return
         self.Changed = True
-        if self.CancelButton != None:
+        if self.CancelButton is not None:
             self.CancelButton.config(state='normal')  # '!disabled')
-            if self.OkButton != None:
+            if self.OkButton is not None:
                 self.OkButton.config(text='Save')
 
     def SaveChanges(self):  # MUST override this!
-        MessageBox.showwarning("SaveChanges", "SaveChanges not implemented!")
+        MessageBox.showwarning(
+            "SaveChanges",
+            "SaveChanges not implemented!")

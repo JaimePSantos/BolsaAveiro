@@ -1,6 +1,6 @@
 import sys
 
-from Interval.Core.Tokens import TT_INTERVALPLUS, \
+from core.Tokens import TT_INTERVALPLUS, \
     TT_INTERVALMULT
 
 
@@ -32,14 +32,20 @@ class Interpreter:
     def visit_LowerNumberNode(self, node):
         'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
         # print("Found LowerNumberNode")
-        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        num = Number(
+            node.tok.value).set_pos(
+            node.pos_start,
+            node.pos_end)
         self.lowerNumberList.appendNum(num)
         return num
 
     def visit_UpperNumberNode(self, node):
         'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
         # print("Found UpperNumberNode")
-        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        num = Number(
+            node.tok.value).set_pos(
+            node.pos_start,
+            node.pos_end)
         self.upperNumberList.appendNum(num)
         return num
 
@@ -52,7 +58,8 @@ class Interpreter:
         :return:
         '''
         # print("Found BinOpNode")
-        # TODO: Repensar a logica dos intervalos, talvez usar um no para o intervalo todo e depois dividi-lo em upper e lower.
+        # TODO: Repensar a logica dos intervalos, talvez usar um no para
+        # o intervalo todo e depois dividi-lo em upper e lower.
         if node.op_tok.type in TT_INTERVALPLUS:
             self.visit(node.left_node)
             self.visit(node.right_node)
@@ -68,15 +75,19 @@ class Interpreter:
             self.visit(node.right_node)
             # self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
             resultList = self.multIntervals()
-            self.resultInterval = Interval(resultList.min(), resultList.max()).set_pos()
+            self.resultInterval = Interval(
+                resultList.min(), resultList.max()).set_pos()
             self.updateIntervalList()
             return self.resultInterval
 
     def addIntervals(self):
         intervalList = self.intervalList
-        resultLower = intervalList[0].lowerNum + intervalList[1].lowerNum
-        resultUpper = intervalList[0].upperNum + intervalList[1].upperNum
-        self.resultInterval = Interval(resultLower, resultUpper).set_pos()
+        resultLower = intervalList[0].lowerNum + \
+            intervalList[1].lowerNum
+        resultUpper = intervalList[0].upperNum + \
+            intervalList[1].upperNum
+        self.resultInterval = Interval(
+            resultLower, resultUpper).set_pos()
         return self.resultInterval
 
     def multIntervals(self):
@@ -87,10 +98,15 @@ class Interpreter:
         # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
         # intervalList = NumberList(self.numberList).separatedIntervals()
         intervalList = self.intervalList
-        resultList = [intervalList[0].lowerNum * intervalList[1].lowerNum,
-                      intervalList[0].lowerNum * intervalList[1].upperNum,
-                      intervalList[0].upperNum * intervalList[1].lowerNum,
-                      intervalList[0].upperNum * intervalList[1].upperNum]
+        resultList = [
+            intervalList[0].lowerNum *
+            intervalList[1].lowerNum,
+            intervalList[0].lowerNum *
+            intervalList[1].upperNum,
+            intervalList[0].upperNum *
+            intervalList[1].lowerNum,
+            intervalList[0].upperNum *
+            intervalList[1].upperNum]
         return NumberList(resultList)
 
     def visit_SeparatorNode(self, node):
@@ -216,8 +232,15 @@ class NumberList:
         '''
         # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
         # intervalList = NumberList(self.numberList).separatedIntervals()
-        resultList = [intervalList[0][0] * intervalList[1][0], intervalList[0][0] * intervalList[1][1],
-                      intervalList[0][1] * intervalList[1][0], intervalList[0][1] * intervalList[1][1]]
+        resultList = [
+            intervalList[0][0] *
+            intervalList[1][0],
+            intervalList[0][0] *
+            intervalList[1][1],
+            intervalList[0][1] *
+            intervalList[1][0],
+            intervalList[0][1] *
+            intervalList[1][1]]
 
         return NumberList(resultList)
 
@@ -273,7 +296,8 @@ class NumberList:
         :param otherNumberList:
         :return:
         '''
-        return NumberList(self.numberList + (otherNumberList.numberList))
+        return NumberList(self.numberList +
+                          (otherNumberList.numberList))
 
     def __repr__(self):
         return str(self.numberList)
@@ -326,7 +350,8 @@ class RTResult:
         self.error = None
 
     def register(self, res):
-        if res.error: self.error = res.error
+        if res.error:
+            self.error = res.error
         return res.value
 
     def success(self, value):
