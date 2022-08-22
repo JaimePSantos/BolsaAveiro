@@ -30,6 +30,8 @@ class Interpreter:
         self.intervalList = [Interval()]
         self.intervalList.pop(0)
         self.intervalNumberList = [NumberList()]
+        self.translation = ''
+        self.lrHistory = ()
 
     def visit(self, node):
         'Template of the function to visit each method.'
@@ -74,14 +76,20 @@ class Interpreter:
         # o intervalo todo e depois dividi-lo em upper e lower.
         print(node)
         if node.op_tok.type in TT_INTERVALPLUS:
-            self.visit(node.left_node)
-            self.visit(node.right_node)
-            # resultLower = self.lowerNumberList.addIntervals()
-            # resultUpper = self.upperNumberList.addIntervals()
-            # return idDL2DL(resultLower,resultUpper).set_pos()
-            self.addIntervals()
-            self.updateIntervalList()
-            return self.resultInterval
+            leftSum = self.visit(node.left_node)
+            rightSum = self.visit(node.right_node)
+            if (type(leftSum) and type(rightSum)) is Interval:
+                self.translation = leftSum.addIntervals(rightSum)
+            else:
+                self.translation = str(leftSum) + ' + ' + str(rightSum)
+
+            # self.translation = self.addIntervals()
+            # print(f"asdfg: {self.translation}")
+            # self.updateIntervalList()
+            # print(rightSum)
+            # self.translation = str(leftSum) + ' + ' + str(rightSum)
+
+            return self.translation
 
         if node.op_tok.type in TT_INTERVALMULT:
             self.visit(node.left_node)
@@ -97,7 +105,9 @@ class Interpreter:
         translation = ''
         self.intervalList = []
         for parenNodeElement in node.element_nodes:
+            print(f"blablabla:{parenNodeElement}")
             visitparenNodeElement = self.visit(parenNodeElement)
+        print(f"fdp {visitparenNodeElement}")
         if node.zeroAryNode:
             for zAryNodeElement in node.zeroAryNode:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
@@ -106,8 +116,12 @@ class Interpreter:
                 translation = '( ' + str(visitparenNodeElement) + ' )' + str(translatedZAryElement)
         else:
             translation = '( ' + str(visitparenNodeElement) + ' )'
+            pass
         self.translation = translation
         return translation
+
+    def visit_IntervalVarNode(self, node):
+        return node.tok.value
 
     def visit_SeparatorNode(self, node):
         '''
@@ -125,13 +139,22 @@ class Interpreter:
 
     def addIntervals(self):
         intervalList = self.intervalList
-        if len(intervalList) >= 2:
+        if len(intervalList) == 2:
             resultLower = intervalList[0].lowerNum + \
                 intervalList[1].lowerNum
             resultUpper = intervalList[0].upperNum + \
                 intervalList[1].upperNum
             self.resultInterval = Interval(
                 resultLower, resultUpper).set_pos()
+            self.translation = str(self.resultInterval)
+            print(f"qwerty {self.translation}")
+        elif len(intervalList) == 1:
+            resultLower = intervalList[0].lowerNum
+            resultUpper = intervalList[0].upperNum
+            self.resultInterval = Interval(
+                resultLower, resultUpper).set_pos()
+            self.translation = str(self.resultInterval)
+
         return self.resultInterval
 
     def multIntervals(self):
@@ -347,6 +370,10 @@ class Interval:
         self.pos_start = self.lowerNum.pos_start
         self.pos_end = self.upperNum.pos_end
         return self
+
+    def addIntervals(self,other):
+        return Interval(self.lowerNum+other.lowerNum, self.upperNum+other.upperNum)
+
 
     def __repr__(self):
         return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
