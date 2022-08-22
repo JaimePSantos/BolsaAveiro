@@ -1,8 +1,6 @@
 import sys
 
-from Interval.Core.Tokens import TT_INTERVALPLUS, \
-    TT_INTERVALMULT
-
+from core.Tokens import (TT_INTERVALPLUS, TT_INTERVALMULT)
 
 #######################################
 # Interpreter - Under Construction
@@ -106,6 +104,10 @@ class Interpreter:
         self.intervalList.append(interval)
         print("idDL2DL List1 " + str(self.intervalList))
         return interval
+
+    def visit_ParenthesisNode(self, node):
+        print(node)
+        pass
 
     def updateIntervalList(self):
         self.intervalList = []

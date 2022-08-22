@@ -1,6 +1,6 @@
 import pathlib as pl
 
-from Interval.Core.RunProgram import run
+from core.RunProgram import run,run2,run3
 
 
 def runFile(filename):
@@ -100,4 +100,9 @@ def main():
                 continue
 
 
-main()
+# main()
+# run('','[1,2]+ ([3,4])')[0]
+# run2('','[1,2]+[3,4]')[0]
+# run3('','[1,2]+[3,4]')[0]
+# run3('','[1,2] + [3,4] + ([5,6]+[5,6])')[0]
+run3('','[1,2] + ([3,4])')[0]
