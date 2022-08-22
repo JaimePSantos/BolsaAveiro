@@ -24,4 +24,5 @@ tags
 .idea/
 /idDL2DL/__pycache__/
 /idDL2DL/*/__pycache__/
-
+/*/__pycache__/
+__pycache__/

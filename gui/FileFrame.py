@@ -3,9 +3,9 @@ import sys
 import tkinter as tk
 import tkinter.filedialog
 
-from idDL2DL.core.RunProgram import runGUI
-from idDL2DL.gui.NotePage import BasicNotepage
-from idDL2DL.gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame
+from core.RunProgram import runGUI
+from gui.NotePage import BasicNotepage
+from gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame
 
 sys.path.append('/')
 base_folder = os.path.join(os.path.dirname("../" + __file__, ), '')

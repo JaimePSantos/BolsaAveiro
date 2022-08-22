@@ -2,7 +2,7 @@ import tkinter as tk
 import tkinter.messagebox as MessageBox
 from tkinter import ttk
 
-from idDL2DL.gui.Tools import UnderConstruction
+from gui.Tools import UnderConstruction
 
 
 class HistoryNotepage(tk.Frame):
