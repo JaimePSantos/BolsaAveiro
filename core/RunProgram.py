@@ -123,7 +123,7 @@ def run3(fn, input):
     if ast.error:
         return None, ast.error
     # print("PARSER:\t %s\n"%ast.node)
-
+    # print(str(ast.node))
     # translator = Translator()
     # translator.reset()
     # visitNodes = translator.visit(ast.node)
