@@ -41,7 +41,7 @@ def run(fn, input):
     ast = parser.parse()
     if ast.error:
         return None, ast.error
-    # print("PARSER:\t %s\n"%ast.node)
+    print("PARSER:\t %s\n"%ast.node)
 
     translator = Translator()
     translator.reset()

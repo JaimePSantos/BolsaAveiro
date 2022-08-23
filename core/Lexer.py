@@ -142,6 +142,8 @@ class Lexer:
         pos_start = self.pos.copy()
         tok_type = TT_COMMA
         self.advance()
+        while self.current_char == ' ':
+            self.advance()
         if self.current_char in DIGITS:
             tok_type = TT_SEPARATOR
             # self.advance()
