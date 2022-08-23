@@ -75,31 +75,39 @@ def runGUI(fn, input):
 
 def run2(fn, input):
     start_time = time.time()
+    print(f"Input: {input}")
     lexer = Lexer(fn, input)
     tokens, error = lexer.makeTokens()
     print(f"First tokens->{tokens}")
     if error:
+        print(error)
         return None, error
     # print("\nLEXER:\t %s\n"%tokens)
 
     parser = Parser(tokens)
     ast = parser.parse()
+    # print(type(ast.node))
+    # print(ast.node)
     if ast.error:
+        print(ast.error)
         return ast.error
     # print("PARSER:\t %s\n"%ast.node)
 
-    interp = str(Interpreter().visit(ast.node))
+    interp = Interpreter()
+    visitInterp = interp.visit(ast.node)
+    outInterp = interp.getTranslation()
+    # print(f"outinterp : {outInterp}")
 
-    lexer2 = Lexer(fn, interp)
+    lexer2 = Lexer(fn, outInterp)
     tokens2, error2 = lexer2.makeTokens()
-    print(f"Second tokens->{tokens}")
+    # print(f"Second tokens->{tokens2}")
     if error2:
+        print(error2)
         return None,error2
     # print("\nLEXER:\t %s\n"%tokens)
 
     parser2 = Parser(tokens2)
     ast2 = parser2.parse()
-    # print(f"Second ast->{ast2}")
     if ast2.error:
         print(ast2.error)
         return ast2.error
