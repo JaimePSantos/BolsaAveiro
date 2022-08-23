@@ -71,9 +71,6 @@ class Interpreter:
         :param node:
         :return:
         '''
-        # print("Found BinOpNode")
-        # TODO: Repensar a logica dos intervalos, talvez usar um no para
-        # o intervalo todo e depois dividi-lo em upper e lower.
         print(node)
         if node.op_tok.type in TT_INTERVALPLUS:
             leftSum = self.visit(node.left_node)
@@ -82,32 +79,22 @@ class Interpreter:
                 self.translation = leftSum.addIntervals(rightSum)
             else:
                 self.translation = str(leftSum) + ' + ' + str(rightSum)
-
-            # self.translation = self.addIntervals()
-            # print(f"asdfg: {self.translation}")
-            # self.updateIntervalList()
-            # print(rightSum)
-            # self.translation = str(leftSum) + ' + ' + str(rightSum)
-
             return self.translation
 
         if node.op_tok.type in TT_INTERVALMULT:
-            self.visit(node.left_node)
-            self.visit(node.right_node)
-            # self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
-            resultList = self.multIntervals()
-            self.resultInterval = Interval(
-                resultList.min(), resultList.max()).set_pos()
-            self.updateIntervalList()
-            return self.resultInterval
+            leftMult = self.visit(node.left_node)
+            rightMult = self.visit(node.right_node)
+            if (type(leftMult) and type(rightMult)) is Interval:
+                self.translation = leftMult.multIntervals(rightMult)
+            else:
+                self.translation = str(leftMult) + ' * ' + str(rightMult)
+            return self.translation
 
     def visit_ParenthesisNode(self, node):
         translation = ''
         self.intervalList = []
         for parenNodeElement in node.element_nodes:
-            print(f"blablabla:{parenNodeElement}")
             visitparenNodeElement = self.visit(parenNodeElement)
-        print(f"fdp {visitparenNodeElement}")
         if node.zeroAryNode:
             for zAryNodeElement in node.zeroAryNode:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
@@ -134,51 +121,8 @@ class Interpreter:
         upper = self.visit(node.right_node)
         interval = Interval(lower, upper).set_pos()
         self.intervalList.append(interval)
-        print("idDL2DL List1 " + str(self.intervalList))
+        # print("idDL2DL List1 " + str(self.intervalList))
         return interval
-
-    def addIntervals(self):
-        intervalList = self.intervalList
-        if len(intervalList) == 2:
-            resultLower = intervalList[0].lowerNum + \
-                intervalList[1].lowerNum
-            resultUpper = intervalList[0].upperNum + \
-                intervalList[1].upperNum
-            self.resultInterval = Interval(
-                resultLower, resultUpper).set_pos()
-            self.translation = str(self.resultInterval)
-            print(f"qwerty {self.translation}")
-        elif len(intervalList) == 1:
-            resultLower = intervalList[0].lowerNum
-            resultUpper = intervalList[0].upperNum
-            self.resultInterval = Interval(
-                resultLower, resultUpper).set_pos()
-            self.translation = str(self.resultInterval)
-
-        return self.resultInterval
-
-    def multIntervals(self):
-        '''
-        Generates the set of numbers resulted from interval multiplication.
-        :return:
-        '''
-        # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
-        # intervalList = NumberList(self.numberList).separatedIntervals()
-        intervalList = self.intervalList
-        resultList = [
-            intervalList[0].lowerNum *
-            intervalList[1].lowerNum,
-            intervalList[0].lowerNum *
-            intervalList[1].upperNum,
-            intervalList[0].upperNum *
-            intervalList[1].lowerNum,
-            intervalList[0].upperNum *
-            intervalList[1].upperNum]
-        return NumberList(resultList)
-
-    def updateIntervalList(self):
-        self.intervalList = []
-        self.intervalList.append(self.resultInterval)
 
     def reset(self):
         '''
@@ -373,6 +317,10 @@ class Interval:
 
     def addIntervals(self,other):
         return Interval(self.lowerNum+other.lowerNum, self.upperNum+other.upperNum)
+
+    def multIntervals(self,other):
+        resultList = [self.lowerNum*other.lowerNum,self.lowerNum*other.upperNum,self.upperNum*other.lowerNum,self.upperNum*other.upperNum]
+        return Interval(min(resultList),max(resultList))
 
 
     def __repr__(self):
