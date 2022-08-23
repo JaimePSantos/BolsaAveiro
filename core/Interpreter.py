@@ -193,6 +193,40 @@ class Number:
     def __repr__(self):
         return str(self.value)
 
+class Interval:
+    '''
+    This class helps us represent the interval that resulted from an operation and keep track of errors.
+    '''
+
+    def __init__(self, lowerNum=None, upperNum=None):
+        if lowerNum and upperNum is not None:
+            self.lowerNum = lowerNum
+            self.upperNum = upperNum
+            self.set_pos()
+        else:
+            self.lowerNum = None
+            self.upperNum = None
+
+    def set_pos(self):
+        '''
+        So we know the position of our intervals.
+        :return:
+        '''
+        self.pos_start = self.lowerNum.pos_start
+        self.pos_end = self.upperNum.pos_end
+        return self
+
+    def addIntervals(self,other):
+        return Interval(self.lowerNum+other.lowerNum, self.upperNum+other.upperNum)
+
+    def multIntervals(self,other):
+        resultList = [self.lowerNum*other.lowerNum,self.lowerNum*other.upperNum,self.upperNum*other.lowerNum,self.upperNum*other.upperNum]
+        return Interval(min(resultList),max(resultList))
+
+
+    def __repr__(self):
+        return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
+
 
 class NumberList:
     '''
@@ -290,42 +324,6 @@ class NumberList:
 
     def __repr__(self):
         return str(self.numberList)
-
-
-class Interval:
-    '''
-    This class helps us represent the interval that resulted from an operation and keep track of errors.
-    '''
-
-    def __init__(self, lowerNum=None, upperNum=None):
-        if lowerNum and upperNum is not None:
-            self.lowerNum = lowerNum
-            self.upperNum = upperNum
-            self.set_pos()
-        else:
-            self.lowerNum = None
-            self.upperNum = None
-
-    def set_pos(self):
-        '''
-        So we know the position of our intervals.
-        :return:
-        '''
-        self.pos_start = self.lowerNum.pos_start
-        self.pos_end = self.upperNum.pos_end
-        return self
-
-    def addIntervals(self,other):
-        return Interval(self.lowerNum+other.lowerNum, self.upperNum+other.upperNum)
-
-    def multIntervals(self,other):
-        resultList = [self.lowerNum*other.lowerNum,self.lowerNum*other.upperNum,self.upperNum*other.lowerNum,self.upperNum*other.upperNum]
-        return Interval(min(resultList),max(resultList))
-
-
-    def __repr__(self):
-        return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
-
 
 #######################################
 # CONTEXT
