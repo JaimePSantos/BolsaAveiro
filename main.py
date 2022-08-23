@@ -16,7 +16,7 @@ def runFile(filename):
                 continue
             if line == '\n':
                 continue
-            result, error = run(filename, line)
+            result, error = run2(filename, line)
             if error:
                 print(error.as_string())
                 break
@@ -88,7 +88,7 @@ def main():
                 continue
             else:
                 continue
-        result, error = run('<stdin>', text)
+        result, error = run2('<stdin>', text)
         if error:
             print(error.as_string())
         else:
@@ -100,8 +100,8 @@ def main():
                 continue
 
 
-# main()
-# run('','[   1  ,   2] + [    3     ,   4]')[0]
+main()
+# print(run('','[   1  ,  a ] + [    3     ,   4]'))
 # run2('','[1,2]+[3,4] + ([1,2])')[0]
 # run3('','[1,2]+[3,4]')[0]
 # run3('','[1,2] + [3,4] + ([5,6]+[5,6])')[0]
@@ -109,6 +109,12 @@ def main():
 # run3('','[1,2] + [3,4]')[0]
 # run3('','([1,2] + [1,2]) + ([3,4]+[3,4])')[0]
 # run3('','[5,6] + ([7,8] + [9,10] + x)')[0]
-run3('','[3,4]+([1,1]*[2,2])')[0]
-run2('','[3,4]+([1,1]*[2,2])')[0]
+# run3('','[3,4]+([1,1]*[2,2])')[0]
+# run2('','[3,4]+([1,1]*[2,2])')[0]
 # run3('','[1,2] + [3,4] + ([5,6] + [7,8])')[0]
+# run3('',"?(2<x AND x<4 AND 0<y AND y<2);(x'= 5-x)")[0]
+# run3('',"?(2<x AND x<4 AND 0<y AND y<[1,2] + [3,4]);( x'= [1,2] + [3,4]*[1,2] , y'=-y ; (2 < x AND x < 4 AND 0<y AND y<2))")[0]
+# run2('',"?(2<x AND x<4 AND 0<y AND y<[1,2] + [3,4]);  ( x'= [1,2] + [3,4]*[1,2] , y'=-y ; (2 < x AND x < 4 AND 0<y AND y<2))")
+# run('',"[{ x'=1 }] ( [{ y'=1 }] ( x>y ) ) -> x > y")
+# run2('',"[{ x'=1 }] ( [{ y'=1 }] ( x>y ) ) -> x > y AND x > [0,1]+[0,1]")
+# run2('',"? (x > 0 AND x < [1,2] + [3,4]) ; (x'=-x, y'=-y & (0<x))")

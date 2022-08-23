@@ -47,6 +47,37 @@ class Translator:
         'If no acceptable method found, throw an exception.'
         raise Exception(f'No visit_{type(node).__name__} defined.')
 
+    def visit_LowerNumberNode(self, node):
+        'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
+        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        return num
+
+    def visit_UpperNumberNode(self, node):
+        'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
+        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        return num
+
+    def visit_SeparatorNode(self, node):
+        '''
+        Visits the nodes with the SEPARATOR token.
+        :param node:
+        :return:
+        '''
+        lower = self.visit(node.left_node)
+        upper = self.visit(node.right_node)
+        uniqueVar = self.makeUniqueVar()
+        if not (isinstance(lower, Number)):
+            newLower = [int(s) for s in list(lower) if s.isdigit()][0]
+            lower = Number(newLower).set_pos(node.pos_start, node.pos_end)
+            interval = TranslatedInterval(lower, upper, uniqueVar, True)
+            self.intervalDict[uniqueVar] = interval
+        else:
+            interval = TranslatedInterval(lower, upper, uniqueVar)
+            self.intervalDict[uniqueVar] = interval
+        translation = interval.ineqVar
+        self.translation = translation
+        return translation
+
     def visit_BinOpNode(self, node):
         '''
         Visits nodes that have binary operations on them. \
@@ -80,56 +111,6 @@ class Translator:
             translation = '(' + str(leftDiv) + ' / ' + str(rightDiv) + ')'
             self.translation = translation
             return translation
-
-    def visit_UnaryOpNode(self, node):
-        visitNode = self.visit(node.node)
-        translation = ''
-        if node.op_tok.type in TT_NOT:
-            translation = '!' + "(" + str(visitNode) + ")"
-            self.translation = translation
-        if node.op_tok.type in TT_INTERVALPLUS:
-            translation = '+' + "(" + str(visitNode) + ")"
-        if node.op_tok.type in TT_INTERVALMINUS:
-            translation = '-' + str(visitNode)
-        return translation
-
-    def visit_UnaryProgOpNode(self, node):
-        visitNode = self.visit(node.node)
-        if node.op_tok.type in TT_PROGTEST:
-            translation = '?' + "( " + str(visitNode) + " )"
-            self.translation = translation
-        return translation
-
-    def visit_LowerNumberNode(self, node):
-        'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
-        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
-        return num
-
-    def visit_UpperNumberNode(self, node):
-        'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
-        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
-        return num
-
-    def visit_SeparatorNode(self, node):
-        '''
-        Visits the nodes with the SEPARATOR token.
-        :param node:
-        :return:
-        '''
-        lower = self.visit(node.left_node)
-        upper = self.visit(node.right_node)
-        uniqueVar = self.makeUniqueVar()
-        if not (isinstance(lower, Number)):
-            newLower = [int(s) for s in list(lower) if s.isdigit()][0]
-            lower = Number(newLower).set_pos(node.pos_start, node.pos_end)
-            interval = TranslatedInterval(lower, upper, uniqueVar, True)
-            self.intervalDict[uniqueVar] = interval
-        else:
-            interval = TranslatedInterval(lower, upper, uniqueVar)
-            self.intervalDict[uniqueVar] = interval
-        translation = interval.ineqVar
-        self.translation = translation
-        return translation
 
     def visit_IntervalVarNode(self, node):
         return node.tok.value
@@ -279,6 +260,25 @@ class Translator:
         # print("Tok %s"%node.tok)
         return node.tok
 
+    def visit_UnaryOpNode(self, node):
+        visitNode = self.visit(node.node)
+        translation = ''
+        if node.op_tok.type in TT_NOT:
+            translation = '!' + "(" + str(visitNode) + ")"
+            self.translation = translation
+        if node.op_tok.type in TT_INTERVALPLUS:
+            translation = '+' + "(" + str(visitNode) + ")"
+        if node.op_tok.type in TT_INTERVALMINUS:
+            translation = '-' + str(visitNode)
+        return translation
+
+    def visit_UnaryProgOpNode(self, node):
+        visitNode = self.visit(node.node)
+        if node.op_tok.type in TT_PROGTEST:
+            translation = '?' + "( " + str(visitNode) + " )"
+            self.translation = translation
+        return translation
+
     def makeUniqueVar(self):
         intervalVar = ''
         for var in LETTERS:
@@ -292,18 +292,24 @@ class Translator:
             return -1
 
     def removeRepeated(self, translation, symbol):
-        j = 1
-        k = []
         charList = translation.split()
         for i in range(len(charList)):
-            if charList[i] == symbol:
-                j += 1
-            if j > 1:
-                k.append(i)
-                j -= 1
-        for num in k:
-            charList[num] = ''
+            if ';' in charList[i]:
+                if len(charList[i])>1:
+                    charList[i] = charList[i].replace(';',"")
         processedString = ' '.join(charList)
+        # j = 1
+        # k = []
+        # charList = translation.split()
+        # for i in range(len(charList)):
+        #     if charList[i] == symbol:
+        #         j += 1
+        #     if j > 1:
+        #         k.append(i)
+        #         j -= 1
+        # for num in k:
+        #     charList[num] = ''
+        # processedString = ' '.join(charList)
         return processedString
 
     def reset(self):

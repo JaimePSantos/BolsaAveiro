@@ -33,6 +33,7 @@ def run(fn, input):
     start_time = time.time()
     lexer = Lexer(fn, input)
     tokens, error = lexer.makeTokens()
+    print(f"First tokens->{tokens}")
     if error:
         return None, error
     # print("\nLEXER:\t %s\n"%tokens)
@@ -40,8 +41,8 @@ def run(fn, input):
     parser = Parser(tokens)
     ast = parser.parse()
     if ast.error:
-        return None, ast.error
-    print("PARSER:\t %s\n"%ast.node)
+        return ast.error
+    # print("PARSER:\t %s\n"%ast.node)
 
     translator = Translator()
     translator.reset()
@@ -76,6 +77,7 @@ def run2(fn, input):
     start_time = time.time()
     lexer = Lexer(fn, input)
     tokens, error = lexer.makeTokens()
+    print(f"First tokens->{tokens}")
     if error:
         return None, error
     # print("\nLEXER:\t %s\n"%tokens)
@@ -83,21 +85,24 @@ def run2(fn, input):
     parser = Parser(tokens)
     ast = parser.parse()
     if ast.error:
-        return None, ast.error
+        return ast.error
     # print("PARSER:\t %s\n"%ast.node)
 
     interp = str(Interpreter().visit(ast.node))
 
     lexer2 = Lexer(fn, interp)
     tokens2, error2 = lexer2.makeTokens()
+    print(f"Second tokens->{tokens}")
     if error2:
-        return None, error2
+        return None,error2
     # print("\nLEXER:\t %s\n"%tokens)
 
     parser2 = Parser(tokens2)
     ast2 = parser2.parse()
+    # print(f"Second ast->{ast2}")
     if ast2.error:
-        return None, ast2.error
+        print(ast2.error)
+        return ast2.error
     # print("PARSER:\t %s\n"%ast.node)
 
     translator = Translator()
