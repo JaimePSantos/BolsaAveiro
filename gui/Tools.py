@@ -35,9 +35,10 @@ def myLabelFrame(
     return l
 
 
-def myEntryFrame(f, row, col, width, stick, colspan):
-    entryTxt = tk.Entry(f, width=width)
-    entryTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan)
+def myEntryFrame(f, row, col, width, stick, colspan,padx=None,pady=None,highlightthickness=None,highlightbackground=None,highlightcolor=None):
+    entryTxt = tk.Entry(f, width=width,highlightthickness=highlightthickness)
+    entryTxt.configure(highlightbackground=highlightbackground, highlightcolor=highlightcolor)
+    entryTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan,padx=padx,pady=pady)
     return entryTxt
 
 
@@ -54,7 +55,9 @@ def myTextFrame(
         bd=None,
         font=None,
         yscrollcommand=None,
-        xscrollcommand=None):
+        xscrollcommand=None,
+        padx=None,
+        pady=None):
     textTxt = tk.Text(
         f,
         width=width,
@@ -65,7 +68,8 @@ def myTextFrame(
         font=font,
         yscrollcommand=yscrollcommand,
         xscrollcommand=xscrollcommand)
-    textTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan)
+    textTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan,padx=padx,
+        pady=pady)
     return textTxt
 
 
@@ -110,7 +114,9 @@ def myButton(
         fg=None,
         font=None,
         bd=None,
-        relief=None):
+        relief=None,
+        padx = None,
+        pady = None):
     myButton = tk.Button(
         f,
         text=text,
@@ -125,7 +131,9 @@ def myButton(
         column=col,
         rowspan=rowspan,
         columnspan=colspan,
-        sticky=sticky)
+        sticky=sticky,
+        padx=padx,
+        pady=pady)
     return myButton
 
 
@@ -143,3 +151,46 @@ def myFrame(f, side, fill, expand):
     myF = tk.Frame(f)
     myF.pack(side=side, fill=fill, expand=expand)
     return myF
+
+def myCheckButton(
+        f,
+        row,
+        col,
+        command,
+        rowspan,
+        colspan,
+        sticky,
+        text,
+        variable,
+        onvalue,
+        offvalue,
+        bg=None,
+        fg=None,
+        font=None,
+        bd=None,
+        relief=None,
+        padx=None,
+        pady=None,
+        height=None):
+    myCheckButton = tk.Checkbutton(
+        f,
+        text=text,
+        variable=variable,
+        onvalue=onvalue,
+        offvalue=offvalue,
+        command=command,
+        bg=bg,
+        fg=fg,
+        font=font,
+        bd=bd,
+        relief=relief,
+        height = height)
+    myCheckButton.grid(
+        row=row,
+        column=col,
+        rowspan=rowspan,
+        columnspan=colspan,
+        sticky=sticky,
+        padx=padx,
+        pady=pady)
+    return myCheckButton

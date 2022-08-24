@@ -5,7 +5,7 @@ import tkinter.filedialog
 
 from core.RunProgram import runGUI, runInterpGUI
 from gui.NotePage import BasicNotepage
-from gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame
+from gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame,myCheckButton
 
 sys.path.append('/')
 base_folder = os.path.join(os.path.dirname("../" + __file__, ), '')
@@ -21,20 +21,27 @@ class FileTranslation(BasicNotepage):
         controls = myFrame(f1, side='bottom', fill='both', expand=True)
         txtFrame = myFrame(f1, side='top', fill='both', expand=True)
 
+        padx = 5
+        pady = 2
+
         self.loadedText = myTextFrame(txtFrame, row=0, col=0, width=99, height=13, stick='W', colspan=100)
         self.scrollBar = myScrollBar(txtFrame, row=0, col=100, stick='ns')
         self.loadedText.config(yscrollcommand=self.scrollBar.set)
         self.scrollBar.config(command=self.loadedText.yview)
 
-        self.loadButton = myButton(controls, row=1, col=0, command=self.openFile, rowspan=1, colspan=1, sticky='W',
-                                   text='Load', bg='white', fg='black', font=('Arial', 12), relief='raised')
-        self.translationButton = myButton(controls, row=1, col=1, command=self.translate, rowspan=1, colspan=1,
+        self.loadButton = myButton(controls, row=1, col=2, command=self.openFile, rowspan=1, colspan=1, sticky='W',
+                                   text='Load', bg='white', fg='black', font=('Arial', 12), relief='raised',padx=padx,pady=pady)
+        self.translationButton = myButton(controls, row=1, col=0, command=self.translate, rowspan=1, colspan=1,
                                           sticky='W', text='Translate', bg='white', fg='black', font=('Arial', 12),
-                                          relief='raised')
-        self.path = myEntryFrame(controls, row=1, col=2, width=79, stick='W', colspan=1)
-        self.interpretButton = myButton(controls, row=1, col=3, command=self.interpret, rowspan=1, colspan=1,
-                                          sticky='W', text='Interpret', bg='white', fg='black', font=('Arial', 12),
-                                          relief='raised')
+                                          relief='raised',padx=padx,pady=pady)
+        self.path = myEntryFrame(controls, row=1, col=3, width=79, stick='W', colspan=1,padx=padx,pady=pady,highlightthickness=2,highlightbackground='black',highlightcolor='black')
+        # self.interpretButton = myButton(controls, row=1, col=3, command=self.interpret, rowspan=1, colspan=1,
+        #                                   sticky='W', text='Interpret', bg='white', fg='black', font=('Arial', 12),
+        #                                   relief='raised')
+        self.interpVar = tk.IntVar()
+        self.interpretButton = myCheckButton(controls, row=1, col=1, command=self.interpOn, rowspan=1, colspan=1,
+                                          sticky='W', text='Interp Off',variable = self.interpVar, onvalue=1, offvalue=0, bg='white', fg='black', font=('Arial', 12),
+                                          relief='raised',padx=padx,pady=pady,height=1)
 
         # --- Translated Frame ---
         f2 = myLabelFrame(self, row=4, col=0, colspan=2, rowspan=3, text='Translated Text')
@@ -128,12 +135,22 @@ class FileTranslation(BasicNotepage):
         if inputs == "":
             transList.append("Please enter an expression to convert.")
         else:
-            transList = self.runMultipleTranslations(inputs)
+            if(self.interpVar.get()==1):
+                transList = self.runMultipleInterpretations(inputs)
+            else:
+                transList = self.runMultipleTranslations(inputs)
         for transl in transList:
             self.translatedText.insert(tk.END, transl)
             self.translatedText.insert(tk.END, "\n")
         self.translatedText.config(state=tk.DISABLED)
         self.translationHistory.refreshHistory()
+
+    def interpOn(self):
+        print(self.interpVar.get())
+        if self.interpVar.get()==1:
+            self.interpretButton['text'] = 'Interp On'
+        else:
+            self.interpretButton['text'] = 'Interp Off'
 
     def interpret(self):
         self.translatedText.config(state=tk.NORMAL)
