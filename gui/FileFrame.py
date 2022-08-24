@@ -3,7 +3,7 @@ import sys
 import tkinter as tk
 import tkinter.filedialog
 
-from core.RunProgram import runGUI
+from core.RunProgram import runGUI, runInterpGUI
 from gui.NotePage import BasicNotepage
 from gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame
 
@@ -15,141 +15,48 @@ class FileTranslation(BasicNotepage):
     def BuildPage(self):
         self.history = {}
         # --- File loading frame ---
-        f1 = myLabelFrame(
-            self,
-            0,
-            0,
-            colspan=2,
-            rowspan=3,
-            text='Begin Translating')
+        f1 = myLabelFrame(self, 0, 0, colspan=2, rowspan=3, text='Begin Translating')
         f1.pack(side='top', fill='both', expand=True)
 
         controls = myFrame(f1, side='bottom', fill='both', expand=True)
         txtFrame = myFrame(f1, side='top', fill='both', expand=True)
 
-        self.loadedText = myTextFrame(
-            txtFrame,
-            row=0,
-            col=0,
-            width=99,
-            height=13,
-            stick='W',
-            colspan=100)
-        self.scrollBar = myScrollBar(
-            txtFrame, row=0, col=100, stick='ns')
+        self.loadedText = myTextFrame(txtFrame, row=0, col=0, width=99, height=13, stick='W', colspan=100)
+        self.scrollBar = myScrollBar(txtFrame, row=0, col=100, stick='ns')
         self.loadedText.config(yscrollcommand=self.scrollBar.set)
         self.scrollBar.config(command=self.loadedText.yview)
 
-        self.loadButton = myButton(
-            controls,
-            row=1,
-            col=0,
-            command=self.openFile,
-            rowspan=1,
-            colspan=1,
-            sticky='W',
-            text='Load',
-            bg='white',
-            fg='black',
-            font=(
-                'Arial',
-                12),
-            relief='raised')
-        self.translationButton = myButton(
-            controls,
-            row=1,
-            col=1,
-            command=self.translate,
-            rowspan=1,
-            colspan=1,
-            sticky='W',
-            text='Translate',
-            bg='white',
-            fg='black',
-            font=(
-                'Arial',
-                12),
-            relief='raised')
-        self.path = myEntryFrame(
-            controls,
-            row=1,
-            col=2,
-            width=79,
-            stick='W',
-            colspan=1)
+        self.loadButton = myButton(controls, row=1, col=0, command=self.openFile, rowspan=1, colspan=1, sticky='W',
+                                   text='Load', bg='white', fg='black', font=('Arial', 12), relief='raised')
+        self.translationButton = myButton(controls, row=1, col=1, command=self.translate, rowspan=1, colspan=1,
+                                          sticky='W', text='Translate', bg='white', fg='black', font=('Arial', 12),
+                                          relief='raised')
+        self.path = myEntryFrame(controls, row=1, col=2, width=79, stick='W', colspan=1)
+        self.interpretButton = myButton(controls, row=1, col=3, command=self.interpret, rowspan=1, colspan=1,
+                                          sticky='W', text='Interpret', bg='white', fg='black', font=('Arial', 12),
+                                          relief='raised')
 
         # --- Translated Frame ---
-        f2 = myLabelFrame(
-            self,
-            row=4,
-            col=0,
-            colspan=2,
-            rowspan=3,
-            text='Translated Text')
+        f2 = myLabelFrame(self, row=4, col=0, colspan=2, rowspan=3, text='Translated Text')
         f2.pack(side='top', fill='both', expand=True)
 
         controls2 = myFrame(f2, side='bottom', fill='both', expand=True)
         txtFrame2 = myFrame(f2, side='top', fill='both', expand=True)
 
-        self.translatedText = myTextFrame(
-            txtFrame2,
-            row=4,
-            col=0,
-            width=99,
-            height=13,
-            stick='W',
-            colspan=100)
+        self.translatedText = myTextFrame(txtFrame2, row=4, col=0, width=99, height=13, stick='W', colspan=100)
         self.translatedText.config(state=tk.DISABLED)
-        self.scrollBar2 = myScrollBar(
-            txtFrame2, row=4, col=100, stick='ns')
+        self.scrollBar2 = myScrollBar(txtFrame2, row=4, col=100, stick='ns')
         self.translatedText.config(yscrollcommand=self.scrollBar2.set)
         self.scrollBar2.config(command=self.translatedText.yview)
 
-        self.clearButton = myButton(
-            controls2,
-            row=5,
-            col=0,
-            command=self.clear,
-            rowspan=1,
-            colspan=1,
-            sticky='W',
-            text='Clear',
-            bg='white',
-            fg='black',
-            font=(
-                'Arial',
-                12),
-            relief='raised')
-        self.clipboardButton = myButton(
-            controls2,
-            row=5,
-            col=1,
-            command=self.copyToClipboard,
-            rowspan=1,
-            colspan=1,
-            sticky='W',
-            text='Copy',
-            bg='white',
-            fg='black',
-            font=(
-                'Arial',
-                12),
-            relief='raised')
-        self.saveButton = myButton(
-            controls2,
-            row=5,
-            col=2,
-            command=self.saveAs,
-            rowspan=1,
-            colspan=1,
-            sticky='W',
-            text='Save',
-            bg='white',
-            fg='black',
-            font=(
-                'Arial',
-                12),
-            relief='raised')
+        self.clearButton = myButton(controls2, row=5, col=0, command=self.clear, rowspan=1, colspan=1, sticky='W',
+                                    text='Clear', bg='white', fg='black', font=('Arial', 12), relief='raised')
+        self.clipboardButton = myButton(controls2, row=5, col=1, command=self.copyToClipboard, rowspan=1, colspan=1,
+                                        sticky='W', text='Copy', bg='white', fg='black', font=('Arial', 12),
+                                        relief='raised')
+        self.saveButton = myButton(controls2, row=5, col=2, command=self.saveAs, rowspan=1, colspan=1,
+                                   sticky='W', text='Save', bg='white', fg='black', font=('Arial', 12),
+                                   relief='raised')
 
     def saveAs(self):
         text = self.translatedText.get('1.0', 'end')
@@ -159,16 +66,13 @@ class FileTranslation(BasicNotepage):
             tk.messagebox.showerror('Error', 'Nothing to translate!')
             return
         elif (nLines > 1):
-            multipleFiles = tk.messagebox.askyesnocancel(
-                "Warning!", "Create multiple files for KMX?")
+            multipleFiles = tk.messagebox.askyesnocancel("Warning!", "Create multiple files for KMX?")
             if (multipleFiles):
                 self.saveMultipleFiles(text)
             if (not (multipleFiles)):
-                tk.messagebox.showwarning(
-                    "Warning!", "All translations will be written to a single file!")
+                tk.messagebox.showwarning("Warning!", "All translations will be written to a single file!")
         if (nLines == 1 or not (multipleFiles)):
-            self.filename = tk.filedialog.asksaveasfilename(
-                initialdir=base_folder, defaultextension='.kyx')
+            self.filename = tk.filedialog.asksaveasfilename(initialdir=base_folder, defaultextension='.kyx')
             if (isinstance(self.filename, str) and self.filename != ''):
                 fileNameList = self.filename.split("/")
                 fileName = fileNameList[len(fileNameList) - 1]
@@ -187,24 +91,13 @@ class FileTranslation(BasicNotepage):
         textList.pop()
         textList.pop()
         fileCount = 0
-        self.filename = tk.filedialog.asksaveasfilename(
-            initialdir=base_folder)
+        self.filename = tk.filedialog.asksaveasfilename(initialdir=base_folder)
         fileNameList = self.filename.split("/")
         fileName = fileNameList[len(fileNameList) - 1]
         if (isinstance(self.filename, str) and self.filename != ''):
             for line in textList:
-                f = open(
-                    self.filename +
-                    "_" +
-                    str(fileCount) +
-                    '.kyx',
-                    'w')
-                f.write(
-                    "Theorem \" " +
-                    fileName +
-                    "_" +
-                    str(fileCount) +
-                    ' \"\n\nProblem\n\n')
+                f = open(self.filename + "_" + str(fileCount) + '.kyx', 'w')
+                f.write("Theorem \" " + fileName + "_" + str(fileCount) + ' \"\n\nProblem\n\n')
                 f.write(line)
                 f.write("\n\nEnd.")
                 f.write("\nEnd.")
@@ -212,10 +105,7 @@ class FileTranslation(BasicNotepage):
                 fileCount += 1
         else:
             pass
-        tk.messagebox.showinfo(
-            'Info',
-            str(fileCount) +
-            " translation files created.")
+        tk.messagebox.showinfo('Info', str(fileCount) + " translation files created.")
 
     def openFile(self):
         self.clear(self.loadedText)
@@ -245,6 +135,21 @@ class FileTranslation(BasicNotepage):
         self.translatedText.config(state=tk.DISABLED)
         self.translationHistory.refreshHistory()
 
+    def interpret(self):
+        self.translatedText.config(state=tk.NORMAL)
+        self.clear(self.translatedText)
+        inputs = self.loadedText.get('1.0', tk.END)
+        transList = []
+        if inputs == "":
+            transList.append("Please enter an expression to convert.")
+        else:
+            transList = self.runMultipleInterpretations(inputs)
+        for transl in transList:
+            self.translatedText.insert(tk.END, transl)
+            self.translatedText.insert(tk.END, "\n")
+        self.translatedText.config(state=tk.DISABLED)
+        self.translationHistory.refreshHistory()
+
     def clear(self, btn=None):
         if btn is not None:
             btn.delete('1.0', tk.END)
@@ -254,8 +159,7 @@ class FileTranslation(BasicNotepage):
 
     def copyToClipboard(self):
         self.translatedText.clipboard_clear()
-        self.translatedText.clipboard_append(
-            self.translatedText.get('1.0', 'end-1c'))
+        self.translatedText.clipboard_append(self.translatedText.get('1.0', 'end-1c'))
 
     def runTranslation(self, input):
         return runGUI('<stdin>', input)
@@ -285,6 +189,21 @@ class FileTranslation(BasicNotepage):
                 continue
             else:
                 outputList.append(runGUI('<stdin>', input))
+
+        self.history[repr(self.clearInput(inputList))] = outputList
+        return outputList
+
+    def runMultipleInterpretations(self, inputs):
+        inputList = inputs.split('\n')
+        inputList.pop()
+        outputList = []
+        for input in inputList:
+            if ('#' in input):
+                continue
+            elif (input == '\n' or input == ''):
+                continue
+            else:
+                outputList.append(runInterpGUI('<stdin>', input))
 
         self.history[repr(self.clearInput(inputList))] = outputList
         return outputList

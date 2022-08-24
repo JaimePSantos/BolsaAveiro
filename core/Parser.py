@@ -8,7 +8,7 @@ from core.Tokens import TT_INT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, 
     TT_RPAREN, \
     TT_PROGTEST, TT_PROGAND, TT_PROGUNION, TT_PROGSEQUENCE, TT_PROGASSIGN, \
     TT_PROGDIFASSIGN, TT_IN, TT_KEYWORD, TT_IDENTIFIER, TT_IDENTIFIERDIF, TT_LBOX, TT_RBOX, \
-    TT_IMPLIES, TT_LDIAMOND, TT_RDIAMOND, TT_COMMA, TT_NDREP, TT_LCURLYBRACK, TT_RCURLYBRACK
+    TT_IMPLIES, TT_LDIAMOND, TT_RDIAMOND, TT_COMMA, TT_NDREP, TT_LCURLYBRACK, TT_RCURLYBRACK, TT_FLOAT
 
 
 #######################################
@@ -61,6 +61,13 @@ class Parser:
         #     if res.error: return res
         #     success = res.success(forall)
         #     return success
+        # elif self.current_tok.type in (TT_SEPARATOR):
+        #     tok = self.current_tok
+        #     res.register_advancement()
+        #     self.advance()
+        #     factor = res.register(self.atom())
+        #     if res.error: return res
+        #     return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in (TT_INTERVALPLUS, TT_INTERVALMINUS):
             tok = self.current_tok
             res.register_advancement()
@@ -137,6 +144,21 @@ class Parser:
             self.advance()
             return success
         elif self.current_tok.type in TT_INT:
+            tokTemp = self.current_tok
+            res.register_advancement()
+            self.advance()
+            if self.current_tok.type in TT_UPPERLIM:
+                success = res.success(UpperNumberNode(tokTemp))
+                res.register_advancement()
+                self.advance()
+                return success
+            else:
+                success = res.success(NumberNode(tokTemp))
+                res.register_advancement()
+                # TODO: Por alguma razao a proxima linha tem de estar comentada para o programa funcar.
+                # self.advance()
+                return success
+        elif self.current_tok.type in TT_FLOAT:
             tokTemp = self.current_tok
             res.register_advancement()
             self.advance()

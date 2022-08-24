@@ -32,8 +32,7 @@ class Translator:
             else:
                 intervals += " & "
         if intervals != '':
-            builtTranslation = intervals + " -> " + \
-                '( ' + self.translation + ' )'
+            builtTranslation = intervals + " -> " + '( ' + self.translation + ' )'
         else:
             builtTranslation = self.translation
         return builtTranslation
@@ -47,6 +46,37 @@ class Translator:
     def no_visit_method(self, node):
         'If no acceptable method found, throw an exception.'
         raise Exception(f'No visit_{type(node).__name__} defined.')
+
+    def visit_LowerNumberNode(self, node):
+        'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
+        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        return num
+
+    def visit_UpperNumberNode(self, node):
+        'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
+        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        return num
+
+    def visit_SeparatorNode(self, node):
+        '''
+        Visits the nodes with the SEPARATOR token.
+        :param node:
+        :return:
+        '''
+        lower = self.visit(node.left_node)
+        upper = self.visit(node.right_node)
+        uniqueVar = self.makeUniqueVar()
+        if not (isinstance(lower, Number)):
+            newLower = [int(s) for s in list(lower) if s.isdigit()][0]
+            lower = Number(newLower).set_pos(node.pos_start, node.pos_end)
+            interval = TranslatedInterval(lower, upper, uniqueVar, True)
+            self.intervalDict[uniqueVar] = interval
+        else:
+            interval = TranslatedInterval(lower, upper, uniqueVar)
+            self.intervalDict[uniqueVar] = interval
+        translation = interval.ineqVar
+        self.translation = translation
+        return translation
 
     def visit_BinOpNode(self, node):
         '''
@@ -72,74 +102,15 @@ class Translator:
         if node.op_tok.type in TT_INTERVALMULT:
             leftMult = self.visit(node.left_node)
             rightMult = self.visit(node.right_node)
-            translation = '(' + str(leftMult) + \
-                ' * ' + str(rightMult) + ')'
+            translation = '(' + str(leftMult) + ' * ' + str(rightMult) + ')'
             self.translation = translation
             return translation
         if node.op_tok.type in TT_INTERVALDIV:
             leftDiv = self.visit(node.left_node)
             rightDiv = self.visit(node.right_node)
-            translation = '(' + str(leftDiv) + \
-                ' / ' + str(rightDiv) + ')'
+            translation = '(' + str(leftDiv) + ' / ' + str(rightDiv) + ')'
             self.translation = translation
             return translation
-
-    def visit_UnaryOpNode(self, node):
-        visitNode = self.visit(node.node)
-        translation = ''
-        if node.op_tok.type in TT_NOT:
-            translation = '!' + "(" + str(visitNode) + ")"
-            self.translation = translation
-        if node.op_tok.type in TT_INTERVALPLUS:
-            translation = '+' + "(" + str(visitNode) + ")"
-        if node.op_tok.type in TT_INTERVALMINUS:
-            translation = '-' + str(visitNode)
-        return translation
-
-    def visit_UnaryProgOpNode(self, node):
-        visitNode = self.visit(node.node)
-        if node.op_tok.type in TT_PROGTEST:
-            translation = '?' + "( " + str(visitNode) + " )"
-            self.translation = translation
-        return translation
-
-    def visit_LowerNumberNode(self, node):
-        'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
-        num = Number(
-            node.tok.value).set_pos(
-            node.pos_start,
-            node.pos_end)
-        return num
-
-    def visit_UpperNumberNode(self, node):
-        'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
-        num = Number(
-            node.tok.value).set_pos(
-            node.pos_start,
-            node.pos_end)
-        return num
-
-    def visit_SeparatorNode(self, node):
-        '''
-        Visits the nodes with the SEPARATOR token.
-        :param node:
-        :return:
-        '''
-        lower = self.visit(node.left_node)
-        upper = self.visit(node.right_node)
-        uniqueVar = self.makeUniqueVar()
-        if not (isinstance(lower, Number)):
-            newLower = [int(s) for s in list(lower) if s.isdigit()][0]
-            lower = Number(newLower).set_pos(
-                node.pos_start, node.pos_end)
-            interval = TranslatedInterval(lower, upper, uniqueVar, True)
-            self.intervalDict[uniqueVar] = interval
-        else:
-            interval = TranslatedInterval(lower, upper, uniqueVar)
-            self.intervalDict[uniqueVar] = interval
-        translation = interval.ineqVar
-        self.translation = translation
-        return translation
 
     def visit_IntervalVarNode(self, node):
         return node.tok.value
@@ -170,11 +141,9 @@ class Translator:
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = ' -> '
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + \
-                translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
-            translation = str(visitLeftNode) + " " + \
-                str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
@@ -195,38 +164,30 @@ class Translator:
         elif node.op_tok.type in TT_PROGUNION:
             translatedOpTok = ' ++ '
         if translatedOpTok != '' and translatedOpTok != ':=' and translatedOpTok != ';':
-            translation = str(visitLeftNode) + " " + \
-                translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         elif translatedOpTok == ':=':
-            translation = str(visitLeftNode) + " " + \
-                translatedOpTok + " " + str(visitRightNode) + ";"
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
         elif translatedOpTok == ';':
-            firstTranslation = str(
-                visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
             translation = self.removeRepeated(firstTranslation, ';')
         else:
-            translation = str(visitLeftNode) + " " + \
-                str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
     def visit_BoxPropNode(self, node):
-        for boxNodeElement, boxPropElement in zip(
-                node.element_nodes, node.boxProp):
+        for boxNodeElement, boxPropElement in zip(node.element_nodes, node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
             visitboxPropElement = self.visit(boxPropElement)
-        translation = '[ ' + str(visitboxNodeElement) + \
-            ' ] ' + str(visitboxPropElement)
+        translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str(visitboxPropElement)
         self.translation = translation
         return translation
 
     def visit_DiamondPropNode(self, node):
-        for diamondNodeElement, diamondPropElement in zip(
-                node.element_nodes, node.diamondProp):
+        for diamondNodeElement, diamondPropElement in zip(node.element_nodes, node.diamondProp):
             visitDiamondNodeElement = self.visit(diamondNodeElement)
             visitDiamondPropElement = self.visit(diamondPropElement)
-        translation = '< ' + \
-            str(visitDiamondNodeElement) + ' > ' + str(visitDiamondPropElement)
+        translation = '< ' + str(visitDiamondNodeElement) + ' > ' + str(visitDiamondPropElement)
         self.translation = translation
         return translation
 
@@ -246,8 +207,7 @@ class Translator:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
             if visitZAryNodeElement.type in TT_NDREP:
                 translatedZAryElement = '*'
-                translation = '( ' + str(visitparenNodeElement) + \
-                    ' )' + str(translatedZAryElement)
+                translation = '( ' + str(visitparenNodeElement) + ' )' + str(translatedZAryElement)
         else:
             translation = '( ' + str(visitparenNodeElement) + ' )'
         self.translation = translation
@@ -262,8 +222,7 @@ class Translator:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
             if visitZAryNodeElement.type in TT_NDREP:
                 translatedZAryElement = '*'
-                translation = '{ ' + str(visitparenNodeElement) + \
-                    ' }' + str(translatedZAryElement)
+                translation = '{ ' + str(visitparenNodeElement) + ' }' + str(translatedZAryElement)
         else:
             translation = '{ ' + str(visitparenNodeElement) + ' }'
         self.translation = translation
@@ -279,11 +238,9 @@ class Translator:
         if node.op_tok.type in TT_PROGDIFASSIGN:
             translatedOpTok = '='
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + \
-                translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
         else:
-            translation = str(visitLeftNode) + " " + \
-                str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
@@ -303,6 +260,25 @@ class Translator:
         # print("Tok %s"%node.tok)
         return node.tok
 
+    def visit_UnaryOpNode(self, node):
+        visitNode = self.visit(node.node)
+        translation = ''
+        if node.op_tok.type in TT_NOT:
+            translation = '!' + "(" + str(visitNode) + ")"
+            self.translation = translation
+        if node.op_tok.type in TT_INTERVALPLUS:
+            translation = '+' + "(" + str(visitNode) + ")"
+        if node.op_tok.type in TT_INTERVALMINUS:
+            translation = '-' + str(visitNode)
+        return translation
+
+    def visit_UnaryProgOpNode(self, node):
+        visitNode = self.visit(node.node)
+        if node.op_tok.type in TT_PROGTEST:
+            translation = '?' + "( " + str(visitNode) + " )"
+            self.translation = translation
+        return translation
+
     def makeUniqueVar(self):
         intervalVar = ''
         for var in LETTERS:
@@ -316,18 +292,24 @@ class Translator:
             return -1
 
     def removeRepeated(self, translation, symbol):
-        j = 1
-        k = []
         charList = translation.split()
         for i in range(len(charList)):
-            if charList[i] == symbol:
-                j += 1
-            if j > 1:
-                k.append(i)
-                j -= 1
-        for num in k:
-            charList[num] = ''
+            if ';' in charList[i]:
+                if len(charList[i])>1:
+                    charList[i] = charList[i].replace(';',"")
         processedString = ' '.join(charList)
+        # j = 1
+        # k = []
+        # charList = translation.split()
+        # for i in range(len(charList)):
+        #     if charList[i] == symbol:
+        #         j += 1
+        #     if j > 1:
+        #         k.append(i)
+        #         j -= 1
+        # for num in k:
+        #     charList[num] = ''
+        # processedString = ' '.join(charList)
         return processedString
 
     def reset(self):
@@ -432,12 +414,7 @@ class TranslatedInterval:
     This class helps us represent the interval that resulted from an operation and keep track of errors.
     '''
 
-    def __init__(
-            self,
-            lowerNum=None,
-            upperNum=None,
-            ineqVar=None,
-            symmetric=None):
+    def __init__(self, lowerNum=None, upperNum=None, ineqVar=None, symmetric=None):
         if lowerNum and upperNum is not None:
             self.lowerNum = lowerNum
             self.upperNum = upperNum
@@ -476,8 +453,7 @@ class RTResult:
         self.error = None
 
     def register(self, res):
-        if res.error:
-            self.error = res.error
+        if res.error: self.error = res.error
         return res.value
 
     def success(self, value):

@@ -1,8 +1,23 @@
 import sys
+import string
+from itertools import groupby
 
-from core.Tokens import TT_INTERVALPLUS, \
-    TT_INTERVALMULT
+from core.Nodes import LowerNumberNode, UpperNumberNode, IntervalVarNode, SeparatorNode, BinOpNode, PropOpNode, \
+    ProgOpNode, \
+    UnaryOpNode, DifferentialVarNode, ProgDifNode, UnaryForallOpNode, BoxPropNode, DiamondPropNode, NumberNode, \
+    TestProgNode, ParenthesisNode, ZeroAryNode, CurlyParenthesisNode
+from core.Tokens import TT_INT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
+    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV, TT_GEQ, TT_SEQ, TT_GT, TT_ST, TT_NOT, TT_FORALL, TT_LPAREN, \
+    TT_RPAREN, \
+    TT_PROGTEST, TT_PROGAND, TT_PROGUNION, TT_PROGSEQUENCE, TT_PROGASSIGN, \
+    TT_PROGDIFASSIGN, TT_IN, TT_KEYWORD, TT_IDENTIFIER, TT_IDENTIFIERDIF, TT_LBOX, TT_RBOX, \
+    TT_IMPLIES, TT_LDIAMOND, TT_RDIAMOND, TT_COMMA, TT_NDREP, TT_LCURLYBRACK, TT_RCURLYBRACK
 
+from core.Errors import RTError
+
+DIGITS = '0123456789'
+LETTERS = string.ascii_letters + "'"
+LETTERS_DIGITS = LETTERS + DIGITS
 
 #######################################
 # Interpreter - Under Construction
@@ -18,6 +33,10 @@ class Interpreter:
         self.intervalList = [Interval()]
         self.intervalList.pop(0)
         self.intervalNumberList = [NumberList()]
+        self.translation = ''
+
+    def getTranslation(self):
+        return self.translation
 
     def visit(self, node):
         'Template of the function to visit each method.'
@@ -57,57 +76,53 @@ class Interpreter:
         :param node:
         :return:
         '''
-        # print("Found BinOpNode")
-        # TODO: Repensar a logica dos intervalos, talvez usar um no para
-        # o intervalo todo e depois dividi-lo em upper e lower.
+        res = RTResult()
+        # left = res.register(self.visit(node.left_node))
+        left = self.visit(node.left_node)
+        # if res.error: return res
+        # right = res.register(self.visit(node.right_node))
+        right = self.visit(node.right_node)
+        # print(f"Left node: {type(left)}")
+        # print(f"Right node: {type(right)}")
+        # if res.error: return res
+        error = False
         if node.op_tok.type in TT_INTERVALPLUS:
-            self.visit(node.left_node)
-            self.visit(node.right_node)
-            # resultLower = self.lowerNumberList.addIntervals()
-            # resultUpper = self.upperNumberList.addIntervals()
-            # return idDL2DL(resultLower,resultUpper).set_pos()
-            self.addIntervals()
-            self.updateIntervalList()
-            return self.resultInterval
-
+            if (type(left) is Interval) and (type(right) is Interval):
+                # print(1)
+                result,error = left.addIntervals(right)
+                self.translation = str(result)
+            else:
+                self.translation = str(left) + ' + ' + str(right)
+                result = self.translation
+        if node.op_tok.type in TT_INTERVALMINUS:
+            if (type(left) is Interval) and (type(right) is Interval):
+                # print(type(left))
+                result,error = left.subIntervals(right)
+                self.translation = str(result)
+            else:
+                self.translation = str(left) + ' + ' + str(right)
+                result = self.translation
         if node.op_tok.type in TT_INTERVALMULT:
-            self.visit(node.left_node)
-            self.visit(node.right_node)
-            # self.intervalNumberList = (self.lowerNumberList.extend(self.upperNumberList))
-            resultList = self.multIntervals()
-            self.resultInterval = Interval(
-                resultList.min(), resultList.max()).set_pos()
-            self.updateIntervalList()
-            return self.resultInterval
+            if (type(left) is Interval) and (type(right) is Interval):
+                result,error = left.multIntervals(right)
+                self.translation = str(result)
+            else:
+                self.translation = str(left) + ' * ' + str(right)
+                result = self.translation
+        if node.op_tok.type in TT_INTERVALDIV:
+            if (type(left) is Interval) and (type(right) is Interval):
+                result,error = left.divIntervals(right)
+                self.translation = str(result)
+            else:
+                self.translation = str(left) + ' / ' + str(right)
+                result = self.translation
 
-    def addIntervals(self):
-        intervalList = self.intervalList
-        resultLower = intervalList[0].lowerNum + \
-            intervalList[1].lowerNum
-        resultUpper = intervalList[0].upperNum + \
-            intervalList[1].upperNum
-        self.resultInterval = Interval(
-            resultLower, resultUpper).set_pos()
-        return self.resultInterval
-
-    def multIntervals(self):
-        '''
-        Generates the set of numbers resulted from interval multiplication.
-        :return:
-        '''
-        # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
-        # intervalList = NumberList(self.numberList).separatedIntervals()
-        intervalList = self.intervalList
-        resultList = [
-            intervalList[0].lowerNum *
-            intervalList[1].lowerNum,
-            intervalList[0].lowerNum *
-            intervalList[1].upperNum,
-            intervalList[0].upperNum *
-            intervalList[1].lowerNum,
-            intervalList[0].upperNum *
-            intervalList[1].upperNum]
-        return NumberList(resultList)
+        if error:
+            # return res.failure(error)
+            return error
+        else:
+            # return res.success(result.set_pos())
+            return result
 
     def visit_SeparatorNode(self, node):
         '''
@@ -120,12 +135,187 @@ class Interpreter:
         upper = self.visit(node.right_node)
         interval = Interval(lower, upper).set_pos()
         self.intervalList.append(interval)
-        print("idDL2DL List1 " + str(self.intervalList))
+        # print("idDL2DL List1 " + str(self.intervalList))
+        self.translation = str(interval)
         return interval
 
-    def updateIntervalList(self):
+    def visit_ParenthesisNode(self, node):
+        translation = ''
         self.intervalList = []
-        self.intervalList.append(self.resultInterval)
+        for parenNodeElement in node.element_nodes:
+            visitparenNodeElement = self.visit(parenNodeElement)
+        if node.zeroAryNode:
+            for zAryNodeElement in node.zeroAryNode:
+                visitZAryNodeElement = self.visit(zAryNodeElement)
+            if visitZAryNodeElement.type in TT_NDREP:
+                translatedZAryElement = '**'
+                translation = '( ' + str(visitparenNodeElement) + ' )' + str(translatedZAryElement)
+        else:
+            translation = '( ' + str(visitparenNodeElement) + ' )'
+        self.translation = translation
+        return translation
+
+    def visit_IntervalVarNode(self, node):
+        return node.tok.value
+
+    def visit_PropOpNode(self, node):
+        leftNode = node.left_node
+        rightNode = node.right_node
+        visitLeftNode = self.visit(leftNode)
+        visitRightNode = self.visit(rightNode)
+        translatedOpTok = ''
+        translation = ''
+        if node.op_tok.type in [TT_ST, TT_GT, TT_GEQ, TT_SEQ]:
+            if node.op_tok.type in TT_ST:
+                translatedOpTok = '<'
+            elif node.op_tok.type in TT_GT:
+                translatedOpTok = '>'
+            elif node.op_tok.type in TT_GEQ:
+                translatedOpTok = '>='
+            elif node.op_tok.type in TT_SEQ:
+                translatedOpTok = '<='
+        elif node.op_tok.matches(TT_KEYWORD, 'AND'):
+            translatedOpTok = ' AND '
+        elif node.op_tok.matches(TT_KEYWORD, 'IN'):
+            translatedOpTok = '  '
+        elif node.op_tok.matches(TT_KEYWORD, 'OR'):
+            translatedOpTok = ' OR '
+        elif node.op_tok.type in (TT_IMPLIES):
+            translatedOpTok = ' -> '
+        if translatedOpTok != '':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        else:
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+        self.translation = translation
+        return translation
+
+    def visit_ProgOpNode(self, node):
+        leftNode = node.left_node
+        rightNode = node.right_node
+        visitLeftNode = self.visit(leftNode)
+        visitRightNode = self.visit(rightNode)
+        translatedOpTok = ''
+        if node.op_tok.type in TT_PROGASSIGN:
+            translatedOpTok = ':='
+        elif node.op_tok.type in TT_COMMA:
+            translatedOpTok = ','
+        elif node.op_tok.type in TT_PROGSEQUENCE:
+            translatedOpTok = ';'
+        elif node.op_tok.type in TT_PROGAND:
+            translatedOpTok = '&'
+        elif node.op_tok.type in TT_PROGUNION:
+            translatedOpTok = ' || '
+        if translatedOpTok != '' and translatedOpTok != ':=' and translatedOpTok != ';':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        elif translatedOpTok == ':=':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        elif translatedOpTok == ';':
+            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            # print(type(node))
+            translation = self.removeRepeated(firstTranslation, ';')
+            # translation = firstTranslation
+        else:
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+        self.translation = translation
+        return translation
+
+    def visit_BoxPropNode(self, node):
+        for boxNodeElement, boxPropElement in zip(node.element_nodes, node.boxProp):
+            visitboxNodeElement = self.visit(boxNodeElement)
+            visitboxPropElement = self.visit(boxPropElement)
+        translation = '[{' + str(visitboxNodeElement) + '}] ' + str(visitboxPropElement)
+        self.translation = translation
+        return translation
+
+    def visit_DiamondPropNode(self, node):
+        for diamondNodeElement, diamondPropElement in zip(node.element_nodes, node.diamondProp):
+            visitDiamondNodeElement = self.visit(diamondNodeElement)
+            visitDiamondPropElement = self.visit(diamondPropElement)
+        translation = '<{' + str(visitDiamondNodeElement) + '}> ' + str(visitDiamondPropElement)
+        self.translation = translation
+        return translation
+
+    def visit_TestProgNode(self, node):
+        for progTestNodeElement in node.element_nodes:
+            visitprogTestNodeElement = self.visit(progTestNodeElement)
+        translation = '?(' + str(visitprogTestNodeElement) + ")"
+        self.translation = translation
+        return translation
+
+    def visit_CurlyParenthesisNode(self, node):
+        translation = ''
+        for parenNodeElement in node.element_nodes:
+            visitparenNodeElement = self.visit(parenNodeElement)
+        if node.zeroAryNode:
+            for zAryNodeElement in node.zeroAryNode:
+                visitZAryNodeElement = self.visit(zAryNodeElement)
+            if visitZAryNodeElement.type in TT_NDREP:
+                translatedZAryElement = '**'
+                translation = '{ ' + str(visitparenNodeElement) + ' }' + str(translatedZAryElement)
+        else:
+            translation = '{' + str(visitparenNodeElement) + '}'
+        self.translation = translation
+        return translation
+
+    def visit_ProgDifNode(self, node):
+        leftNode = node.left_node
+        rightNode = node.right_node
+        visitLeftNode = self.visit(leftNode)
+        visitRightNode = self.visit(rightNode)
+        translatedOpTok = ''
+        translation = ''
+        if node.op_tok.type in TT_PROGDIFASSIGN:
+            translatedOpTok = '='
+        if translatedOpTok != '':
+            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+        else:
+            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+        self.translation = translation
+        return translation
+
+    def visit_DifferentialVarNode(self, node):
+        return node.tok.value
+
+    def visit_NumberNode(self, node):
+        return node.tok.value
+
+    def visit_UnaryForallOpNode(self, node):
+        visitNode = self.visit(node.node)
+        translation = '$ ' + str(visitNode) + ' IN'
+        self.translation = translation
+        return translation
+
+    def visit_ZeroAryNode(self, node):
+        # print("Tok %s"%node.tok)
+        return node.tok
+
+    def visit_UnaryOpNode(self, node):
+        visitNode = self.visit(node.node)
+        translation = ''
+        if node.op_tok.type in TT_NOT:
+            translation = '!' + "(" + str(visitNode) + ")"
+            self.translation = translation
+        if node.op_tok.type in TT_INTERVALPLUS:
+            translation = '+' + "(" + str(visitNode) + ")"
+        if node.op_tok.type in TT_INTERVALMINUS:
+            translation = '-' + str(visitNode)
+        return translation
+
+    def visit_UnaryProgOpNode(self, node):
+        visitNode = self.visit(node.node)
+        if node.op_tok.type in TT_PROGTEST:
+            translation = '?' + "( " + str(visitNode) + " )"
+            self.translation = translation
+        return translation
+
+    def removeRepeated(self, translation, symbol):
+        charList = translation.split()
+        for i in range(len(charList)):
+            if ';' in charList[i]:
+                if len(charList[i])>1:
+                    charList[i] = charList[i].replace(';',"")
+        processedString = ' '.join(charList)
+        return processedString
 
     def reset(self):
         '''
@@ -169,6 +359,13 @@ class Number:
         if isinstance(other, Number):
             return Number(self.value + other.value)
 
+    def __sub__(self, other):
+        if isinstance(other, Number):
+            return Number(self.value - other.value)
+
+    def __truediv__(self,other):
+            return Number(self.value/other.value)
+
     def __mul__(self, other):
         if isinstance(other, Number):
             return Number(self.value * other.value)
@@ -196,6 +393,49 @@ class Number:
     def __repr__(self):
         return str(self.value)
 
+class Interval:
+    '''
+    This class helps us represent the interval that resulted from an operation and keep track of errors.
+    '''
+
+    def __init__(self, lowerNum=None, upperNum=None):
+        if lowerNum and upperNum is not None:
+            self.lowerNum = lowerNum
+            self.upperNum = upperNum
+            self.set_pos()
+        else:
+            self.lowerNum = None
+            self.upperNum = None
+
+    def set_pos(self):
+        '''
+        So we know the position of our intervals.
+        :return:
+        '''
+        self.pos_start = self.lowerNum.pos_start
+        self.pos_end = self.upperNum.pos_end
+        return self
+
+    def addIntervals(self,other):
+        return Interval(self.lowerNum+other.lowerNum, self.upperNum+other.upperNum), None
+
+    def subIntervals(self,other):
+        return Interval(self.lowerNum-other.upperNum, self.upperNum-other.lowerNum), None
+
+    def multIntervals(self,other):
+        resultList = [self.lowerNum*other.lowerNum,self.lowerNum*other.upperNum,self.upperNum*other.lowerNum,self.upperNum*other.upperNum]
+        return Interval(min(resultList),max(resultList)), None
+
+    def divIntervals(self,other):
+        if (other.lowerNum or other.upperNum) == 0:
+            return None, RTError(other.pos_start, other.pos_end, 'Division by zero', '')
+        else:
+            resultList = [self.lowerNum/other.lowerNum,self.lowerNum/other.upperNum,self.upperNum/other.lowerNum,self.upperNum/other.upperNum]
+            return Interval(min(resultList),max(resultList)), None
+
+
+    def __repr__(self):
+        return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
 
 class NumberList:
     '''
@@ -232,15 +472,8 @@ class NumberList:
         '''
         # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
         # intervalList = NumberList(self.numberList).separatedIntervals()
-        resultList = [
-            intervalList[0][0] *
-            intervalList[1][0],
-            intervalList[0][0] *
-            intervalList[1][1],
-            intervalList[0][1] *
-            intervalList[1][0],
-            intervalList[0][1] *
-            intervalList[1][1]]
+        resultList = [intervalList[0][0] * intervalList[1][0], intervalList[0][0] * intervalList[1][1],
+                      intervalList[0][1] * intervalList[1][0], intervalList[0][1] * intervalList[1][1]]
 
         return NumberList(resultList)
 
@@ -296,39 +529,10 @@ class NumberList:
         :param otherNumberList:
         :return:
         '''
-        return NumberList(self.numberList +
-                          (otherNumberList.numberList))
+        return NumberList(self.numberList + (otherNumberList.numberList))
 
     def __repr__(self):
         return str(self.numberList)
-
-
-class Interval:
-    '''
-    This class helps us represent the interval that resulted from an operation and keep track of errors.
-    '''
-
-    def __init__(self, lowerNum=None, upperNum=None):
-        if lowerNum and upperNum is not None:
-            self.lowerNum = lowerNum
-            self.upperNum = upperNum
-            self.set_pos()
-        else:
-            self.lowerNum = None
-            self.upperNum = None
-
-    def set_pos(self):
-        '''
-        So we know the position of our intervals.
-        :return:
-        '''
-        self.pos_start = self.lowerNum.pos_start
-        self.pos_end = self.upperNum.pos_end
-        return self
-
-    def __repr__(self):
-        return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
-
 
 #######################################
 # CONTEXT
@@ -350,8 +554,7 @@ class RTResult:
         self.error = None
 
     def register(self, res):
-        if res.error:
-            self.error = res.error
+        if res.error: self.error = res.error
         return res.value
 
     def success(self, value):

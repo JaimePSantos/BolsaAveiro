@@ -158,6 +158,12 @@ class Lexer:
         pos_start = self.pos.copy()
         tok_type = TT_COMMA
         self.advance()
+        while self.current_char == ' ':
+            self.advance()
+        if self.current_char == '-':
+            tok_type = TT_SEPARATOR
+            # self.advance()
+            return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
         if self.current_char in DIGITS:
             tok_type = TT_SEPARATOR
             # self.advance()
@@ -291,6 +297,23 @@ class Lexer:
         if self.current_char == '>':
             self.advance()
             tok_type = TT_IMPLIES
+        if self.current_char in DIGITS:
+            num_str = ''
+            dot_count = 0
+            pos_start = self.pos.copy()
+            while self.current_char is not None and self.current_char in DIGITS + '.':
+                if self.current_char == '.':
+                    if dot_count == 1:
+                        break
+                    dot_count += 1
+                    num_str += '.'
+                else:
+                    num_str += self.current_char
+                self.advance()
+            if dot_count == 0:
+                return Token(TT_INT, -int(num_str), pos_start, self.pos)
+            else:
+                return Token(TT_FLOAT, -float(num_str), pos_start, self.pos)
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def makeAsterisk(self):
