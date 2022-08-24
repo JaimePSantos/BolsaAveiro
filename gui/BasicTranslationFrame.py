@@ -6,7 +6,7 @@ from NotePage import BasicNotepage
 from gui.Tools import myLabelFrame, myButton, myTextFrame, myScrollBar, myFrame
 
 sys.path.append('../idDL2DL/')
-from Interval.Core.RunProgram import runGUI
+from core.RunProgram import runGUI
 
 base_folder = os.path.join(os.path.dirname(__file__, ), '../idDL2DL')
 

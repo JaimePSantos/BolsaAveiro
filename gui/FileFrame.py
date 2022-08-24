@@ -3,7 +3,7 @@ import sys
 import tkinter as tk
 import tkinter.filedialog
 
-from core.RunProgram import runGUI
+from core.RunProgram import runGUI, runInterpGUI
 from gui.NotePage import BasicNotepage
 from gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame
 
@@ -32,6 +32,9 @@ class FileTranslation(BasicNotepage):
                                           sticky='W', text='Translate', bg='white', fg='black', font=('Arial', 12),
                                           relief='raised')
         self.path = myEntryFrame(controls, row=1, col=2, width=79, stick='W', colspan=1)
+        self.interpretButton = myButton(controls, row=1, col=3, command=self.interpret, rowspan=1, colspan=1,
+                                          sticky='W', text='Interpret', bg='white', fg='black', font=('Arial', 12),
+                                          relief='raised')
 
         # --- Translated Frame ---
         f2 = myLabelFrame(self, row=4, col=0, colspan=2, rowspan=3, text='Translated Text')
@@ -132,6 +135,21 @@ class FileTranslation(BasicNotepage):
         self.translatedText.config(state=tk.DISABLED)
         self.translationHistory.refreshHistory()
 
+    def interpret(self):
+        self.translatedText.config(state=tk.NORMAL)
+        self.clear(self.translatedText)
+        inputs = self.loadedText.get('1.0', tk.END)
+        transList = []
+        if inputs == "":
+            transList.append("Please enter an expression to convert.")
+        else:
+            transList = self.runMultipleInterpretations(inputs)
+        for transl in transList:
+            self.translatedText.insert(tk.END, transl)
+            self.translatedText.insert(tk.END, "\n")
+        self.translatedText.config(state=tk.DISABLED)
+        self.translationHistory.refreshHistory()
+
     def clear(self, btn=None):
         if btn is not None:
             btn.delete('1.0', tk.END)
@@ -171,6 +189,21 @@ class FileTranslation(BasicNotepage):
                 continue
             else:
                 outputList.append(runGUI('<stdin>', input))
+
+        self.history[repr(self.clearInput(inputList))] = outputList
+        return outputList
+
+    def runMultipleInterpretations(self, inputs):
+        inputList = inputs.split('\n')
+        inputList.pop()
+        outputList = []
+        for input in inputList:
+            if ('#' in input):
+                continue
+            elif (input == '\n' or input == ''):
+                continue
+            else:
+                outputList.append(runInterpGUI('<stdin>', input))
 
         self.history[repr(self.clearInput(inputList))] = outputList
         return outputList
