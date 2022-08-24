@@ -83,6 +83,7 @@ def runGUI(fn, input):
 
     return output
 
+
 def runInterpGUI(fn, input):
     print(f"Input: {input}")
     lexer = Lexer(fn, input)
@@ -105,7 +106,7 @@ def runInterpGUI(fn, input):
     lexer2 = Lexer(fn, outInterp)
     tokens2, error2 = lexer2.makeTokens()
     if error2:
-        return None,error2
+        return None, error2
 
     parser2 = Parser(tokens2)
     ast2 = parser2.parse()
@@ -117,6 +118,7 @@ def runInterpGUI(fn, input):
     visitNodes = translator.visit(ast2.node)
     output = translator.buildTranslation()
     return output
+
 
 def run2(fn, input):
     start_time = time.time()
@@ -148,7 +150,7 @@ def run2(fn, input):
     # print(f"Second tokens->{tokens2}")
     if error2:
         print(error2)
-        return None,error2
+        return None, error2
     # print("\nLEXER:\t %s\n"%tokens)
 
     parser2 = Parser(tokens2)
@@ -167,6 +169,7 @@ def run2(fn, input):
     print(printingResults)
 
     return output, None
+
 
 def run3(fn, input):
     start_time = time.time()

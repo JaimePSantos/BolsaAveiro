@@ -23,6 +23,7 @@ LETTERS_DIGITS = LETTERS + DIGITS
 # Interpreter - Under Construction
 #######################################
 
+
 class Interpreter:
     'Class that evalutates the input.'
 
@@ -87,31 +88,35 @@ class Interpreter:
         # if res.error: return res
         error = False
         if node.op_tok.type in TT_INTERVALPLUS:
-            if (type(left) is Interval) and (type(right) is Interval):
+            if (isinstance(left, Interval)) and (
+                    isinstance(right, Interval)):
                 # print(1)
-                result,error = left.addIntervals(right)
+                result, error = left.addIntervals(right)
                 self.translation = str(result)
             else:
                 self.translation = str(left) + ' + ' + str(right)
                 result = self.translation
         if node.op_tok.type in TT_INTERVALMINUS:
-            if (type(left) is Interval) and (type(right) is Interval):
+            if (isinstance(left, Interval)) and (
+                    isinstance(right, Interval)):
                 # print(type(left))
-                result,error = left.subIntervals(right)
+                result, error = left.subIntervals(right)
                 self.translation = str(result)
             else:
                 self.translation = str(left) + ' + ' + str(right)
                 result = self.translation
         if node.op_tok.type in TT_INTERVALMULT:
-            if (type(left) is Interval) and (type(right) is Interval):
-                result,error = left.multIntervals(right)
+            if (isinstance(left, Interval)) and (
+                    isinstance(right, Interval)):
+                result, error = left.multIntervals(right)
                 self.translation = str(result)
             else:
                 self.translation = str(left) + ' * ' + str(right)
                 result = self.translation
         if node.op_tok.type in TT_INTERVALDIV:
-            if (type(left) is Interval) and (type(right) is Interval):
-                result,error = left.divIntervals(right)
+            if (isinstance(left, Interval)) and (
+                    isinstance(right, Interval)):
+                result, error = left.divIntervals(right)
                 self.translation = str(result)
             else:
                 self.translation = str(left) + ' / ' + str(right)
@@ -149,7 +154,8 @@ class Interpreter:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
             if visitZAryNodeElement.type in TT_NDREP:
                 translatedZAryElement = '**'
-                translation = '( ' + str(visitparenNodeElement) + ' )' + str(translatedZAryElement)
+                translation = '( ' + str(visitparenNodeElement) + \
+                    ' )' + str(translatedZAryElement)
         else:
             translation = '( ' + str(visitparenNodeElement) + ' )'
         self.translation = translation
@@ -183,9 +189,11 @@ class Interpreter:
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = ' -> '
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         else:
-            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
@@ -206,32 +214,40 @@ class Interpreter:
         elif node.op_tok.type in TT_PROGUNION:
             translatedOpTok = ' || '
         if translatedOpTok != '' and translatedOpTok != ':=' and translatedOpTok != ';':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         elif translatedOpTok == ':=':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         elif translatedOpTok == ';':
-            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            firstTranslation = str(
+                visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
             # print(type(node))
             translation = self.removeRepeated(firstTranslation, ';')
             # translation = firstTranslation
         else:
-            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
     def visit_BoxPropNode(self, node):
-        for boxNodeElement, boxPropElement in zip(node.element_nodes, node.boxProp):
+        for boxNodeElement, boxPropElement in zip(
+                node.element_nodes, node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
             visitboxPropElement = self.visit(boxPropElement)
-        translation = '[{' + str(visitboxNodeElement) + '}] ' + str(visitboxPropElement)
+        translation = '[{' + str(visitboxNodeElement) + '}] ' + \
+            str(visitboxPropElement)
         self.translation = translation
         return translation
 
     def visit_DiamondPropNode(self, node):
-        for diamondNodeElement, diamondPropElement in zip(node.element_nodes, node.diamondProp):
+        for diamondNodeElement, diamondPropElement in zip(
+                node.element_nodes, node.diamondProp):
             visitDiamondNodeElement = self.visit(diamondNodeElement)
             visitDiamondPropElement = self.visit(diamondPropElement)
-        translation = '<{' + str(visitDiamondNodeElement) + '}> ' + str(visitDiamondPropElement)
+        translation = '<{' + str(visitDiamondNodeElement) + \
+            '}> ' + str(visitDiamondPropElement)
         self.translation = translation
         return translation
 
@@ -251,7 +267,8 @@ class Interpreter:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
             if visitZAryNodeElement.type in TT_NDREP:
                 translatedZAryElement = '**'
-                translation = '{ ' + str(visitparenNodeElement) + ' }' + str(translatedZAryElement)
+                translation = '{ ' + str(visitparenNodeElement) + \
+                    ' }' + str(translatedZAryElement)
         else:
             translation = '{' + str(visitparenNodeElement) + '}'
         self.translation = translation
@@ -267,9 +284,11 @@ class Interpreter:
         if node.op_tok.type in TT_PROGDIFASSIGN:
             translatedOpTok = '='
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         else:
-            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
@@ -312,8 +331,8 @@ class Interpreter:
         charList = translation.split()
         for i in range(len(charList)):
             if ';' in charList[i]:
-                if len(charList[i])>1:
-                    charList[i] = charList[i].replace(';',"")
+                if len(charList[i]) > 1:
+                    charList[i] = charList[i].replace(';', "")
         processedString = ' '.join(charList)
         return processedString
 
@@ -363,8 +382,8 @@ class Number:
         if isinstance(other, Number):
             return Number(self.value - other.value)
 
-    def __truediv__(self,other):
-            return Number(self.value/other.value)
+    def __truediv__(self, other):
+        return Number(self.value / other.value)
 
     def __mul__(self, other):
         if isinstance(other, Number):
@@ -393,6 +412,7 @@ class Number:
     def __repr__(self):
         return str(self.value)
 
+
 class Interval:
     '''
     This class helps us represent the interval that resulted from an operation and keep track of errors.
@@ -416,26 +436,41 @@ class Interval:
         self.pos_end = self.upperNum.pos_end
         return self
 
-    def addIntervals(self,other):
-        return Interval(self.lowerNum+other.lowerNum, self.upperNum+other.upperNum), None
+    def addIntervals(self, other):
+        return Interval(self.lowerNum + other.lowerNum,
+                        self.upperNum + other.upperNum), None
 
-    def subIntervals(self,other):
-        return Interval(self.lowerNum-other.upperNum, self.upperNum-other.lowerNum), None
+    def subIntervals(self, other):
+        return Interval(self.lowerNum - other.upperNum,
+                        self.upperNum - other.lowerNum), None
 
-    def multIntervals(self,other):
-        resultList = [self.lowerNum*other.lowerNum,self.lowerNum*other.upperNum,self.upperNum*other.lowerNum,self.upperNum*other.upperNum]
-        return Interval(min(resultList),max(resultList)), None
+    def multIntervals(self, other):
+        resultList = [
+            self.lowerNum *
+            other.lowerNum,
+            self.lowerNum *
+            other.upperNum,
+            self.upperNum *
+            other.lowerNum,
+            self.upperNum *
+            other.upperNum]
+        return Interval(min(resultList), max(resultList)), None
 
-    def divIntervals(self,other):
+    def divIntervals(self, other):
         if (other.lowerNum or other.upperNum) == 0:
-            return None, RTError(other.pos_start, other.pos_end, 'Division by zero', '')
+            return None, RTError(
+                other.pos_start, other.pos_end, 'Division by zero', '')
         else:
-            resultList = [self.lowerNum/other.lowerNum,self.lowerNum/other.upperNum,self.upperNum/other.lowerNum,self.upperNum/other.upperNum]
-            return Interval(min(resultList),max(resultList)), None
-
+            resultList = [
+                self.lowerNum / other.lowerNum,
+                self.lowerNum / other.upperNum,
+                self.upperNum / other.lowerNum,
+                self.upperNum / other.upperNum]
+            return Interval(min(resultList), max(resultList)), None
 
     def __repr__(self):
         return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
+
 
 class NumberList:
     '''
@@ -472,8 +507,15 @@ class NumberList:
         '''
         # TODO: Perceber o caso mais geral da multiplicaçao e fazer as alteraçoes de acordo.
         # intervalList = NumberList(self.numberList).separatedIntervals()
-        resultList = [intervalList[0][0] * intervalList[1][0], intervalList[0][0] * intervalList[1][1],
-                      intervalList[0][1] * intervalList[1][0], intervalList[0][1] * intervalList[1][1]]
+        resultList = [
+            intervalList[0][0] *
+            intervalList[1][0],
+            intervalList[0][0] *
+            intervalList[1][1],
+            intervalList[0][1] *
+            intervalList[1][0],
+            intervalList[0][1] *
+            intervalList[1][1]]
 
         return NumberList(resultList)
 
@@ -529,7 +571,8 @@ class NumberList:
         :param otherNumberList:
         :return:
         '''
-        return NumberList(self.numberList + (otherNumberList.numberList))
+        return NumberList(self.numberList +
+                          (otherNumberList.numberList))
 
     def __repr__(self):
         return str(self.numberList)
@@ -548,13 +591,15 @@ class NumberList:
 # RUNTIME RESULT
 #######################################
 
+
 class RTResult:
     def __init__(self):
         self.value = None
         self.error = None
 
     def register(self, res):
-        if res.error: self.error = res.error
+        if res.error:
+            self.error = res.error
         return res.value
 
     def success(self, value):

@@ -1,6 +1,6 @@
 import pathlib as pl
 
-from core.RunProgram import run,run2,run3
+from core.RunProgram import run, run2, run3
 
 
 def runFile(filename):
