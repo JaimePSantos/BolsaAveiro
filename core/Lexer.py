@@ -32,14 +32,17 @@ class Lexer:
 
     def advance(self):
         self.pos.advance(self.current_char)
-        self.current_char = self.text[self.pos.idx] if self.pos.idx < len(self.text) else None
-        self.next_char = self.text[self.pos.idx + 1] if self.pos.idx < len(self.text) - 1 else None
-        self.prev_char = self.text[self.pos.idx - 1] if (
-                    self.pos.idx < len(self.text) + 1 and len(self.text) > 0) else None
+        self.current_char = self.text[self.pos.idx] if self.pos.idx < len(
+            self.text) else None
+        self.next_char = self.text[self.pos.idx + \
+            1] if self.pos.idx < len(self.text) - 1 else None
+        self.prev_char = self.text[self.pos.idx -
+                                   1] if (self.pos.idx < len(self.text) +
+                                          1 and len(self.text) > 0) else None
 
     def makeTokens(self):
         tokens = []
-        while self.current_char != None:
+        while self.current_char is not None:
             if self.current_char in ' \t':
                 self.advance()
             elif self.current_char in ' \n':
@@ -55,7 +58,8 @@ class Lexer:
                 self.advance()
             elif self.current_char == '}':
                 token, error = self.makeRCurly()
-                if error: return [], error
+                if error:
+                    return [], error
                 tokens.append(token)
             elif self.current_char == '{':
                 tokens.append(Token(TT_LCURLYBRACK, pos_start=self.pos))
@@ -63,7 +67,10 @@ class Lexer:
             elif self.current_char == ',':
                 tokens.append(self.makeComma())
             elif self.current_char == '+':
-                tokens.append(Token(TT_INTERVALPLUS, pos_start=self.pos))
+                tokens.append(
+                    Token(
+                        TT_INTERVALPLUS,
+                        pos_start=self.pos))
                 self.advance()
             elif self.current_char == '-':
                 tokens.append(self.makeHyphen())
@@ -83,11 +90,15 @@ class Lexer:
             elif self.current_char == '>':
                 tokens.append(self.makeGreaterThan())
             elif self.current_char == '=':
-                tokens.append(Token(TT_PROGDIFASSIGN, pos_start=self.pos))
+                tokens.append(
+                    Token(
+                        TT_PROGDIFASSIGN,
+                        pos_start=self.pos))
                 self.advance()
             elif self.current_char == ':':
                 token, error = self.makeColon()
-                if error: return [], error
+                if error:
+                    return [], error
                 tokens.append(token)
             elif self.current_char == '!':
                 tokens.append(Token(TT_NOT, pos_start=self.pos))
@@ -97,13 +108,17 @@ class Lexer:
                 self.advance()
             elif self.current_char == '|':
                 token, error = self.makePipe()
-                if error: return [], error
+                if error:
+                    return [], error
                 tokens.append(token)
             elif self.current_char == '?':
                 tokens.append(Token(TT_PROGTEST, pos_start=self.pos))
                 self.advance()
             elif self.current_char == ';':
-                tokens.append(Token(TT_PROGSEQUENCE, pos_start=self.pos))
+                tokens.append(
+                    Token(
+                        TT_PROGSEQUENCE,
+                        pos_start=self.pos))
                 self.advance()
             elif self.current_char == '$':
                 tokens.append(Token(TT_FORALL, pos_start=self.pos))
@@ -115,7 +130,8 @@ class Lexer:
                 pos_start = self.pos.copy()
                 char = self.current_char
                 self.advance()
-                return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
+                return [], IllegalCharError(
+                    pos_start, self.pos, "'" + char + "'")
 
         tokens.append(Token(TT_EOF, pos_start=self.pos))
         return tokens, None
@@ -151,7 +167,10 @@ class Lexer:
         if self.current_char in DIGITS:
             tok_type = TT_SEPARATOR
             # self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+            return Token(
+                tok_type,
+                pos_start=pos_start,
+                pos_end=self.pos)
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def makePipe(self):
@@ -160,8 +179,10 @@ class Lexer:
         if self.current_char == '|':
             tok_type = TT_PROGUNION
             self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
-        return None, ExpectedCharError(pos_start, self.pos, "'|' (after '|')")
+            return Token(tok_type, pos_start=pos_start,
+                         pos_end=self.pos), None
+        return None, ExpectedCharError(
+            pos_start, self.pos, "'|' (after '|')")
 
     def makeLetter(self):
         post_start = self.pos.copy()
@@ -170,13 +191,22 @@ class Lexer:
             letter_str += self.current_char
             self.advance()
         if "'" in letter_str:
-            return Token(TT_DIFFERENTIALVAR, str(letter_str), post_start, self.pos)
-        return Token(TT_INTERVALVAR, str(letter_str), post_start, self.pos)
+            return Token(
+                TT_DIFFERENTIALVAR,
+                str(letter_str),
+                post_start,
+                self.pos)
+        return Token(
+            TT_INTERVALVAR,
+            str(letter_str),
+            post_start,
+            self.pos)
 
     def makeAssignment(self):
         id_str = ''
         pos_start = self.pos.copy()
-        while self.current_char != None and self.current_char in ['=', ':']:
+        while self.current_char is not None and self.current_char in [
+                '=', ':']:
             id_str += self.current_char
             self.advance()
         if id_str[0] == ':':
@@ -191,13 +221,15 @@ class Lexer:
         if self.current_char == '=':
             tok_type = TT_PROGASSIGN
             self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
-        return None, ExpectedCharError(pos_start, self.pos, "'=' (after ':')")
+            return Token(tok_type, pos_start=pos_start,
+                         pos_end=self.pos), None
+        return None, ExpectedCharError(
+            pos_start, self.pos, "'=' (after ':')")
 
     def makeIdentifier(self):
         id_str = ''
         pos_start = self.pos.copy()
-        while self.current_char != None and self.current_char in LETTERS_DIGITS + '_':
+        while self.current_char is not None and self.current_char in LETTERS_DIGITS + '_':
             id_str += self.current_char
             self.advance()
         lowerKW = [x.lower() for x in KEYWORDS]
@@ -246,13 +278,17 @@ class Lexer:
         if self.current_char == ']':
             tok_type = TT_RBOX
             self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
+            return Token(tok_type, pos_start=pos_start,
+                         pos_end=self.pos), None
         elif self.current_char == '>':
             tok_type = TT_RDIAMOND
             self.advance()
-            return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
-        # return None,ExpectedCharError(pos_start, self.pos, "']' or '>' (after '}')" )
-        return Token(tok_type, pos_start=pos_start, pos_end=self.pos), None
+            return Token(tok_type, pos_start=pos_start,
+                         pos_end=self.pos), None
+        # return None,ExpectedCharError(pos_start, self.pos, "']' or '>'
+        # (after '}')" )
+        return Token(tok_type, pos_start=pos_start,
+                     pos_end=self.pos), None
 
     def makeHyphen(self):
         tok_type = TT_INTERVALMINUS

@@ -21,11 +21,21 @@ def resultsString(input, output, time):
     printingResult = prettyPrint(output, ['++', '->'])
     dateTime = str(dt.datetime.now())
     executionTime = time
-    resultString = ("\n\n## idDL2dDL v0.1 ################################\n\n"
-                    "Input in interval dDL:\n\t> " + printingInput +
-                    "\nOutput in dDL:\n\t> " + printingResult +
-                    "\n\n## " + dateTime + " ##################" +
-                    "\n## Execution time: " + str(round(executionTime, 6)) + "s ###################\n")
+    resultString = (
+        "\n\n## idDL2dDL v0.1 ################################\n\n"
+        "Input in interval dDL:\n\t> " +
+        printingInput +
+        "\nOutput in dDL:\n\t> " +
+        printingResult +
+        "\n\n## " +
+        dateTime +
+        " ##################" +
+        "\n## Execution time: " +
+        str(
+            round(
+                executionTime,
+                6)) +
+        "s ###################\n")
     return resultString
 
 

@@ -129,7 +129,12 @@ class DiamondPropNode:
 
 
 class ParenthesisNode:
-    def __init__(self, element_nodes, pos_start, pos_end, zeroAryNode=None):
+    def __init__(
+            self,
+            element_nodes,
+            pos_start,
+            pos_end,
+            zeroAryNode=None):
         self.element_nodes = element_nodes
         self.pos_start = pos_start
         self.pos_end = pos_end
@@ -146,7 +151,12 @@ class ParenthesisNode:
 
 
 class CurlyParenthesisNode:
-    def __init__(self, element_nodes, pos_start, pos_end, zeroAryNode=None):
+    def __init__(
+            self,
+            element_nodes,
+            pos_start,
+            pos_end,
+            zeroAryNode=None):
         self.element_nodes = element_nodes
         self.pos_start = pos_start
         self.pos_end = pos_end
