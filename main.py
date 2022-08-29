@@ -1,7 +1,8 @@
 import pathlib as pl
+import matplotlib.pyplot as plt
 
-from core.RunProgram import run, run2, run3
-
+from core.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
+import timeit
 
 def runFile(filename):
     resultList = []
@@ -105,28 +106,54 @@ def main():
             else:
                 continue
 
+def timeTest(n,samples):
+    str = "[1,1]*[1,1]"
+    str2 = "+ [1,1]/[1,1]"
+    interpTime = 0
+    translTime = 0
+    translatorList = []
+    interpList = []
+    for n in range(0, n):
+        for x in range(samples):
+            str3 = str + str2 * n
 
-main()
-# run('', " (  x:=y ; x:=z ; ( [{(x:=k)**}](x>y)))**")
-# run2('', " (  x:=y ; x:=z ; ( [{(x:=k)**}](x>y)))**")
+            startTime = timeit.default_timer()
+            runTranslatorTest('', str3)
+            endTime = timeit.default_timer()
+            execTime = endTime - startTime
+            translTime += execTime
 
-# print(run('','[   1  ,  a ] + [    3     ,   4]'))
-# run2('','[1,-1]')
-# run2('','[10,20] + [30,40] - [5,6]')
-# run2('',"(abcd - [1,2])")
-# run2('','[1,2]')
-# run3('','[1,2]+[3,4]')
-# run3('','[1,2] + [3,4] + ([5,6]+[5,6])')[0]
-# run3('','[3,4]*[1,1]*[2,2]')[0]
-# run3('','[1,2] + [3,4]')[0]
-# run3('','([1,2] + [1,2]) + ([3,4]+[3,4])')[0]
-# run3('','[5,6] + ([7,8] + [9,10] + x)')[0]
-# run3('','[3,4]+([1,1]*[2,2])')[0]
-# run2('','[3,4]+([1,1]*[2,2])')[0]
-# run3('','[1,2] + [3,4] + ([5,6] + [7,8])')[0]
-# run3('',"?(2<x AND x<4 AND 0<y AND y<2);(x'= 5-x)")[0]
-# run3('',"?(2<x AND x<4 AND 0<y AND y<[1,2] + [3,4]);( x'= [1,2] + [3,4]*[1,2] , y'=-y ; (2 < x AND x < 4 AND 0<y AND y<2))")[0]
-# run2('',"?(2<x AND x<4 AND 0<y AND y<[1,2] + [3,4]);  ( x'= [1,2] + [3,4]*[1,2] , y'=-y ; (2 < x AND x < 4 AND 0<y AND y<2))")
-# run('',"[{ x'=1 }] ( [{ y'=1 }] ( x>y ) ) -> x > y")
-# run2('',"[{ x'=1 }] ( [{ y'=1 }] ( x>y ) ) -> x > y AND x > [0,1]+[0,1]")
-# run2('',"? (x > 0 AND x < [1,2] + [3,4]) ; (x'=-x, y'=-y & (0<x))")
+            startTime2 = timeit.default_timer()
+            runInterpTest('', str3)
+            endTime2 = timeit.default_timer()
+            execTime2 = endTime2 - startTime2
+            interpTime += execTime2
+        translatorList.append(translTime / samples)
+        interpList.append(interpTime / samples)
+        translTime = 0
+        interpTime = 0
+        print(n)
+    return translatorList,interpList
+
+# main()
+
+n = 300
+samples = 50
+
+# translatorList,interpList = timeTest(n,samples)
+# with open("testTime.txt","a") as f:
+#     f.write(f"{translatorList}\n")
+#     f.write(f"{interpList}\n\n")
+
+
+with open("testTime.txt","r") as f:
+    output = list(line for line in (l.strip() for l in f) if line)
+
+print(output)
+translatorList = eval(output[4])
+interpList = eval(output[5])
+
+plt.plot(translatorList,label='Transl')
+plt.plot(interpList,label='Interp')
+plt.legend()
+plt.show()

@@ -1,4 +1,5 @@
 import string
+import copy
 
 from core.Tokens import TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV, TT_GEQ, TT_SEQ, TT_GT, TT_ST, TT_NOT, TT_PROGTEST, TT_PROGAND, \
@@ -15,7 +16,8 @@ class Translator:
     'Class that evalutates the input.'
 
     def __init__(self):
-        self.varList = []
+        # self.varList = []
+        self.varCounter = 0
         self.intervalDict = {}
         self.varDict = {}
         self.translation = ""
@@ -304,16 +306,31 @@ class Translator:
         return translation
 
     def makeUniqueVar(self):
-        intervalVar = ''
-        for var in LETTERS:
-            if var not in self.varList:
-                intervalVar = var
-                self.varList.append(intervalVar)
-                return intervalVar
-            else:
-                continue
-        if intervalVar == '':
-            return -1
+        i = copy.deepcopy(self.varCounter)
+        newCharacter = i % 26
+        i //= 26
+        s = "" + chr(newCharacter + ord('a'))
+        while i != 0:
+            newCharacter = i % 26
+            i //= 26
+            s = chr(newCharacter + ord('a')) + s
+        self.varCounter += 1
+        return s
+
+    # def makeUniqueVar(self):
+    #     intervalVar = ''
+    #     for var in LETTERS:
+    #         if var not in self.varList:
+    #             if len(self.varList)<=25:
+    #                 intervalVar = var
+    #                 self.varList.append(intervalVar)
+    #             else:
+    #                 intervalVar = var+''
+    #             return intervalVar
+    #         else:
+    #             continue
+    #     if intervalVar == '':
+    #         return -1
 
     def removeRepeated(self, translation, symbol):
         charList = translation.split()
