@@ -25,6 +25,9 @@ class HistoryTranslation(HistoryNotepage):
             text='History')
         f1.pack(side='top', fill='both', expand=True)
 
+        padx = 5
+        pady = 2
+
         controls = myFrame(f1, side='top', fill='both', expand=True)
         self.refreshButton = myButton(
             controls,
@@ -40,7 +43,9 @@ class HistoryTranslation(HistoryNotepage):
             font=(
                 'Arial',
                 12),
-            relief='raised')
+            relief='raised',
+            padx=padx,
+            pady=pady)
         self.clearButton = myButton(
             controls,
             row=1,
@@ -55,7 +60,10 @@ class HistoryTranslation(HistoryNotepage):
             font=(
                 'Arial',
                 12),
-            relief='raised')
+            relief='raised',
+            padx=padx,
+            pady=pady
+        )
 
         txtFrame = myFrame(f1, side='top', fill='both', expand=True)
         self.translationListBox = myListBoxFrame(

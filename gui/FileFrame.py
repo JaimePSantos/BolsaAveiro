@@ -156,7 +156,9 @@ class FileTranslation(BasicNotepage):
             font=(
                 'Arial',
                 12),
-            relief='raised')
+            relief='raised',
+            padx=padx,
+            pady=pady)
         self.clipboardButton = myButton(
             controls2,
             row=5,
@@ -186,7 +188,10 @@ class FileTranslation(BasicNotepage):
             font=(
                 'Arial',
                 12),
-            relief='raised')
+            relief='raised',
+            padx=padx,
+            pady=pady
+        )
 
     def saveAs(self):
         text = self.translatedText.get('1.0', 'end')
