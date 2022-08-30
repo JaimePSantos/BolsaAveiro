@@ -128,30 +128,31 @@ def timeTest(n,samples):
             endTime2 = timeit.default_timer()
             execTime2 = endTime2 - startTime2
             interpTime += execTime2
+            print(f"Sample {x}.")
         translatorList.append(translTime / samples)
         interpList.append(interpTime / samples)
         translTime = 0
         interpTime = 0
-        print(n)
+        print(f"\n#######length length {n}#######\n")
     return translatorList,interpList
 
 # main()
 
 n = 300
-samples = 50
+samples = 100
 
-# translatorList,interpList = timeTest(n,samples)
-# with open("testTime.txt","a") as f:
-#     f.write(f"{translatorList}\n")
-#     f.write(f"{interpList}\n\n")
+translatorList,interpList = timeTest(n,samples)
+with open("testTime.txt","a") as f:
+    f.write(f"{translatorList}\n")
+    f.write(f"{interpList}\n\n")
 
 
-with open("testTime.txt","r") as f:
-    output = list(line for line in (l.strip() for l in f) if line)
-
-print(output)
-translatorList = eval(output[4])
-interpList = eval(output[5])
+# with open("testTime.txt","r") as f:
+#     output = list(line for line in (l.strip() for l in f) if line)
+#
+# print(output)
+# translatorList = eval(output[4])
+# interpList = eval(output[5])
 
 plt.plot(translatorList,label='Transl')
 plt.plot(interpList,label='Interp')

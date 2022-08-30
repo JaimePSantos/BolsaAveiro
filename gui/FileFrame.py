@@ -37,7 +37,8 @@ class FileTranslation(BasicNotepage):
             width=99,
             height=13,
             stick='W',
-            colspan=100)
+            colspan=100,
+            font = ('Arial',16))
         self.scrollBar = myScrollBar(
             txtFrame, row=0, col=100, stick='ns')
         self.loadedText.config(yscrollcommand=self.scrollBar.set)
@@ -135,7 +136,11 @@ class FileTranslation(BasicNotepage):
             width=99,
             height=13,
             stick='W',
-            colspan=100)
+            colspan=100,
+            font=(
+                'Arial',
+                14),
+        )
         self.translatedText.config(state=tk.DISABLED)
         self.scrollBar2 = myScrollBar(
             txtFrame2, row=4, col=100, stick='ns')
@@ -308,7 +313,7 @@ class FileTranslation(BasicNotepage):
             transList = self.runMultipleInterpretations(inputs)
         for transl in transList:
             self.translatedText.insert(tk.END, transl)
-            self.translatedText.insert(tk.END, "\n")
+            self.translatedText.insert(tk.END, "\n\n")
         self.translatedText.config(state=tk.DISABLED)
         self.translationHistory.refreshHistory()
 

@@ -406,7 +406,7 @@ class Parser:
                         right,
                         SeparatorNode) or isinstance(
                         right,
-                        IntervalVarNode)):
+                        IntervalVarNode) or isinstance(right, ParenthesisNode) or isinstance(right, BinOpNode)):
                     return res.failure(
                         InvalidSyntaxError(
                             op_tok.pos_start,
