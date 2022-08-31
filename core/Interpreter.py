@@ -103,7 +103,7 @@ class Interpreter:
                 result, error = left.subIntervals(right)
                 self.translation = str(result)
             else:
-                self.translation = str(left) + ' + ' + str(right)
+                self.translation = str(left) + ' - ' + str(right)
                 result = self.translation
         if node.op_tok.type in TT_INTERVALMULT:
             if (isinstance(left, Interval)) and (

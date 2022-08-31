@@ -34,10 +34,10 @@ class FileTranslation(BasicNotepage):
             txtFrame,
             row=0,
             col=0,
-            width=99,
+            width=78,
             height=13,
             stick='W',
-            colspan=100,
+            colspan=1,
             font = ('Arial',16))
         self.scrollBar = myScrollBar(
             txtFrame, row=0, col=100, stick='ns')
@@ -133,10 +133,10 @@ class FileTranslation(BasicNotepage):
             txtFrame2,
             row=4,
             col=0,
-            width=99,
+            width=85,
             height=13,
             stick='W',
-            colspan=100,
+            colspan=1,
             font=(
                 'Arial',
                 14),
