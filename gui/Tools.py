@@ -35,10 +35,32 @@ def myLabelFrame(
     return l
 
 
-def myEntryFrame(f, row, col, width, stick, colspan,padx=None,pady=None,highlightthickness=None,highlightbackground=None,highlightcolor=None):
-    entryTxt = tk.Entry(f, width=width,highlightthickness=highlightthickness)
-    entryTxt.configure(highlightbackground=highlightbackground, highlightcolor=highlightcolor)
-    entryTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan,padx=padx,pady=pady)
+def myEntryFrame(
+        f,
+        row,
+        col,
+        width,
+        stick,
+        colspan,
+        padx=None,
+        pady=None,
+        highlightthickness=None,
+        highlightbackground=None,
+        highlightcolor=None):
+    entryTxt = tk.Entry(
+        f,
+        width=width,
+        highlightthickness=highlightthickness)
+    entryTxt.configure(
+        highlightbackground=highlightbackground,
+        highlightcolor=highlightcolor)
+    entryTxt.grid(
+        row=row,
+        column=col,
+        sticky=stick,
+        columnspan=colspan,
+        padx=padx,
+        pady=pady)
     return entryTxt
 
 
@@ -68,7 +90,12 @@ def myTextFrame(
         font=font,
         yscrollcommand=yscrollcommand,
         xscrollcommand=xscrollcommand)
-    textTxt.grid(row=row, column=col, sticky=stick, columnspan=colspan,padx=padx,
+    textTxt.grid(
+        row=row,
+        column=col,
+        sticky=stick,
+        columnspan=colspan,
+        padx=padx,
         pady=pady)
     return textTxt
 
@@ -115,8 +142,8 @@ def myButton(
         font=None,
         bd=None,
         relief=None,
-        padx = None,
-        pady = None):
+        padx=None,
+        pady=None):
     myButton = tk.Button(
         f,
         text=text,
@@ -152,6 +179,7 @@ def myFrame(f, side, fill, expand):
     myF.pack(side=side, fill=fill, expand=expand)
     return myF
 
+
 def myCheckButton(
         f,
         row,
@@ -184,7 +212,7 @@ def myCheckButton(
         font=font,
         bd=bd,
         relief=relief,
-        height = height)
+        height=height)
     myCheckButton.grid(
         row=row,
         column=col,

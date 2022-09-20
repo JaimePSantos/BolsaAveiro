@@ -1,4 +1,5 @@
 import string
+import copy
 
 from core.Tokens import TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV, TT_GEQ, TT_SEQ, TT_GT, TT_ST, TT_NOT, TT_PROGTEST, TT_PROGAND, \
@@ -15,10 +16,12 @@ class Translator:
     'Class that evalutates the input.'
 
     def __init__(self):
-        self.varList = []
+        # self.varList = []
+        self.varCounter = 0
         self.intervalDict = {}
         self.varDict = {}
         self.translation = ""
+        self.depthCounter = 0
 
     def buildTranslation(self):
         intervals = ''
@@ -32,7 +35,8 @@ class Translator:
             else:
                 intervals += " & "
         if intervals != '':
-            builtTranslation = intervals + " -> " + '( ' + self.translation + ' )'
+            builtTranslation = intervals + " -> " + \
+                '( ' + self.translation + ' )'
         else:
             builtTranslation = self.translation
         return builtTranslation
@@ -40,7 +44,9 @@ class Translator:
     def visit(self, node):
         'Template of the function to visit each method.'
         method_name = f'visit_{type(node).__name__}'
+        print(f"Depth = {self.depthCounter}\t{node} -> {type(node).__name__}")
         method = getattr(self, method_name, self.no_visit_method)
+        self.depthCounter+=1
         return method(node)
 
     def no_visit_method(self, node):
@@ -49,12 +55,18 @@ class Translator:
 
     def visit_LowerNumberNode(self, node):
         'Visits the nodes that have lower limit values and constructs a list that keeps track of these values.'
-        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        num = Number(
+            node.tok.value).set_pos(
+            node.pos_start,
+            node.pos_end)
         return num
 
     def visit_UpperNumberNode(self, node):
         'Visits the nodes that have upper limit values and constructs a list that keeps track of these values.'
-        num = Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        num = Number(
+            node.tok.value).set_pos(
+            node.pos_start,
+            node.pos_end)
         return num
 
     def visit_SeparatorNode(self, node):
@@ -68,7 +80,8 @@ class Translator:
         uniqueVar = self.makeUniqueVar()
         if not (isinstance(lower, Number)):
             newLower = [int(s) for s in list(lower) if s.isdigit()][0]
-            lower = Number(newLower).set_pos(node.pos_start, node.pos_end)
+            lower = Number(newLower).set_pos(
+                node.pos_start, node.pos_end)
             interval = TranslatedInterval(lower, upper, uniqueVar, True)
             self.intervalDict[uniqueVar] = interval
         else:
@@ -102,13 +115,15 @@ class Translator:
         if node.op_tok.type in TT_INTERVALMULT:
             leftMult = self.visit(node.left_node)
             rightMult = self.visit(node.right_node)
-            translation = '(' + str(leftMult) + ' * ' + str(rightMult) + ')'
+            translation = '(' + str(leftMult) + \
+                ' * ' + str(rightMult) + ')'
             self.translation = translation
             return translation
         if node.op_tok.type in TT_INTERVALDIV:
             leftDiv = self.visit(node.left_node)
             rightDiv = self.visit(node.right_node)
-            translation = '(' + str(leftDiv) + ' / ' + str(rightDiv) + ')'
+            translation = '(' + str(leftDiv) + \
+                ' / ' + str(rightDiv) + ')'
             self.translation = translation
             return translation
 
@@ -141,9 +156,11 @@ class Translator:
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = ' -> '
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         else:
-            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
@@ -164,30 +181,38 @@ class Translator:
         elif node.op_tok.type in TT_PROGUNION:
             translatedOpTok = ' ++ '
         if translatedOpTok != '' and translatedOpTok != ':=' and translatedOpTok != ';':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         elif translatedOpTok == ':=':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode) + ";"
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode) + ";"
         elif translatedOpTok == ';':
-            firstTranslation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            firstTranslation = str(
+                visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
             translation = self.removeRepeated(firstTranslation, ';')
         else:
-            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
     def visit_BoxPropNode(self, node):
-        for boxNodeElement, boxPropElement in zip(node.element_nodes, node.boxProp):
+        for boxNodeElement, boxPropElement in zip(
+                node.element_nodes, node.boxProp):
             visitboxNodeElement = self.visit(boxNodeElement)
             visitboxPropElement = self.visit(boxPropElement)
-        translation = '[ ' + str(visitboxNodeElement) + ' ] ' + str(visitboxPropElement)
+        translation = '[ ' + str(visitboxNodeElement) + \
+            ' ] ' + str(visitboxPropElement)
         self.translation = translation
         return translation
 
     def visit_DiamondPropNode(self, node):
-        for diamondNodeElement, diamondPropElement in zip(node.element_nodes, node.diamondProp):
+        for diamondNodeElement, diamondPropElement in zip(
+                node.element_nodes, node.diamondProp):
             visitDiamondNodeElement = self.visit(diamondNodeElement)
             visitDiamondPropElement = self.visit(diamondPropElement)
-        translation = '< ' + str(visitDiamondNodeElement) + ' > ' + str(visitDiamondPropElement)
+        translation = '< ' + \
+            str(visitDiamondNodeElement) + ' > ' + str(visitDiamondPropElement)
         self.translation = translation
         return translation
 
@@ -207,7 +232,8 @@ class Translator:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
             if visitZAryNodeElement.type in TT_NDREP:
                 translatedZAryElement = '*'
-                translation = '( ' + str(visitparenNodeElement) + ' )' + str(translatedZAryElement)
+                translation = '( ' + str(visitparenNodeElement) + \
+                    ' )' + str(translatedZAryElement)
         else:
             translation = '( ' + str(visitparenNodeElement) + ' )'
         self.translation = translation
@@ -222,7 +248,8 @@ class Translator:
                 visitZAryNodeElement = self.visit(zAryNodeElement)
             if visitZAryNodeElement.type in TT_NDREP:
                 translatedZAryElement = '*'
-                translation = '{ ' + str(visitparenNodeElement) + ' }' + str(translatedZAryElement)
+                translation = '{ ' + str(visitparenNodeElement) + \
+                    ' }' + str(translatedZAryElement)
         else:
             translation = '{ ' + str(visitparenNodeElement) + ' }'
         self.translation = translation
@@ -238,9 +265,11 @@ class Translator:
         if node.op_tok.type in TT_PROGDIFASSIGN:
             translatedOpTok = '='
         if translatedOpTok != '':
-            translation = str(visitLeftNode) + " " + translatedOpTok + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                translatedOpTok + " " + str(visitRightNode)
         else:
-            translation = str(visitLeftNode) + " " + str(node.op_tok) + " " + str(visitRightNode)
+            translation = str(visitLeftNode) + " " + \
+                str(node.op_tok) + " " + str(visitRightNode)
         self.translation = translation
         return translation
 
@@ -280,23 +309,38 @@ class Translator:
         return translation
 
     def makeUniqueVar(self):
-        intervalVar = ''
-        for var in LETTERS:
-            if var not in self.varList:
-                intervalVar = var
-                self.varList.append(intervalVar)
-                return intervalVar
-            else:
-                continue
-        if intervalVar == '':
-            return -1
+        i = copy.deepcopy(self.varCounter)
+        newCharacter = i % 26
+        i //= 26
+        s = "" + chr(newCharacter + ord('a'))
+        while i != 0:
+            newCharacter = i % 26
+            i //= 26
+            s = chr(newCharacter + ord('a')) + s
+        self.varCounter += 1
+        return s
+
+    # def makeUniqueVar(self):
+    #     intervalVar = ''
+    #     for var in LETTERS:
+    #         if var not in self.varList:
+    #             if len(self.varList)<=25:
+    #                 intervalVar = var
+    #                 self.varList.append(intervalVar)
+    #             else:
+    #                 intervalVar = var+''
+    #             return intervalVar
+    #         else:
+    #             continue
+    #     if intervalVar == '':
+    #         return -1
 
     def removeRepeated(self, translation, symbol):
         charList = translation.split()
         for i in range(len(charList)):
             if ';' in charList[i]:
-                if len(charList[i])>1:
-                    charList[i] = charList[i].replace(';',"")
+                if len(charList[i]) > 1:
+                    charList[i] = charList[i].replace(';', "")
         processedString = ' '.join(charList)
         # j = 1
         # k = []
@@ -414,7 +458,12 @@ class TranslatedInterval:
     This class helps us represent the interval that resulted from an operation and keep track of errors.
     '''
 
-    def __init__(self, lowerNum=None, upperNum=None, ineqVar=None, symmetric=None):
+    def __init__(
+            self,
+            lowerNum=None,
+            upperNum=None,
+            ineqVar=None,
+            symmetric=None):
         if lowerNum and upperNum is not None:
             self.lowerNum = lowerNum
             self.upperNum = upperNum
@@ -453,7 +502,8 @@ class RTResult:
         self.error = None
 
     def register(self, res):
-        if res.error: self.error = res.error
+        if res.error:
+            self.error = res.error
         return res.value
 
     def success(self, value):

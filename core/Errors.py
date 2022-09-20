@@ -8,13 +8,15 @@ class Error:
     def as_string(self):
         result = f'{self.error_name}: {self.details}\n'
         result += f'File {self.pos_start.fn}, line {self.pos_start.ln + 1}'
-        result += '\n\n' + self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+        result += '\n\n' + \
+            self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
         return result
 
     def __str__(self):
         result = f'{self.error_name}: {self.details}\n'
         result += f'File {self.pos_start.fn}, line {self.pos_start.ln + 1}'
-        result += '\n\n' + self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+        result += '\n\n' + \
+            self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
         return result
 
     def stringsWithArrows(self, text, pos_start, pos_end):
@@ -23,7 +25,8 @@ class Error:
         # Calculate indices
         idx_start = max(text.rfind('\n', 0, pos_start.idx), 0)
         idx_end = text.find('\n', idx_start + 1)
-        if idx_end < 0: idx_end = len(text)
+        if idx_end < 0:
+            idx_end = len(text)
 
         # Generate each line
         line_count = pos_end.ln - pos_start.ln + 1
@@ -31,7 +34,8 @@ class Error:
             # Calculate line columns
             line = text[idx_start:idx_end]
             col_start = pos_start.col if i == 0 else 0
-            col_end = pos_end.col if i == line_count - 1 else len(line) - 1
+            col_end = pos_end.col if i == line_count - \
+                1 else len(line) - 1
 
             # Append to result
             result += line + '\n'
@@ -40,7 +44,8 @@ class Error:
             # Re-calculate indices
             idx_start = idx_end
             idx_end = text.find('\n', idx_start + 1)
-            if idx_end < 0: idx_end = len(text)
+            if idx_end < 0:
+                idx_end = len(text)
 
         return result.replace('\t', '')
 
@@ -49,9 +54,11 @@ class IllegalCharError(Error):
     def __init__(self, pos_start, pos_end, details):
         super().__init__(pos_start, pos_end, 'Illegal Character', details)
 
+
 class ExpectedCharError(Error):
     def __init__(self, pos_start, pos_end, details):
         super().__init__(pos_start, pos_end, 'Expected Character', details)
+
 
 class InvalidSyntaxError(Error):
     def __init__(self, pos_start, pos_end, details=''):
@@ -66,13 +73,15 @@ class RTError(Error):
     def as_string(self):
         result = self.generate_traceback()
         result += f'{self.error_name}: {self.details}'
-        result += '\n\n' + self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+        result += '\n\n' + \
+            self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
         return result
 
     def __str__(self):
         result = f'{self.error_name}: {self.details}\n'
         result += f'File {self.pos_start.fn}, line {self.pos_start.ln + 1}'
-        result += '\n\n' + self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+        result += '\n\n' + \
+            self.stringsWithArrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
         return result
 
     def generate_traceback(self):
@@ -92,7 +101,8 @@ class RTError(Error):
         # Calculate indices
         idx_start = max(text.rfind('\n', 0, pos_start.idx), 0)
         idx_end = text.find('\n', idx_start + 1)
-        if idx_end < 0: idx_end = len(text)
+        if idx_end < 0:
+            idx_end = len(text)
 
         # Generate each line
         line_count = pos_end.ln - pos_start.ln + 1
@@ -100,7 +110,8 @@ class RTError(Error):
             # Calculate line columns
             line = text[idx_start:idx_end]
             col_start = pos_start.col if i == 0 else 0
-            col_end = pos_end.col if i == line_count - 1 else len(line) - 1
+            col_end = pos_end.col if i == line_count - \
+                1 else len(line) - 1
 
             # Append to result
             result += line + '\n'
@@ -109,6 +120,7 @@ class RTError(Error):
             # Re-calculate indices
             idx_start = idx_end
             idx_end = text.find('\n', idx_start + 1)
-            if idx_end < 0: idx_end = len(text)
+            if idx_end < 0:
+                idx_end = len(text)
 
         return result.replace('\t', '')
