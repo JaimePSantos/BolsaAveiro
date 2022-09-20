@@ -60,7 +60,7 @@ def run(fn, input):
     output = translator.buildTranslation()
     executionTime = time.time() - start_time
     printingResults = resultsString(input, output, executionTime)
-    print(printingResults)
+    # print(printingResults)
 
     return output, None
 
@@ -193,7 +193,7 @@ def run3(fn, input):
     executionTime = time.time() - start_time
     printingResults = resultsString(input, output, executionTime)
     # print(printingResults)
-    print(f"Interpreted Result -> {output}")
+    # print(f"Interpreted Result -> {output}")
     return output, None
 
 def runTranslatorTest(fn, input):
