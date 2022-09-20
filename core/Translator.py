@@ -44,7 +44,7 @@ class Translator:
     def visit(self, node):
         'Template of the function to visit each method.'
         method_name = f'visit_{type(node).__name__}'
-        print(f"Depth = {self.depthCounter}\t{node} -> {type(node).__name__}")
+        # print(f"Depth = {self.depthCounter}\t{node} -> {type(node).__name__}")
         method = getattr(self, method_name, self.no_visit_method)
         self.depthCounter+=1
         return method(node)
