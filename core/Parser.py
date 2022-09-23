@@ -302,7 +302,7 @@ class Parser:
         if self.current_tok.type != secondWrapperToken and self.current_tok.type != TT_NDREP:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "Expected ',' or '" + str(secondWrapperToken) + "'"
+                f"{str(node)}: Expected ',' or '{str(secondWrapperToken)}' but got {self.current_tok}"
             ))
         elif (self.current_tok.type == secondWrapperToken) and (
                 secondWrapperToken == TT_RBOX or secondWrapperToken == TT_RDIAMOND):

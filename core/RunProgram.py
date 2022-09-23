@@ -166,7 +166,7 @@ def run2(fn, input):
     output = translator.buildTranslation()
     executionTime = time.time() - start_time
     printingResults = resultsString(input, output, executionTime)
-    print(printingResults)
+    # print(printingResults)
 
     return output, None
 
