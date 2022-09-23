@@ -26,13 +26,7 @@ A single translation can be made by simply typing the desired formula in this pr
 more).
 
 ## GUI
-
-**_UNDER CONSTRUCTION_**
-### Pycharm (recommended)
-Install [Pycharm](https://www.jetbrains.com/pycharm/), navigate to the `/idDL2DL/` folder and run `gui-main.py`  
-
-### Alternative
-You will need to add the project folder to your `$PYTHONPATH`, navigate to `/idDL2DL/` folder and `python gui-main.py`  
+It should be as simple as navigating to the cloned project folder and running `python gui-main.py`.
 
 ### Translation Page
 

@@ -296,7 +296,7 @@ class FileTranslation(BasicNotepage):
         self.translationHistory.refreshHistory()
 
     def interpOn(self):
-        print(self.interpVar.get())
+        # print(self.interpVar.get())
         if self.interpVar.get() == 1:
             self.interpretButton['text'] = 'Interp On'
         else:

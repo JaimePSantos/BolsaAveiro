@@ -44,9 +44,9 @@ class Translator:
     def visit(self, node):
         'Template of the function to visit each method.'
         method_name = f'visit_{type(node).__name__}'
-        print(f"Depth = {self.depthCounter}\t{node} -> {type(node).__name__}")
+        # print(f"Depth = {self.depthCounter}\t{node} -> {type(node).__name__}")
         method = getattr(self, method_name, self.no_visit_method)
-        self.depthCounter+=1
+        self.depthCounter += 1
         return method(node)
 
     def no_visit_method(self, node):
@@ -320,21 +320,6 @@ class Translator:
         self.varCounter += 1
         return s
 
-    # def makeUniqueVar(self):
-    #     intervalVar = ''
-    #     for var in LETTERS:
-    #         if var not in self.varList:
-    #             if len(self.varList)<=25:
-    #                 intervalVar = var
-    #                 self.varList.append(intervalVar)
-    #             else:
-    #                 intervalVar = var+''
-    #             return intervalVar
-    #         else:
-    #             continue
-    #     if intervalVar == '':
-    #         return -1
-
     def removeRepeated(self, translation, symbol):
         charList = translation.split()
         for i in range(len(charList)):
@@ -342,18 +327,6 @@ class Translator:
                 if len(charList[i]) > 1:
                     charList[i] = charList[i].replace(';', "")
         processedString = ' '.join(charList)
-        # j = 1
-        # k = []
-        # charList = translation.split()
-        # for i in range(len(charList)):
-        #     if charList[i] == symbol:
-        #         j += 1
-        #     if j > 1:
-        #         k.append(i)
-        #         j -= 1
-        # for num in k:
-        #     charList[num] = ''
-        # processedString = ' '.join(charList)
         return processedString
 
     def reset(self):
