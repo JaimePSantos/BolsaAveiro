@@ -1,5 +1,5 @@
-from core.Errors import InvalidSyntaxError
-from core.Nodes import (
+from iddl.Errors import InvalidSyntaxError
+from iddl.Nodes import (
     LowerNumberNode,
     UpperNumberNode,
     IntervalVarNode,
@@ -18,7 +18,7 @@ from core.Nodes import (
     ParenthesisNode,
     ZeroAryNode,
     CurlyParenthesisNode)
-from core.Tokens import (
+from iddl.Tokens import (
     TT_INT,
     TT_EOF,
     TT_LOWERLIM,
@@ -107,10 +107,26 @@ class Parser:
             tok = self.current_tok
             res.register_advancement()
             self.advance()
-            factor = res.register(self.atom())
-            if res.error:
-                return res
-            return res.success(UnaryOpNode(tok, factor))
+            if self.current_tok.type == TT_INT:
+                tokNum = self.current_tok
+                self.advance()
+                res.register_advancement()
+                if self.current_tok.type == TT_UPPERLIM:
+                    if res.error:
+                        return res
+                    self.advance()
+                    return res.success(UpperNumberNode(tok + tokNum))
+                else:
+                    factor = res.register(self.atom())
+                    if res.error:
+                        return res
+                    return res.success(UnaryOpNode(tok, factor))
+            else:
+                factor = res.register(self.atom())
+                if res.error:
+                    return res
+                return res.success(UnaryOpNode(tok, factor))
+
         elif self.current_tok.type in TT_LDIAMOND:
             diamond = res.register(
                 self.makeWrapperNode(
@@ -171,10 +187,26 @@ class Parser:
                 return res
             return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in TT_LOWERLIM:
-            # TODO: Concatenar isto num so TT_Interval?
             res.register_advancement()
             self.advance()
-            success = res.success(LowerNumberNode(self.current_tok))
+            if self.current_tok.type == TT_INTERVALMINUS:
+                minusTok = self.current_tok
+                self.advance()
+                if self.current_tok.type == TT_INT or self.current_tok.type == TT_FLOAT:
+                    success = res.success(LowerNumberNode(minusTok + self.current_tok))
+                else:
+                    return res.failure(InvalidSyntaxError(
+                        self.current_tok.pos_start, self.current_tok.pos_end,
+                        f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."
+                    ))
+            elif self.current_tok.type == TT_INT or self.current_tok.type == TT_FLOAT:
+                success = res.success(LowerNumberNode(self.current_tok))
+
+            else:
+                return res.failure(InvalidSyntaxError(
+                    self.current_tok.pos_start, self.current_tok.pos_end,
+                    f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."
+                ))
             res.register_advancement()
             self.advance()
             return success
@@ -193,6 +225,7 @@ class Parser:
                 # TODO: Por alguma razao a proxima linha tem de estar comentada para o programa funcar.
                 # self.advance()
                 return success
+
         elif self.current_tok.type in TT_FLOAT:
             tokTemp = self.current_tok
             res.register_advancement()
@@ -226,7 +259,7 @@ class Parser:
             InvalidSyntaxError(
                 self.current_tok.pos_start,
                 self.current_tok.pos_end,
-                "Expected an interval or operator."))
+                f"Expected an interval or operator but got {self.current_tok}"))
         return failure
 
     def interval(self):

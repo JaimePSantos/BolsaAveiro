@@ -1,4 +1,4 @@
-from core.RunProgram import runGUI
+from iddl.RunProgram import runGUI
 import os
 import sys
 import tkinter as tk

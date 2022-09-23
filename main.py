@@ -1,6 +1,6 @@
 import pathlib as pl
 
-from core.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
+from iddl.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
 
 def runFile(filename):
     resultList = []

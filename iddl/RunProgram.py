@@ -1,10 +1,10 @@
 import datetime as dt
 import time
 
-from core.Lexer import Lexer
-from core.Parser import Parser
-from core.Translator import Translator
-from core.Interpreter import Interpreter
+from iddl.Lexer import Lexer
+from iddl.Parser import Parser
+from iddl.Translator import Translator
+from iddl.Interpreter import Interpreter
 
 
 def prettyPrint(text, linebreak):
