@@ -1,14 +1,61 @@
 from core.Errors import InvalidSyntaxError
-from core.Nodes import LowerNumberNode, UpperNumberNode, IntervalVarNode, SeparatorNode, BinOpNode, PropOpNode, \
-    ProgOpNode, \
-    UnaryOpNode, DifferentialVarNode, ProgDifNode, UnaryForallOpNode, BoxPropNode, DiamondPropNode, NumberNode, \
-    TestProgNode, ParenthesisNode, ZeroAryNode, CurlyParenthesisNode
-from core.Tokens import TT_INT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
-    TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV, TT_GEQ, TT_SEQ, TT_GT, TT_ST, TT_NOT, TT_FORALL, TT_LPAREN, \
-    TT_RPAREN, \
-    TT_PROGTEST, TT_PROGAND, TT_PROGUNION, TT_PROGSEQUENCE, TT_PROGASSIGN, \
-    TT_PROGDIFASSIGN, TT_IN, TT_KEYWORD, TT_IDENTIFIER, TT_IDENTIFIERDIF, TT_LBOX, TT_RBOX, \
-    TT_IMPLIES, TT_LDIAMOND, TT_RDIAMOND, TT_COMMA, TT_NDREP, TT_LCURLYBRACK, TT_RCURLYBRACK, TT_FLOAT
+from core.Nodes import (
+    LowerNumberNode,
+    UpperNumberNode,
+    IntervalVarNode,
+    SeparatorNode,
+    BinOpNode,
+    PropOpNode,
+    ProgOpNode,
+    UnaryOpNode,
+    DifferentialVarNode,
+    ProgDifNode,
+    UnaryForallOpNode,
+    BoxPropNode,
+    DiamondPropNode,
+    NumberNode,
+    TestProgNode,
+    ParenthesisNode,
+    ZeroAryNode,
+    CurlyParenthesisNode)
+from core.Tokens import (
+    TT_INT,
+    TT_EOF,
+    TT_LOWERLIM,
+    TT_UPPERLIM,
+    TT_SEPARATOR,
+    TT_INTERVALPLUS,
+    TT_INTERVALMINUS,
+    TT_INTERVALMULT,
+    TT_INTERVALDIV,
+    TT_GEQ,
+    TT_SEQ,
+    TT_GT,
+    TT_ST,
+    TT_NOT,
+    TT_FORALL,
+    TT_LPAREN,
+    TT_RPAREN,
+    TT_PROGTEST,
+    TT_PROGAND,
+    TT_PROGUNION,
+    TT_PROGSEQUENCE,
+    TT_PROGASSIGN,
+    TT_PROGDIFASSIGN,
+    TT_IN,
+    TT_KEYWORD,
+    TT_IDENTIFIER,
+    TT_IDENTIFIERDIF,
+    TT_LBOX,
+    TT_RBOX,
+    TT_IMPLIES,
+    TT_LDIAMOND,
+    TT_RDIAMOND,
+    TT_COMMA,
+    TT_NDREP,
+    TT_LCURLYBRACK,
+    TT_RCURLYBRACK,
+    TT_FLOAT)
 
 
 #######################################
@@ -56,18 +103,6 @@ class Parser:
             if res.error:
                 return res
             return res.success(UnaryForallOpNode(tok, factor))
-        # if self.current_tok.type in TT_FORALL:
-        #     forall = res.register(self.makeWrapperNode(ForallPropNode,TT_FORALL,(TT_KEYWORD,'IN')))
-        #     if res.error: return res
-        #     success = res.success(forall)
-        #     return success
-        # elif self.current_tok.type in (TT_SEPARATOR):
-        #     tok = self.current_tok
-        #     res.register_advancement()
-        #     self.advance()
-        #     factor = res.register(self.atom())
-        #     if res.error: return res
-        #     return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in (TT_INTERVALPLUS, TT_INTERVALMINUS):
             tok = self.current_tok
             res.register_advancement()
@@ -406,7 +441,11 @@ class Parser:
                         right,
                         SeparatorNode) or isinstance(
                         right,
-                        IntervalVarNode) or isinstance(right, ParenthesisNode) or isinstance(right, BinOpNode)):
+                        IntervalVarNode) or isinstance(
+                        right,
+                        ParenthesisNode) or isinstance(
+                        right,
+                        BinOpNode)):
                     return res.failure(
                         InvalidSyntaxError(
                             op_tok.pos_start,

@@ -196,6 +196,7 @@ def run3(fn, input):
     # print(f"Interpreted Result -> {output}")
     return output, None
 
+
 def runTranslatorTest(fn, input):
     lexer = Lexer(fn, input)
     tokens, error = lexer.makeTokens()
@@ -213,6 +214,7 @@ def runTranslatorTest(fn, input):
     output = translator.buildTranslation()
 
     return output, None
+
 
 def runInterpTest(fn, input):
     lexer = Lexer(fn, input)
