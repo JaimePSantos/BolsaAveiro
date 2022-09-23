@@ -277,6 +277,7 @@ class Translator:
         return node.tok.value
 
     def visit_NumberNode(self, node):
+        self.translation = str(node.tok.value)
         return node.tok.value
 
     def visit_UnaryForallOpNode(self, node):
@@ -294,11 +295,11 @@ class Translator:
         translation = ''
         if node.op_tok.type in TT_NOT:
             translation = '!' + "(" + str(visitNode) + ")"
-            self.translation = translation
         if node.op_tok.type in TT_INTERVALPLUS:
             translation = '+' + "(" + str(visitNode) + ")"
         if node.op_tok.type in TT_INTERVALMINUS:
             translation = '-' + str(visitNode)
+        self.translation = translation
         return translation
 
     def visit_UnaryProgOpNode(self, node):

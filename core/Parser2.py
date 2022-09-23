@@ -171,18 +171,10 @@ class Parser:
                 return res
             return res.success(UnaryOpNode(tok, factor))
         elif self.current_tok.type in TT_LOWERLIM:
+            # TODO: Concatenar isto num so TT_Interval?
             res.register_advancement()
             self.advance()
-            # print(f'{self.current_tok.type == TT_INTERVALMINUS} \t\t {self.current_tok} \t\t {TT_INT == TT_INTERVALMINUS} !!!')
-            if self.current_tok.type == TT_INTERVALMINUS:
-                # print(f'{self.current_tok.type in TT_INTERVALMINUS} !!!')
-                minusTok = self.current_tok
-                print(minusTok)
-                self.advance()
-                # print(f'{self.current_tok} !!')
-                success = res.success(LowerNumberNode(minusTok + self.current_tok))
-            else:
-                success = res.success(LowerNumberNode(self.current_tok))
+            success = res.success(LowerNumberNode(self.current_tok))
             res.register_advancement()
             self.advance()
             return success
