@@ -1,6 +1,6 @@
 import pathlib as pl
 
-from core.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
+from iddl.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
 
 def runFile(filename):
     resultList = []
@@ -106,5 +106,7 @@ def main():
 
 # main()
 
-# print(run("","[1,2] + ([3,4]*[5,6] - [7,8])"))
-print(run2("","[{x:=[1,2]; y:=[0,1] ; {x'=x - -1}}] (x>0 AND  y>=0)"))
+# print(run2("","[1,2] + ([3,4]*[5,6] - [7,8])"))
+# print(run2("","[5,6] - [7,8]"))
+print(run("","[-5,-5] + [2,3]"))
+# print(run2("","[{x:=[1,2]; y:=[0.0,1.3] ; {x'=x -1}}] (x>0 AND  y>=0)"))

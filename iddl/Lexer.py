@@ -1,7 +1,7 @@
 import string
 
-from core.Errors import IllegalCharError, ExpectedCharError
-from core.Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
+from iddl.Errors import IllegalCharError, ExpectedCharError
+from iddl.Tokens import TT_INT, TT_FLOAT, TT_EOF, TT_LOWERLIM, TT_UPPERLIM, TT_SEPARATOR, TT_INTERVALPLUS, \
     TT_INTERVALMINUS, TT_INTERVALMULT, TT_INTERVALDIV, TT_GEQ, TT_SEQ, TT_GT, TT_ST, TT_NOT, TT_FORALL, \
     TT_LPAREN, TT_RPAREN, Token, TT_INTERVALVAR, TT_PROGTEST, TT_PROGAND, TT_PROGUNION, TT_PROGSEQUENCE, TT_PROGASSIGN, \
     TT_DIFFERENTIALVAR, TT_PROGDIFASSIGN, TT_IN, TT_KEYWORD, TT_IDENTIFIER, TT_IDENTIFIERDIF, TT_LBOX, TT_RBOX, \
@@ -70,6 +70,7 @@ class Lexer:
                 tokens.append(
                     Token(
                         TT_INTERVALPLUS,
+                        value="+",
                         pos_start=self.pos))
                 self.advance()
             elif self.current_char == '-':
@@ -134,6 +135,7 @@ class Lexer:
                     pos_start, self.pos, "'" + char + "'")
 
         tokens.append(Token(TT_EOF, pos_start=self.pos))
+        # print(tokens)
         return tokens, None
 
     def makeNumber(self):
@@ -300,25 +302,7 @@ class Lexer:
         if self.current_char == '>':
             self.advance()
             tok_type = TT_IMPLIES
-        if self.current_char in DIGITS:
-            num_str = ''
-            dot_count = 0
-            pos_start = self.pos.copy()
-            while self.current_char is not None and self.current_char in DIGITS + '.':
-                if self.current_char == '.':
-                    if dot_count == 1:
-                        break
-                    dot_count += 1
-                    num_str += '.'
-                else:
-                    num_str += self.current_char
-                self.advance()
-            if dot_count == 0:
-                return Token(TT_INT, -int(num_str), pos_start, self.pos)
-            else:
-                return Token(TT_FLOAT, -
-                             float(num_str), pos_start, self.pos)
-        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+        return Token(tok_type,value='-', pos_start=pos_start, pos_end=self.pos)
 
     def makeAsterisk(self):
         tok_type = TT_INTERVALMULT

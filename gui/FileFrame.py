@@ -3,7 +3,7 @@ import sys
 import tkinter as tk
 import tkinter.filedialog
 
-from core.RunProgram import runGUI, runInterpGUI
+from iddl.RunProgram import runGUI, runInterpGUI
 from gui.NotePage import BasicNotepage
 from gui.Tools import myLabelFrame, myEntryFrame, myButton, myTextFrame, myScrollBar, myFrame, myCheckButton
 

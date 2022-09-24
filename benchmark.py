@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-from core.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
+from iddl.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
 import timeit
 
 def timeTest(n,samples):

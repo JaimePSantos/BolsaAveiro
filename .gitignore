@@ -26,3 +26,5 @@ tags
 /idDL2DL/*/__pycache__/
 /*/__pycache__/
 __pycache__/
+/iddl/iddl.egg-info/
+/dist/

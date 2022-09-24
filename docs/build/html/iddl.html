@@ -1,0 +1,1509 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+
+    <meta name="generator" content="sphinx-5.2.0, furo 2022.09.15"/>
+        <title>iddl package - idDL2DL</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --color-content-foreground: #000000;
+  --color-background-primary: #ffffff;
+  --color-background-border: #ffffff;
+  --color-sidebar-background: #f8f9fb;
+  --color-brand-content: #1c00e3;
+  --color-brand-primary: #192bd0;
+  --color-link: #c93434;
+  --color-link--hover: #5b0000;
+  --color-inline-code-background: #f6f6f6;;
+  --color-foreground-secondary: #000;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-content-foreground: #ffffffd9;
+  --color-background-primary: #131416;
+  --color-background-border: #303335;
+  --color-sidebar-background: #1a1c1e;
+  --color-brand-content: #2196f3;
+  --color-brand-primary: #007fff;
+  --color-link: #51ba86;
+  --color-link--hover: #9cefc6;
+  --color-inline-code-background: #262626;
+  --color-foreground-secondary: #ffffffd9;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-content-foreground: #ffffffd9;
+  --color-background-primary: #131416;
+  --color-background-border: #303335;
+  --color-sidebar-background: #1a1c1e;
+  --color-brand-content: #2196f3;
+  --color-brand-primary: #007fff;
+  --color-link: #51ba86;
+  --color-link--hover: #9cefc6;
+  --color-inline-code-background: #262626;
+  --color-foreground-secondary: #ffffffd9;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">idDL2DL</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">idDL2DL</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="iddl-package">
+<h1>iddl package<a class="headerlink" href="#iddl-package" title="Permalink to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="module-iddl.Errors">
+<span id="iddl-errors-module"></span><h2>iddl.Errors module<a class="headerlink" href="#module-iddl.Errors" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Errors.Error">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#Error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.Error" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Errors.Error.as_string">
+<span class="sig-name descname"><span class="pre">as_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#Error.as_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.Error.as_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Errors.Error.stringsWithArrows">
+<span class="sig-name descname"><span class="pre">stringsWithArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#Error.stringsWithArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.Error.stringsWithArrows" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Errors.IllegalCharError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IllegalCharError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#IllegalCharError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.IllegalCharError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iddl.Errors.Error" title="iddl.Errors.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Errors.ExpectedCharError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExpectedCharError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#ExpectedCharError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.ExpectedCharError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iddl.Errors.Error" title="iddl.Errors.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Errors.InvalidSyntaxError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InvalidSyntaxError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#InvalidSyntaxError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.InvalidSyntaxError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iddl.Errors.Error" title="iddl.Errors.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Errors.RTError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RTError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#RTError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.RTError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iddl.Errors.Error" title="iddl.Errors.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Errors.RTError.as_string">
+<span class="sig-name descname"><span class="pre">as_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#RTError.as_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.RTError.as_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Errors.RTError.generate_traceback">
+<span class="sig-name descname"><span class="pre">generate_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#RTError.generate_traceback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.RTError.generate_traceback" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Errors.RTError.stringsWithArrows">
+<span class="sig-name descname"><span class="pre">stringsWithArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Errors.html#RTError.stringsWithArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Errors.RTError.stringsWithArrows" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-iddl.Interpreter">
+<span id="iddl-interpreter-module"></span><h2>iddl.Interpreter module<a class="headerlink" href="#module-iddl.Interpreter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Interpreter</span></span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that evalutates the input.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.getTranslation">
+<span class="sig-name descname"><span class="pre">getTranslation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.getTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.getTranslation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit">
+<span class="sig-name descname"><span class="pre">visit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit" title="Permalink to this definition">#</a></dt>
+<dd><p>Template of the function to visit each method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.no_visit_method">
+<span class="sig-name descname"><span class="pre">no_visit_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.no_visit_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.no_visit_method" title="Permalink to this definition">#</a></dt>
+<dd><p>If no acceptable method found, throw an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_LowerNumberNode">
+<span class="sig-name descname"><span class="pre">visit_LowerNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_LowerNumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_LowerNumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits the nodes that have lower limit values and constructs a list that keeps track of these values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_UpperNumberNode">
+<span class="sig-name descname"><span class="pre">visit_UpperNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_UpperNumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_UpperNumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits the nodes that have upper limit values and constructs a list that keeps track of these values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_BinOpNode">
+<span class="sig-name descname"><span class="pre">visit_BinOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_BinOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_BinOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits nodes that have binary operations on them.         If the token is + then we simply add all lower limit numbers and upper limit numbers separately.         If the token is * then we join lower limit numbers and upper limit numbers so we can perform interval multiplication on them.
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_SeparatorNode">
+<span class="sig-name descname"><span class="pre">visit_SeparatorNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_SeparatorNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_SeparatorNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits the nodes with the SEPARATOR token.
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_ParenthesisNode">
+<span class="sig-name descname"><span class="pre">visit_ParenthesisNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_ParenthesisNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_ParenthesisNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_IntervalVarNode">
+<span class="sig-name descname"><span class="pre">visit_IntervalVarNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_IntervalVarNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_IntervalVarNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_PropOpNode">
+<span class="sig-name descname"><span class="pre">visit_PropOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_PropOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_PropOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_ProgOpNode">
+<span class="sig-name descname"><span class="pre">visit_ProgOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_ProgOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_ProgOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_BoxPropNode">
+<span class="sig-name descname"><span class="pre">visit_BoxPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_BoxPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_BoxPropNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_DiamondPropNode">
+<span class="sig-name descname"><span class="pre">visit_DiamondPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_DiamondPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_DiamondPropNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_TestProgNode">
+<span class="sig-name descname"><span class="pre">visit_TestProgNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_TestProgNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_TestProgNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_CurlyParenthesisNode">
+<span class="sig-name descname"><span class="pre">visit_CurlyParenthesisNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_CurlyParenthesisNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_CurlyParenthesisNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_ProgDifNode">
+<span class="sig-name descname"><span class="pre">visit_ProgDifNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_ProgDifNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_ProgDifNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_DifferentialVarNode">
+<span class="sig-name descname"><span class="pre">visit_DifferentialVarNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_DifferentialVarNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_DifferentialVarNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_NumberNode">
+<span class="sig-name descname"><span class="pre">visit_NumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_NumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_NumberNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_UnaryForallOpNode">
+<span class="sig-name descname"><span class="pre">visit_UnaryForallOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_UnaryForallOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_UnaryForallOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_ZeroAryNode">
+<span class="sig-name descname"><span class="pre">visit_ZeroAryNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_ZeroAryNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_ZeroAryNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_UnaryOpNode">
+<span class="sig-name descname"><span class="pre">visit_UnaryOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_UnaryOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_UnaryOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.visit_UnaryProgOpNode">
+<span class="sig-name descname"><span class="pre">visit_UnaryProgOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.visit_UnaryProgOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.visit_UnaryProgOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.removeRepeated">
+<span class="sig-name descname"><span class="pre">removeRepeated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.removeRepeated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.removeRepeated" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interpreter.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interpreter.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interpreter.reset" title="Permalink to this definition">#</a></dt>
+<dd><p>Clears the lists of numbers so each input has a clean slate.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Interpreter.Number">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Number" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us perform integer operations on the elements belonging to the NumberList class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Number.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Number.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Number.set_pos" title="Permalink to this definition">#</a></dt>
+<dd><p>For keeping track of number position.
+:param pos_start:
+:param pos_end:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowerNum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperNum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interval" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us represent the interval that resulted from an operation and keep track of errors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interval.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interval.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interval.set_pos" title="Permalink to this definition">#</a></dt>
+<dd><p>So we know the position of our intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interval.addIntervals">
+<span class="sig-name descname"><span class="pre">addIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interval.addIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interval.addIntervals" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interval.subIntervals">
+<span class="sig-name descname"><span class="pre">subIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interval.subIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interval.subIntervals" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interval.multIntervals">
+<span class="sig-name descname"><span class="pre">multIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interval.multIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interval.multIntervals" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.Interval.divIntervals">
+<span class="sig-name descname"><span class="pre">divIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#Interval.divIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.Interval.divIntervals" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NumberList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numberList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us keep track of the numbers present in each node so we can perform interval operations on them.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.appendNum">
+<span class="sig-name descname"><span class="pre">appendNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apNumber</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.appendNum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.appendNum" title="Permalink to this definition">#</a></dt>
+<dd><p>Used to construct the appropriate list of numbers present in each node.
+:param apNumber:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.addIntervals">
+<span class="sig-name descname"><span class="pre">addIntervals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.addIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.addIntervals" title="Permalink to this definition">#</a></dt>
+<dd><p>Takes the list with either the lower limits or upper limits of the interval and sums the terms.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.multIntervals">
+<span class="sig-name descname"><span class="pre">multIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intervalList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.multIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.multIntervals" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates the set of numbers resulted from interval multiplication.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.negInterval">
+<span class="sig-name descname"><span class="pre">negInterval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.negInterval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.negInterval" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.invInterval">
+<span class="sig-name descname"><span class="pre">invInterval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.invInterval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.invInterval" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.separatedIntervals">
+<span class="sig-name descname"><span class="pre">separatedIntervals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.separatedIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.separatedIntervals" title="Permalink to this definition">#</a></dt>
+<dd><p>Takes the list with the lower limits and upper limits of the intervals and separates them into the original intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.min" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum of a list so we can get the lower limit that resulted from the multiplication of intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.max" title="Permalink to this definition">#</a></dt>
+<dd><p>Maximum of a list so we can get the upper limit that resulted from the multiplication of intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.NumberList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otherNumberList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#NumberList.extend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.NumberList.extend" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper function so we can combine the upper limit list with the lower limit list.
+:param otherNumberList:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Interpreter.RTResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RTResult</span></span><a class="reference internal" href="_modules/iddl/Interpreter.html#RTResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.RTResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.RTResult.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#RTResult.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.RTResult.register" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.RTResult.success">
+<span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#RTResult.success"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.RTResult.success" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Interpreter.RTResult.failure">
+<span class="sig-name descname"><span class="pre">failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Interpreter.html#RTResult.failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Interpreter.RTResult.failure" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-iddl.Lexer">
+<span id="iddl-lexer-module"></span><h2>iddl.Lexer module<a class="headerlink" href="#module-iddl.Lexer" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lexer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.advance">
+<span class="sig-name descname"><span class="pre">advance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.advance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.advance" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeTokens">
+<span class="sig-name descname"><span class="pre">makeTokens</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeTokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeTokens" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeNumber">
+<span class="sig-name descname"><span class="pre">makeNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeNumber"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeNumber" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeComma">
+<span class="sig-name descname"><span class="pre">makeComma</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeComma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeComma" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makePipe">
+<span class="sig-name descname"><span class="pre">makePipe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makePipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makePipe" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeLetter">
+<span class="sig-name descname"><span class="pre">makeLetter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeLetter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeLetter" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeAssignment">
+<span class="sig-name descname"><span class="pre">makeAssignment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeAssignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeAssignment" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeColon">
+<span class="sig-name descname"><span class="pre">makeColon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeColon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeColon" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeIdentifier">
+<span class="sig-name descname"><span class="pre">makeIdentifier</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeIdentifier" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeLessThan">
+<span class="sig-name descname"><span class="pre">makeLessThan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeLessThan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeLessThan" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeGreaterThan">
+<span class="sig-name descname"><span class="pre">makeGreaterThan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeGreaterThan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeGreaterThan" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeLSquare">
+<span class="sig-name descname"><span class="pre">makeLSquare</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeLSquare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeLSquare" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeRCurly">
+<span class="sig-name descname"><span class="pre">makeRCurly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeRCurly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeRCurly" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeHyphen">
+<span class="sig-name descname"><span class="pre">makeHyphen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeHyphen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeHyphen" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Lexer.makeAsterisk">
+<span class="sig-name descname"><span class="pre">makeAsterisk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Lexer.makeAsterisk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Lexer.makeAsterisk" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Lexer.Position">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ln</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftxt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Position" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Position.advance">
+<span class="sig-name descname"><span class="pre">advance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Position.advance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Position.advance" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Lexer.Position.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Lexer.html#Position.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Lexer.Position.copy" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-iddl.Nodes">
+<span id="iddl-nodes-module"></span><h2>iddl.Nodes module<a class="headerlink" href="#module-iddl.Nodes" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.LowerNumberNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LowerNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tok</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#LowerNumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.LowerNumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.NumberNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tok</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#NumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.NumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.UpperNumberNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UpperNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tok</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#UpperNumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.UpperNumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.IntervalVarNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IntervalVarNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tok</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#IntervalVarNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.IntervalVarNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.DifferentialVarNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DifferentialVarNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tok</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#DifferentialVarNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.DifferentialVarNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.SeparatorNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SeparatorNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#SeparatorNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.SeparatorNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.SeparatorNode2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SeparatorNode2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#SeparatorNode2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.SeparatorNode2" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.BoxNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BoxNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#BoxNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.BoxNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.DiamondNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiamondNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#DiamondNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.DiamondNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.BoxPropNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BoxPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boxProp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#BoxPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.BoxPropNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.ForallPropNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ForallPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forallProp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#ForallPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.ForallPropNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.DiamondPropNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiamondPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diamondProp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#DiamondPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.DiamondPropNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.ParenthesisNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParenthesisNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroAryNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#ParenthesisNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.ParenthesisNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.IntervalNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IntervalNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroAryNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#IntervalNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.IntervalNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.CurlyParenthesisNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurlyParenthesisNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroAryNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#CurlyParenthesisNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.CurlyParenthesisNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.TestProgNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TestProgNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#TestProgNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.TestProgNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.BinOpNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BinOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#BinOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.BinOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.PropOpNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PropOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#PropOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.PropOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.ProgOpNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProgOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#ProgOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.ProgOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.ProgDifNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProgDifNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#ProgDifNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.ProgDifNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.UnaryOpNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UnaryOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#UnaryOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.UnaryOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.ZeroAryNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZeroAryNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tok</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#ZeroAryNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.ZeroAryNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.UnaryProgOpNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UnaryProgOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#UnaryProgOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.UnaryProgOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Nodes.UnaryForallOpNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UnaryForallOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_tok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Nodes.html#UnaryForallOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Nodes.UnaryForallOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-iddl.Parser">
+<span id="iddl-parser-module"></span><h2>iddl.Parser module<a class="headerlink" href="#module-iddl.Parser" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Parser.Parser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.advance">
+<span class="sig-name descname"><span class="pre">advance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.advance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.advance" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.update_current_tok">
+<span class="sig-name descname"><span class="pre">update_current_tok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.update_current_tok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.update_current_tok" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.parse" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.atom">
+<span class="sig-name descname"><span class="pre">atom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.atom" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.interval">
+<span class="sig-name descname"><span class="pre">interval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.interval" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.intervalTerm">
+<span class="sig-name descname"><span class="pre">intervalTerm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.intervalTerm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.intervalTerm" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.intervalExpr">
+<span class="sig-name descname"><span class="pre">intervalExpr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.intervalExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.intervalExpr" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.propEq">
+<span class="sig-name descname"><span class="pre">propEq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.propEq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.propEq" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.propTerm">
+<span class="sig-name descname"><span class="pre">propTerm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.propTerm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.propTerm" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.propExpr">
+<span class="sig-name descname"><span class="pre">propExpr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.propExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.propExpr" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.progEq">
+<span class="sig-name descname"><span class="pre">progEq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.progEq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.progEq" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.progAnd">
+<span class="sig-name descname"><span class="pre">progAnd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.progAnd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.progAnd" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.progExpr">
+<span class="sig-name descname"><span class="pre">progExpr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.progExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.progExpr" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.makeWrapperNode">
+<span class="sig-name descname"><span class="pre">makeWrapperNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firstWrapperToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondWrapperToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unaryOp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.makeWrapperNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.makeWrapperNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.bin_op">
+<span class="sig-name descname"><span class="pre">bin_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ops</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.bin_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.bin_op" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.prop_bin_op">
+<span class="sig-name descname"><span class="pre">prop_bin_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ops</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.prop_bin_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.prop_bin_op" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.Parser.prog_bin_op">
+<span class="sig-name descname"><span class="pre">prog_bin_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ops</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#Parser.prog_bin_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.Parser.prog_bin_op" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Parser.ParseResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParseResult</span></span><a class="reference internal" href="_modules/iddl/Parser.html#ParseResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.ParseResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.ParseResult.register_advancement">
+<span class="sig-name descname"><span class="pre">register_advancement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#ParseResult.register_advancement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.ParseResult.register_advancement" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.ParseResult.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#ParseResult.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.ParseResult.register" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.ParseResult.success">
+<span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#ParseResult.success"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.ParseResult.success" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Parser.ParseResult.failure">
+<span class="sig-name descname"><span class="pre">failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Parser.html#ParseResult.failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Parser.ParseResult.failure" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-iddl.RunProgram">
+<span id="iddl-runprogram-module"></span><h2>iddl.RunProgram module<a class="headerlink" href="#module-iddl.RunProgram" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.prettyPrint">
+<span class="sig-name descname"><span class="pre">prettyPrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linebreak</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#prettyPrint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.prettyPrint" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.resultsString">
+<span class="sig-name descname"><span class="pre">resultsString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#resultsString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.resultsString" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.run" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.runGUI">
+<span class="sig-name descname"><span class="pre">runGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#runGUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.runGUI" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.runInterpGUI">
+<span class="sig-name descname"><span class="pre">runInterpGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#runInterpGUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.runInterpGUI" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.run2">
+<span class="sig-name descname"><span class="pre">run2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#run2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.run2" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.run3">
+<span class="sig-name descname"><span class="pre">run3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#run3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.run3" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.runTranslatorTest">
+<span class="sig-name descname"><span class="pre">runTranslatorTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#runTranslatorTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.runTranslatorTest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iddl.RunProgram.runInterpTest">
+<span class="sig-name descname"><span class="pre">runInterpTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/RunProgram.html#runInterpTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.RunProgram.runInterpTest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-iddl.Tokens">
+<span id="iddl-tokens-module"></span><h2>iddl.Tokens module<a class="headerlink" href="#module-iddl.Tokens" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Tokens.Token">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Tokens.html#Token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Tokens.Token" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Tokens.Token.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Tokens.html#Token.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Tokens.Token.matches" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-iddl.Translator">
+<span id="iddl-translator-module"></span><h2>iddl.Translator module<a class="headerlink" href="#module-iddl.Translator" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Translator.Translator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Translator</span></span><a class="reference internal" href="_modules/iddl/Translator.html#Translator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that evalutates the input.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.buildTranslation">
+<span class="sig-name descname"><span class="pre">buildTranslation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.buildTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.buildTranslation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit">
+<span class="sig-name descname"><span class="pre">visit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit" title="Permalink to this definition">#</a></dt>
+<dd><p>Template of the function to visit each method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.no_visit_method">
+<span class="sig-name descname"><span class="pre">no_visit_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.no_visit_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.no_visit_method" title="Permalink to this definition">#</a></dt>
+<dd><p>If no acceptable method found, throw an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_LowerNumberNode">
+<span class="sig-name descname"><span class="pre">visit_LowerNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_LowerNumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_LowerNumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits the nodes that have lower limit values and constructs a list that keeps track of these values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_UpperNumberNode">
+<span class="sig-name descname"><span class="pre">visit_UpperNumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_UpperNumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_UpperNumberNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits the nodes that have upper limit values and constructs a list that keeps track of these values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_SeparatorNode">
+<span class="sig-name descname"><span class="pre">visit_SeparatorNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_SeparatorNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_SeparatorNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits the nodes with the SEPARATOR token.
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_BinOpNode">
+<span class="sig-name descname"><span class="pre">visit_BinOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_BinOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_BinOpNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Visits nodes that have binary operations on them.         If the token is + then we simply add all lower limit numbers and upper limit numbers separately.         If the token is * then we join lower limit numbers and upper limit numbers so we can perform interval multiplication on them.
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_IntervalVarNode">
+<span class="sig-name descname"><span class="pre">visit_IntervalVarNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_IntervalVarNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_IntervalVarNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_PropOpNode">
+<span class="sig-name descname"><span class="pre">visit_PropOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_PropOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_PropOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_ProgOpNode">
+<span class="sig-name descname"><span class="pre">visit_ProgOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_ProgOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_ProgOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_BoxPropNode">
+<span class="sig-name descname"><span class="pre">visit_BoxPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_BoxPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_BoxPropNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_DiamondPropNode">
+<span class="sig-name descname"><span class="pre">visit_DiamondPropNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_DiamondPropNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_DiamondPropNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_TestProgNode">
+<span class="sig-name descname"><span class="pre">visit_TestProgNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_TestProgNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_TestProgNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_ParenthesisNode">
+<span class="sig-name descname"><span class="pre">visit_ParenthesisNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_ParenthesisNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_ParenthesisNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_CurlyParenthesisNode">
+<span class="sig-name descname"><span class="pre">visit_CurlyParenthesisNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_CurlyParenthesisNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_CurlyParenthesisNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_ProgDifNode">
+<span class="sig-name descname"><span class="pre">visit_ProgDifNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_ProgDifNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_ProgDifNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_DifferentialVarNode">
+<span class="sig-name descname"><span class="pre">visit_DifferentialVarNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_DifferentialVarNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_DifferentialVarNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_NumberNode">
+<span class="sig-name descname"><span class="pre">visit_NumberNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_NumberNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_NumberNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_UnaryForallOpNode">
+<span class="sig-name descname"><span class="pre">visit_UnaryForallOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_UnaryForallOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_UnaryForallOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_ZeroAryNode">
+<span class="sig-name descname"><span class="pre">visit_ZeroAryNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_ZeroAryNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_ZeroAryNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_UnaryOpNode">
+<span class="sig-name descname"><span class="pre">visit_UnaryOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_UnaryOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_UnaryOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.visit_UnaryProgOpNode">
+<span class="sig-name descname"><span class="pre">visit_UnaryProgOpNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.visit_UnaryProgOpNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.visit_UnaryProgOpNode" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.makeUniqueVar">
+<span class="sig-name descname"><span class="pre">makeUniqueVar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.makeUniqueVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.makeUniqueVar" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.removeRepeated">
+<span class="sig-name descname"><span class="pre">removeRepeated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.removeRepeated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.removeRepeated" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Translator.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Translator.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Translator.reset" title="Permalink to this definition">#</a></dt>
+<dd><p>Clears the lists of numbers so each input has a clean slate.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Translator.Number">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Number" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us perform integer operations on the elements belonging to the NumberList class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Number.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Number.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Number.set_pos" title="Permalink to this definition">#</a></dt>
+<dd><p>For keeping track of number position.
+:param pos_start:
+:param pos_end:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Translator.Interval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowerNum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperNum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Interval" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us represent the interval that resulted from an operation and keep track of errors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.Interval.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#Interval.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.Interval.set_pos" title="Permalink to this definition">#</a></dt>
+<dd><p>So we know the position of our intervals.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Translator.TranslatedInterval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TranslatedInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowerNum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperNum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ineqVar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#TranslatedInterval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.TranslatedInterval" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class helps us represent the interval that resulted from an operation and keep track of errors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.TranslatedInterval.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#TranslatedInterval.set_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.TranslatedInterval.set_pos" title="Permalink to this definition">#</a></dt>
+<dd><p>So we know the position of our intervals.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.TranslatedInterval.set_lims">
+<span class="sig-name descname"><span class="pre">set_lims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#TranslatedInterval.set_lims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.TranslatedInterval.set_lims" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="iddl.Translator.RTResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RTResult</span></span><a class="reference internal" href="_modules/iddl/Translator.html#RTResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.RTResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.RTResult.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#RTResult.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.RTResult.register" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.RTResult.success">
+<span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#RTResult.success"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.RTResult.success" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iddl.Translator.RTResult.failure">
+<span class="sig-name descname"><span class="pre">failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iddl/Translator.html#RTResult.failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#iddl.Translator.RTResult.failure" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-iddl">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-iddl" title="Permalink to this heading">#</a></h2>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Jaime Santos, Daniel Figueiredo, Alexandre Madeira
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">iddl package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-iddl.Errors">iddl.Errors module</a><ul>
+<li><a class="reference internal" href="#iddl.Errors.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Errors.Error.as_string"><code class="docutils literal notranslate"><span class="pre">Error.as_string()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Errors.Error.stringsWithArrows"><code class="docutils literal notranslate"><span class="pre">Error.stringsWithArrows()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Errors.IllegalCharError"><code class="docutils literal notranslate"><span class="pre">IllegalCharError</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Errors.ExpectedCharError"><code class="docutils literal notranslate"><span class="pre">ExpectedCharError</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Errors.InvalidSyntaxError"><code class="docutils literal notranslate"><span class="pre">InvalidSyntaxError</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Errors.RTError"><code class="docutils literal notranslate"><span class="pre">RTError</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Errors.RTError.as_string"><code class="docutils literal notranslate"><span class="pre">RTError.as_string()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Errors.RTError.generate_traceback"><code class="docutils literal notranslate"><span class="pre">RTError.generate_traceback()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Errors.RTError.stringsWithArrows"><code class="docutils literal notranslate"><span class="pre">RTError.stringsWithArrows()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.Interpreter">iddl.Interpreter module</a><ul>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter"><code class="docutils literal notranslate"><span class="pre">Interpreter</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.getTranslation"><code class="docutils literal notranslate"><span class="pre">Interpreter.getTranslation()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.no_visit_method"><code class="docutils literal notranslate"><span class="pre">Interpreter.no_visit_method()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_LowerNumberNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_LowerNumberNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_UpperNumberNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_UpperNumberNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_BinOpNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_BinOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_SeparatorNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_SeparatorNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_ParenthesisNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_ParenthesisNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_IntervalVarNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_IntervalVarNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_PropOpNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_PropOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_ProgOpNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_ProgOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_BoxPropNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_BoxPropNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_DiamondPropNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_DiamondPropNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_TestProgNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_TestProgNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_CurlyParenthesisNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_CurlyParenthesisNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_ProgDifNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_ProgDifNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_DifferentialVarNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_DifferentialVarNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_NumberNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_NumberNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_UnaryForallOpNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_UnaryForallOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_ZeroAryNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_ZeroAryNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_UnaryOpNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_UnaryOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.visit_UnaryProgOpNode"><code class="docutils literal notranslate"><span class="pre">Interpreter.visit_UnaryProgOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.removeRepeated"><code class="docutils literal notranslate"><span class="pre">Interpreter.removeRepeated()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interpreter.reset"><code class="docutils literal notranslate"><span class="pre">Interpreter.reset()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Interpreter.Number"><code class="docutils literal notranslate"><span class="pre">Number</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Interpreter.Number.set_pos"><code class="docutils literal notranslate"><span class="pre">Number.set_pos()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interval"><code class="docutils literal notranslate"><span class="pre">Interval</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Interpreter.Interval.set_pos"><code class="docutils literal notranslate"><span class="pre">Interval.set_pos()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interval.addIntervals"><code class="docutils literal notranslate"><span class="pre">Interval.addIntervals()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interval.subIntervals"><code class="docutils literal notranslate"><span class="pre">Interval.subIntervals()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interval.multIntervals"><code class="docutils literal notranslate"><span class="pre">Interval.multIntervals()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.Interval.divIntervals"><code class="docutils literal notranslate"><span class="pre">Interval.divIntervals()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList"><code class="docutils literal notranslate"><span class="pre">NumberList</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.appendNum"><code class="docutils literal notranslate"><span class="pre">NumberList.appendNum()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.addIntervals"><code class="docutils literal notranslate"><span class="pre">NumberList.addIntervals()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.multIntervals"><code class="docutils literal notranslate"><span class="pre">NumberList.multIntervals()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.negInterval"><code class="docutils literal notranslate"><span class="pre">NumberList.negInterval()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.invInterval"><code class="docutils literal notranslate"><span class="pre">NumberList.invInterval()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.separatedIntervals"><code class="docutils literal notranslate"><span class="pre">NumberList.separatedIntervals()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.min"><code class="docutils literal notranslate"><span class="pre">NumberList.min()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.max"><code class="docutils literal notranslate"><span class="pre">NumberList.max()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.NumberList.extend"><code class="docutils literal notranslate"><span class="pre">NumberList.extend()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Interpreter.RTResult"><code class="docutils literal notranslate"><span class="pre">RTResult</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Interpreter.RTResult.register"><code class="docutils literal notranslate"><span class="pre">RTResult.register()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.RTResult.success"><code class="docutils literal notranslate"><span class="pre">RTResult.success()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Interpreter.RTResult.failure"><code class="docutils literal notranslate"><span class="pre">RTResult.failure()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.Lexer">iddl.Lexer module</a><ul>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer"><code class="docutils literal notranslate"><span class="pre">Lexer</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.advance"><code class="docutils literal notranslate"><span class="pre">Lexer.advance()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeTokens"><code class="docutils literal notranslate"><span class="pre">Lexer.makeTokens()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeNumber"><code class="docutils literal notranslate"><span class="pre">Lexer.makeNumber()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeComma"><code class="docutils literal notranslate"><span class="pre">Lexer.makeComma()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makePipe"><code class="docutils literal notranslate"><span class="pre">Lexer.makePipe()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeLetter"><code class="docutils literal notranslate"><span class="pre">Lexer.makeLetter()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeAssignment"><code class="docutils literal notranslate"><span class="pre">Lexer.makeAssignment()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeColon"><code class="docutils literal notranslate"><span class="pre">Lexer.makeColon()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeIdentifier"><code class="docutils literal notranslate"><span class="pre">Lexer.makeIdentifier()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeLessThan"><code class="docutils literal notranslate"><span class="pre">Lexer.makeLessThan()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeGreaterThan"><code class="docutils literal notranslate"><span class="pre">Lexer.makeGreaterThan()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeLSquare"><code class="docutils literal notranslate"><span class="pre">Lexer.makeLSquare()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeRCurly"><code class="docutils literal notranslate"><span class="pre">Lexer.makeRCurly()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeHyphen"><code class="docutils literal notranslate"><span class="pre">Lexer.makeHyphen()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Lexer.makeAsterisk"><code class="docutils literal notranslate"><span class="pre">Lexer.makeAsterisk()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Lexer.Position"><code class="docutils literal notranslate"><span class="pre">Position</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Lexer.Position.advance"><code class="docutils literal notranslate"><span class="pre">Position.advance()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Lexer.Position.copy"><code class="docutils literal notranslate"><span class="pre">Position.copy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.Nodes">iddl.Nodes module</a><ul>
+<li><a class="reference internal" href="#iddl.Nodes.LowerNumberNode"><code class="docutils literal notranslate"><span class="pre">LowerNumberNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.NumberNode"><code class="docutils literal notranslate"><span class="pre">NumberNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.UpperNumberNode"><code class="docutils literal notranslate"><span class="pre">UpperNumberNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.IntervalVarNode"><code class="docutils literal notranslate"><span class="pre">IntervalVarNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.DifferentialVarNode"><code class="docutils literal notranslate"><span class="pre">DifferentialVarNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.SeparatorNode"><code class="docutils literal notranslate"><span class="pre">SeparatorNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.SeparatorNode2"><code class="docutils literal notranslate"><span class="pre">SeparatorNode2</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.BoxNode"><code class="docutils literal notranslate"><span class="pre">BoxNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.DiamondNode"><code class="docutils literal notranslate"><span class="pre">DiamondNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.BoxPropNode"><code class="docutils literal notranslate"><span class="pre">BoxPropNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.ForallPropNode"><code class="docutils literal notranslate"><span class="pre">ForallPropNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.DiamondPropNode"><code class="docutils literal notranslate"><span class="pre">DiamondPropNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.ParenthesisNode"><code class="docutils literal notranslate"><span class="pre">ParenthesisNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.IntervalNode"><code class="docutils literal notranslate"><span class="pre">IntervalNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.CurlyParenthesisNode"><code class="docutils literal notranslate"><span class="pre">CurlyParenthesisNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.TestProgNode"><code class="docutils literal notranslate"><span class="pre">TestProgNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.BinOpNode"><code class="docutils literal notranslate"><span class="pre">BinOpNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.PropOpNode"><code class="docutils literal notranslate"><span class="pre">PropOpNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.ProgOpNode"><code class="docutils literal notranslate"><span class="pre">ProgOpNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.ProgDifNode"><code class="docutils literal notranslate"><span class="pre">ProgDifNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.UnaryOpNode"><code class="docutils literal notranslate"><span class="pre">UnaryOpNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.ZeroAryNode"><code class="docutils literal notranslate"><span class="pre">ZeroAryNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.UnaryProgOpNode"><code class="docutils literal notranslate"><span class="pre">UnaryProgOpNode</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Nodes.UnaryForallOpNode"><code class="docutils literal notranslate"><span class="pre">UnaryForallOpNode</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.Parser">iddl.Parser module</a><ul>
+<li><a class="reference internal" href="#iddl.Parser.Parser"><code class="docutils literal notranslate"><span class="pre">Parser</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Parser.Parser.advance"><code class="docutils literal notranslate"><span class="pre">Parser.advance()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.update_current_tok"><code class="docutils literal notranslate"><span class="pre">Parser.update_current_tok()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.parse"><code class="docutils literal notranslate"><span class="pre">Parser.parse()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.atom"><code class="docutils literal notranslate"><span class="pre">Parser.atom()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.interval"><code class="docutils literal notranslate"><span class="pre">Parser.interval()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.intervalTerm"><code class="docutils literal notranslate"><span class="pre">Parser.intervalTerm()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.intervalExpr"><code class="docutils literal notranslate"><span class="pre">Parser.intervalExpr()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.propEq"><code class="docutils literal notranslate"><span class="pre">Parser.propEq()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.propTerm"><code class="docutils literal notranslate"><span class="pre">Parser.propTerm()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.propExpr"><code class="docutils literal notranslate"><span class="pre">Parser.propExpr()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.progEq"><code class="docutils literal notranslate"><span class="pre">Parser.progEq()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.progAnd"><code class="docutils literal notranslate"><span class="pre">Parser.progAnd()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.progExpr"><code class="docutils literal notranslate"><span class="pre">Parser.progExpr()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.makeWrapperNode"><code class="docutils literal notranslate"><span class="pre">Parser.makeWrapperNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.bin_op"><code class="docutils literal notranslate"><span class="pre">Parser.bin_op()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.prop_bin_op"><code class="docutils literal notranslate"><span class="pre">Parser.prop_bin_op()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.Parser.prog_bin_op"><code class="docutils literal notranslate"><span class="pre">Parser.prog_bin_op()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Parser.ParseResult"><code class="docutils literal notranslate"><span class="pre">ParseResult</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Parser.ParseResult.register_advancement"><code class="docutils literal notranslate"><span class="pre">ParseResult.register_advancement()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.ParseResult.register"><code class="docutils literal notranslate"><span class="pre">ParseResult.register()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.ParseResult.success"><code class="docutils literal notranslate"><span class="pre">ParseResult.success()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Parser.ParseResult.failure"><code class="docutils literal notranslate"><span class="pre">ParseResult.failure()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.RunProgram">iddl.RunProgram module</a><ul>
+<li><a class="reference internal" href="#iddl.RunProgram.prettyPrint"><code class="docutils literal notranslate"><span class="pre">prettyPrint()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.resultsString"><code class="docutils literal notranslate"><span class="pre">resultsString()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.runGUI"><code class="docutils literal notranslate"><span class="pre">runGUI()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.runInterpGUI"><code class="docutils literal notranslate"><span class="pre">runInterpGUI()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.run2"><code class="docutils literal notranslate"><span class="pre">run2()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.run3"><code class="docutils literal notranslate"><span class="pre">run3()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.runTranslatorTest"><code class="docutils literal notranslate"><span class="pre">runTranslatorTest()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.RunProgram.runInterpTest"><code class="docutils literal notranslate"><span class="pre">runInterpTest()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.Tokens">iddl.Tokens module</a><ul>
+<li><a class="reference internal" href="#iddl.Tokens.Token"><code class="docutils literal notranslate"><span class="pre">Token</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Tokens.Token.matches"><code class="docutils literal notranslate"><span class="pre">Token.matches()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl.Translator">iddl.Translator module</a><ul>
+<li><a class="reference internal" href="#iddl.Translator.Translator"><code class="docutils literal notranslate"><span class="pre">Translator</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Translator.Translator.buildTranslation"><code class="docutils literal notranslate"><span class="pre">Translator.buildTranslation()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit"><code class="docutils literal notranslate"><span class="pre">Translator.visit()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.no_visit_method"><code class="docutils literal notranslate"><span class="pre">Translator.no_visit_method()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_LowerNumberNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_LowerNumberNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_UpperNumberNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_UpperNumberNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_SeparatorNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_SeparatorNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_BinOpNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_BinOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_IntervalVarNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_IntervalVarNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_PropOpNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_PropOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_ProgOpNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_ProgOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_BoxPropNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_BoxPropNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_DiamondPropNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_DiamondPropNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_TestProgNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_TestProgNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_ParenthesisNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_ParenthesisNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_CurlyParenthesisNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_CurlyParenthesisNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_ProgDifNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_ProgDifNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_DifferentialVarNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_DifferentialVarNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_NumberNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_NumberNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_UnaryForallOpNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_UnaryForallOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_ZeroAryNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_ZeroAryNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_UnaryOpNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_UnaryOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.visit_UnaryProgOpNode"><code class="docutils literal notranslate"><span class="pre">Translator.visit_UnaryProgOpNode()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.makeUniqueVar"><code class="docutils literal notranslate"><span class="pre">Translator.makeUniqueVar()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.removeRepeated"><code class="docutils literal notranslate"><span class="pre">Translator.removeRepeated()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.Translator.reset"><code class="docutils literal notranslate"><span class="pre">Translator.reset()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Translator.Number"><code class="docutils literal notranslate"><span class="pre">Number</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Translator.Number.set_pos"><code class="docutils literal notranslate"><span class="pre">Number.set_pos()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Translator.Interval"><code class="docutils literal notranslate"><span class="pre">Interval</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Translator.Interval.set_pos"><code class="docutils literal notranslate"><span class="pre">Interval.set_pos()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Translator.TranslatedInterval"><code class="docutils literal notranslate"><span class="pre">TranslatedInterval</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Translator.TranslatedInterval.set_pos"><code class="docutils literal notranslate"><span class="pre">TranslatedInterval.set_pos()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.TranslatedInterval.set_lims"><code class="docutils literal notranslate"><span class="pre">TranslatedInterval.set_lims()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iddl.Translator.RTResult"><code class="docutils literal notranslate"><span class="pre">RTResult</span></code></a><ul>
+<li><a class="reference internal" href="#iddl.Translator.RTResult.register"><code class="docutils literal notranslate"><span class="pre">RTResult.register()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.RTResult.success"><code class="docutils literal notranslate"><span class="pre">RTResult.success()</span></code></a></li>
+<li><a class="reference internal" href="#iddl.Translator.RTResult.failure"><code class="docutils literal notranslate"><span class="pre">RTResult.failure()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-iddl">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/responsiveSvg.js"></script>
+    </body>
+</html>

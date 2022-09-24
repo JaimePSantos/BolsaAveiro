@@ -1,0 +1,709 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+
+    <meta name="generator" content="sphinx-5.2.0, furo 2022.09.15"/>
+        <title>gui package - idDL2DL</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --color-content-foreground: #000000;
+  --color-background-primary: #ffffff;
+  --color-background-border: #ffffff;
+  --color-sidebar-background: #f8f9fb;
+  --color-brand-content: #1c00e3;
+  --color-brand-primary: #192bd0;
+  --color-link: #c93434;
+  --color-link--hover: #5b0000;
+  --color-inline-code-background: #f6f6f6;;
+  --color-foreground-secondary: #000;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-content-foreground: #ffffffd9;
+  --color-background-primary: #131416;
+  --color-background-border: #303335;
+  --color-sidebar-background: #1a1c1e;
+  --color-brand-content: #2196f3;
+  --color-brand-primary: #007fff;
+  --color-link: #51ba86;
+  --color-link--hover: #9cefc6;
+  --color-inline-code-background: #262626;
+  --color-foreground-secondary: #ffffffd9;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-content-foreground: #ffffffd9;
+  --color-background-primary: #131416;
+  --color-background-border: #303335;
+  --color-sidebar-background: #1a1c1e;
+  --color-brand-content: #2196f3;
+  --color-brand-primary: #007fff;
+  --color-link: #51ba86;
+  --color-link--hover: #9cefc6;
+  --color-inline-code-background: #262626;
+  --color-foreground-secondary: #ffffffd9;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">idDL2DL</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">idDL2DL</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="gui-package">
+<h1>gui package<a class="headerlink" href="#gui-package" title="Permalink to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="module-gui.BasicTranslationFrame">
+<span id="gui-basictranslationframe-module"></span><h2>gui.BasicTranslationFrame module<a class="headerlink" href="#module-gui.BasicTranslationFrame" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BasicTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gui.NotePage.BasicNotepage" title="gui.NotePage.BasicNotepage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicNotepage</span></code></a></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.BuildPage">
+<span class="sig-name descname"><span class="pre">BuildPage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.BuildPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.BuildPage" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.saveAs">
+<span class="sig-name descname"><span class="pre">saveAs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.saveAs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.saveAs" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.saveMultipleFiles">
+<span class="sig-name descname"><span class="pre">saveMultipleFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.saveMultipleFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.saveMultipleFiles" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.translate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">btn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.clear" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.copyToClipboard">
+<span class="sig-name descname"><span class="pre">copyToClipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.copyToClipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.copyToClipboard" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.runTranslation">
+<span class="sig-name descname"><span class="pre">runTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.runTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.runTranslation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.BasicTranslationFrame.BasicTranslation.runMultipleTranslations">
+<span class="sig-name descname"><span class="pre">runMultipleTranslations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/BasicTranslationFrame.html#BasicTranslation.runMultipleTranslations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.BasicTranslationFrame.BasicTranslation.runMultipleTranslations" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.FileFrame">
+<span id="gui-fileframe-module"></span><h2>gui.FileFrame module<a class="headerlink" href="#module-gui.FileFrame" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FileTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gui.NotePage.BasicNotepage" title="gui.NotePage.BasicNotepage"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicNotepage</span></code></a></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.BuildPage">
+<span class="sig-name descname"><span class="pre">BuildPage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.BuildPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.BuildPage" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.saveAs">
+<span class="sig-name descname"><span class="pre">saveAs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.saveAs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.saveAs" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.saveMultipleFiles">
+<span class="sig-name descname"><span class="pre">saveMultipleFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.saveMultipleFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.saveMultipleFiles" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.openFile">
+<span class="sig-name descname"><span class="pre">openFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.openFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.openFile" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.translate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.interpOn">
+<span class="sig-name descname"><span class="pre">interpOn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.interpOn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.interpOn" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.interpret">
+<span class="sig-name descname"><span class="pre">interpret</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.interpret"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.interpret" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">btn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.clear" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.copyToClipboard">
+<span class="sig-name descname"><span class="pre">copyToClipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.copyToClipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.copyToClipboard" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.runTranslation">
+<span class="sig-name descname"><span class="pre">runTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.runTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.runTranslation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.clearInput">
+<span class="sig-name descname"><span class="pre">clearInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.clearInput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.clearInput" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.getHistory">
+<span class="sig-name descname"><span class="pre">getHistory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.getHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.getHistory" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.clearHistory">
+<span class="sig-name descname"><span class="pre">clearHistory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.clearHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.clearHistory" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.runMultipleTranslations">
+<span class="sig-name descname"><span class="pre">runMultipleTranslations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.runMultipleTranslations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.runMultipleTranslations" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.runMultipleInterpretations">
+<span class="sig-name descname"><span class="pre">runMultipleInterpretations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.runMultipleInterpretations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.runMultipleInterpretations" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.FileFrame.FileTranslation.setTranslationHistory">
+<span class="sig-name descname"><span class="pre">setTranslationHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translationHistory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/FileFrame.html#FileTranslation.setTranslationHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.FileFrame.FileTranslation.setTranslationHistory" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.HistoryFrame">
+<span id="gui-historyframe-module"></span><h2>gui.HistoryFrame module<a class="headerlink" href="#module-gui.HistoryFrame" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HistoryTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gui.HistoryNotepage.HistoryNotepage" title="gui.HistoryNotepage.HistoryNotepage"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryNotepage</span></code></a></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.BuildPage">
+<span class="sig-name descname"><span class="pre">BuildPage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.BuildPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.BuildPage" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.refreshHistory">
+<span class="sig-name descname"><span class="pre">refreshHistory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.refreshHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.refreshHistory" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.clearHistory">
+<span class="sig-name descname"><span class="pre">clearHistory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.clearHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.clearHistory" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.selectItem">
+<span class="sig-name descname"><span class="pre">selectItem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.selectItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.selectItem" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.showTranslation">
+<span class="sig-name descname"><span class="pre">showTranslation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.showTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.showTranslation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.listboxCopy">
+<span class="sig-name descname"><span class="pre">listboxCopy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.listboxCopy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.listboxCopy" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryFrame.HistoryTranslation.setFileTranslation">
+<span class="sig-name descname"><span class="pre">setFileTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileTranslation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryFrame.html#HistoryTranslation.setFileTranslation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryFrame.HistoryTranslation.setFileTranslation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.HistoryNotepage">
+<span id="gui-historynotepage-module"></span><h2>gui.HistoryNotepage module<a class="headerlink" href="#module-gui.HistoryNotepage" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.HistoryNotepage.HistoryNotepage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HistoryNotepage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryNotepage.html#HistoryNotepage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryNotepage.HistoryNotepage" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryNotepage.HistoryNotepage.BuildPage">
+<span class="sig-name descname"><span class="pre">BuildPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileTranslation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryNotepage.html#HistoryNotepage.BuildPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryNotepage.HistoryNotepage.BuildPage" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryNotepage.HistoryNotepage.SomethingChanged">
+<span class="sig-name descname"><span class="pre">SomethingChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryNotepage.html#HistoryNotepage.SomethingChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryNotepage.HistoryNotepage.SomethingChanged" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.HistoryNotepage.HistoryNotepage.SaveChanges">
+<span class="sig-name descname"><span class="pre">SaveChanges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/HistoryNotepage.html#HistoryNotepage.SaveChanges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.HistoryNotepage.HistoryNotepage.SaveChanges" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.IntervalInterface">
+<span id="gui-intervalinterface-module"></span><h2>gui.IntervalInterface module<a class="headerlink" href="#module-gui.IntervalInterface" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.IntervalInterface.IntervalInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IntervalInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/IntervalInterface.html#IntervalInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.IntervalInterface.IntervalInterface" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.IntervalInterface.IntervalInterface.quitProgram">
+<span class="sig-name descname"><span class="pre">quitProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/IntervalInterface.html#IntervalInterface.quitProgram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.IntervalInterface.IntervalInterface.quitProgram" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.IntervalInterface.IntervalInterface.intervalLangDocs">
+<span class="sig-name descname"><span class="pre">intervalLangDocs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/IntervalInterface.html#IntervalInterface.intervalLangDocs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.IntervalInterface.IntervalInterface.intervalLangDocs" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.IntervalInterface.IntervalInterface.intervalLangInstruct">
+<span class="sig-name descname"><span class="pre">intervalLangInstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/IntervalInterface.html#IntervalInterface.intervalLangInstruct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.IntervalInterface.IntervalInterface.intervalLangInstruct" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.NotePage">
+<span id="gui-notepage-module"></span><h2>gui.NotePage module<a class="headerlink" href="#module-gui.NotePage" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.NotePage.BasicNotepage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BasicNotepage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colconfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/NotePage.html#BasicNotepage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.NotePage.BasicNotepage" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.NotePage.BasicNotepage.BuildPage">
+<span class="sig-name descname"><span class="pre">BuildPage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/NotePage.html#BasicNotepage.BuildPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.NotePage.BasicNotepage.BuildPage" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.NotePage.BasicNotepage.SomethingChanged">
+<span class="sig-name descname"><span class="pre">SomethingChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/NotePage.html#BasicNotepage.SomethingChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.NotePage.BasicNotepage.SomethingChanged" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.NotePage.BasicNotepage.SaveChanges">
+<span class="sig-name descname"><span class="pre">SaveChanges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/NotePage.html#BasicNotepage.SaveChanges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.NotePage.BasicNotepage.SaveChanges" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.Tools">
+<span id="gui-tools-module"></span><h2>gui.Tools module<a class="headerlink" href="#module-gui.Tools" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.UnderConstruction">
+<span class="sig-name descname"><span class="pre">UnderConstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#UnderConstruction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.UnderConstruction" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myLabelFrame">
+<span class="sig-name descname"><span class="pre">myLabelFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEWS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">py</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(5,</span> <span class="pre">5,</span> <span class="pre">5,</span> <span class="pre">5)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myLabelFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myLabelFrame" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myEntryFrame">
+<span class="sig-name descname"><span class="pre">myEntryFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pady</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlightthickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlightbackground</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlightcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myEntryFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myEntryFrame" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myTextFrame">
+<span class="sig-name descname"><span class="pre">myTextFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscrollcommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xscrollcommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pady</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myTextFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myTextFrame" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myListBoxFrame">
+<span class="sig-name descname"><span class="pre">myListBoxFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscrollcommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xscrollcommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myListBoxFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myListBoxFrame" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myButton">
+<span class="sig-name descname"><span class="pre">myButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sticky</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relief</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pady</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myButton" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myScrollBar">
+<span class="sig-name descname"><span class="pre">myScrollBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vertical'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columnspan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myScrollBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myScrollBar" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myFrame">
+<span class="sig-name descname"><span class="pre">myFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myFrame" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.Tools.myCheckButton">
+<span class="sig-name descname"><span class="pre">myCheckButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sticky</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relief</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pady</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/Tools.html#myCheckButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.Tools.myCheckButton" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-gui">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gui" title="Permalink to this heading">#</a></h2>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Jaime Santos, Daniel Figueiredo, Alexandre Madeira
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">gui package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-gui.BasicTranslationFrame">gui.BasicTranslationFrame module</a><ul>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation"><code class="docutils literal notranslate"><span class="pre">BasicTranslation</span></code></a><ul>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.BuildPage"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.BuildPage()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.saveAs"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.saveAs()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.saveMultipleFiles"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.saveMultipleFiles()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.translate"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.translate()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.clear"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.clear()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.copyToClipboard"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.copyToClipboard()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.runTranslation"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.runTranslation()</span></code></a></li>
+<li><a class="reference internal" href="#gui.BasicTranslationFrame.BasicTranslation.runMultipleTranslations"><code class="docutils literal notranslate"><span class="pre">BasicTranslation.runMultipleTranslations()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui.FileFrame">gui.FileFrame module</a><ul>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation"><code class="docutils literal notranslate"><span class="pre">FileTranslation</span></code></a><ul>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.BuildPage"><code class="docutils literal notranslate"><span class="pre">FileTranslation.BuildPage()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.saveAs"><code class="docutils literal notranslate"><span class="pre">FileTranslation.saveAs()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.saveMultipleFiles"><code class="docutils literal notranslate"><span class="pre">FileTranslation.saveMultipleFiles()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.openFile"><code class="docutils literal notranslate"><span class="pre">FileTranslation.openFile()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.translate"><code class="docutils literal notranslate"><span class="pre">FileTranslation.translate()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.interpOn"><code class="docutils literal notranslate"><span class="pre">FileTranslation.interpOn()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.interpret"><code class="docutils literal notranslate"><span class="pre">FileTranslation.interpret()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.clear"><code class="docutils literal notranslate"><span class="pre">FileTranslation.clear()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.copyToClipboard"><code class="docutils literal notranslate"><span class="pre">FileTranslation.copyToClipboard()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.runTranslation"><code class="docutils literal notranslate"><span class="pre">FileTranslation.runTranslation()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.clearInput"><code class="docutils literal notranslate"><span class="pre">FileTranslation.clearInput()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.getHistory"><code class="docutils literal notranslate"><span class="pre">FileTranslation.getHistory()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.clearHistory"><code class="docutils literal notranslate"><span class="pre">FileTranslation.clearHistory()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.runMultipleTranslations"><code class="docutils literal notranslate"><span class="pre">FileTranslation.runMultipleTranslations()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.runMultipleInterpretations"><code class="docutils literal notranslate"><span class="pre">FileTranslation.runMultipleInterpretations()</span></code></a></li>
+<li><a class="reference internal" href="#gui.FileFrame.FileTranslation.setTranslationHistory"><code class="docutils literal notranslate"><span class="pre">FileTranslation.setTranslationHistory()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui.HistoryFrame">gui.HistoryFrame module</a><ul>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation</span></code></a><ul>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.BuildPage"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.BuildPage()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.refreshHistory"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.refreshHistory()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.clearHistory"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.clearHistory()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.selectItem"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.selectItem()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.showTranslation"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.showTranslation()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.listboxCopy"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.listboxCopy()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryFrame.HistoryTranslation.setFileTranslation"><code class="docutils literal notranslate"><span class="pre">HistoryTranslation.setFileTranslation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui.HistoryNotepage">gui.HistoryNotepage module</a><ul>
+<li><a class="reference internal" href="#gui.HistoryNotepage.HistoryNotepage"><code class="docutils literal notranslate"><span class="pre">HistoryNotepage</span></code></a><ul>
+<li><a class="reference internal" href="#gui.HistoryNotepage.HistoryNotepage.BuildPage"><code class="docutils literal notranslate"><span class="pre">HistoryNotepage.BuildPage()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryNotepage.HistoryNotepage.SomethingChanged"><code class="docutils literal notranslate"><span class="pre">HistoryNotepage.SomethingChanged()</span></code></a></li>
+<li><a class="reference internal" href="#gui.HistoryNotepage.HistoryNotepage.SaveChanges"><code class="docutils literal notranslate"><span class="pre">HistoryNotepage.SaveChanges()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui.IntervalInterface">gui.IntervalInterface module</a><ul>
+<li><a class="reference internal" href="#gui.IntervalInterface.IntervalInterface"><code class="docutils literal notranslate"><span class="pre">IntervalInterface</span></code></a><ul>
+<li><a class="reference internal" href="#gui.IntervalInterface.IntervalInterface.quitProgram"><code class="docutils literal notranslate"><span class="pre">IntervalInterface.quitProgram()</span></code></a></li>
+<li><a class="reference internal" href="#gui.IntervalInterface.IntervalInterface.intervalLangDocs"><code class="docutils literal notranslate"><span class="pre">IntervalInterface.intervalLangDocs()</span></code></a></li>
+<li><a class="reference internal" href="#gui.IntervalInterface.IntervalInterface.intervalLangInstruct"><code class="docutils literal notranslate"><span class="pre">IntervalInterface.intervalLangInstruct()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui.NotePage">gui.NotePage module</a><ul>
+<li><a class="reference internal" href="#gui.NotePage.BasicNotepage"><code class="docutils literal notranslate"><span class="pre">BasicNotepage</span></code></a><ul>
+<li><a class="reference internal" href="#gui.NotePage.BasicNotepage.BuildPage"><code class="docutils literal notranslate"><span class="pre">BasicNotepage.BuildPage()</span></code></a></li>
+<li><a class="reference internal" href="#gui.NotePage.BasicNotepage.SomethingChanged"><code class="docutils literal notranslate"><span class="pre">BasicNotepage.SomethingChanged()</span></code></a></li>
+<li><a class="reference internal" href="#gui.NotePage.BasicNotepage.SaveChanges"><code class="docutils literal notranslate"><span class="pre">BasicNotepage.SaveChanges()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui.Tools">gui.Tools module</a><ul>
+<li><a class="reference internal" href="#gui.Tools.UnderConstruction"><code class="docutils literal notranslate"><span class="pre">UnderConstruction()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myLabelFrame"><code class="docutils literal notranslate"><span class="pre">myLabelFrame()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myEntryFrame"><code class="docutils literal notranslate"><span class="pre">myEntryFrame()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myTextFrame"><code class="docutils literal notranslate"><span class="pre">myTextFrame()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myListBoxFrame"><code class="docutils literal notranslate"><span class="pre">myListBoxFrame()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myButton"><code class="docutils literal notranslate"><span class="pre">myButton()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myScrollBar"><code class="docutils literal notranslate"><span class="pre">myScrollBar()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myFrame"><code class="docutils literal notranslate"><span class="pre">myFrame()</span></code></a></li>
+<li><a class="reference internal" href="#gui.Tools.myCheckButton"><code class="docutils literal notranslate"><span class="pre">myCheckButton()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-gui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/responsiveSvg.js"></script>
+    </body>
+</html>
