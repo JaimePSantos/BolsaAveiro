@@ -3,7 +3,7 @@ import os
 import sys
 import tkinter as tk
 
-from NotePage import BasicNotepage
+from gui.NotePage import BasicNotepage
 from gui.Tools import myLabelFrame, myButton, myTextFrame, myScrollBar, myFrame
 
 sys.path.append('../idDL2DL/')
