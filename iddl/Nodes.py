@@ -68,6 +68,7 @@ class SeparatorNode:
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
+
 class SeparatorNode2:
     def __init__(self, left_node, op_tok, right_node):
         self.left_node = left_node
@@ -160,6 +161,7 @@ class ParenthesisNode:
         else:
             return f'({elementStr})'
 
+
 class IntervalNode:
     def __init__(
             self,
@@ -180,6 +182,7 @@ class IntervalNode:
             return f'(({elementStr}){zAryElementStr})'
         else:
             return f'({elementStr})'
+
 
 class CurlyParenthesisNode:
     def __init__(

@@ -193,20 +193,24 @@ class Parser:
                 minusTok = self.current_tok
                 self.advance()
                 if self.current_tok.type == TT_INT or self.current_tok.type == TT_FLOAT:
-                    success = res.success(LowerNumberNode(minusTok + self.current_tok))
+                    success = res.success(
+                        LowerNumberNode(
+                            minusTok + self.current_tok))
                 else:
-                    return res.failure(InvalidSyntaxError(
-                        self.current_tok.pos_start, self.current_tok.pos_end,
-                        f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."
-                    ))
+                    return res.failure(
+                        InvalidSyntaxError(
+                            self.current_tok.pos_start,
+                            self.current_tok.pos_end,
+                            f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."))
             elif self.current_tok.type == TT_INT or self.current_tok.type == TT_FLOAT:
                 success = res.success(LowerNumberNode(self.current_tok))
 
             else:
-                return res.failure(InvalidSyntaxError(
-                    self.current_tok.pos_start, self.current_tok.pos_end,
-                    f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."
-                ))
+                return res.failure(
+                    InvalidSyntaxError(
+                        self.current_tok.pos_start,
+                        self.current_tok.pos_end,
+                        f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."))
             res.register_advancement()
             self.advance()
             return success
@@ -333,10 +337,11 @@ class Parser:
                         self.current_tok.pos_end,
                         "Expected '{[' , '}]' , 'VAR', '+', '(', 'NOT', '}>' or '<{"))
         if self.current_tok.type != secondWrapperToken and self.current_tok.type != TT_NDREP:
-            return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
-                f"{str(node)}: Expected ',' or '{str(secondWrapperToken)}' but got {self.current_tok}"
-            ))
+            return res.failure(
+                InvalidSyntaxError(
+                    self.current_tok.pos_start,
+                    self.current_tok.pos_end,
+                    f"{str(node)}: Expected ',' or '{str(secondWrapperToken)}' but got {self.current_tok}"))
         elif (self.current_tok.type == secondWrapperToken) and (
                 secondWrapperToken == TT_RBOX or secondWrapperToken == TT_RDIAMOND):
             self.advance()

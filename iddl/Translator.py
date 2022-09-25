@@ -152,7 +152,7 @@ class Translator:
         elif node.op_tok.matches(TT_KEYWORD, 'IN'):
             translatedOpTok = '  '
         elif node.op_tok.matches(TT_KEYWORD, 'OR'):
-            translatedOpTok = ' ∨ '
+            translatedOpTok = ' | '
         elif node.op_tok.type in (TT_IMPLIES):
             translatedOpTok = ' -> '
         if translatedOpTok != '':

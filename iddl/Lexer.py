@@ -302,7 +302,11 @@ class Lexer:
         if self.current_char == '>':
             self.advance()
             tok_type = TT_IMPLIES
-        return Token(tok_type,value='-', pos_start=pos_start, pos_end=self.pos)
+        return Token(
+            tok_type,
+            value='-',
+            pos_start=pos_start,
+            pos_end=self.pos)
 
     def makeAsterisk(self):
         tok_type = TT_INTERVALMULT
