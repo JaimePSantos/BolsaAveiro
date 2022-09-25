@@ -67,7 +67,7 @@ class Token:
             return f'{self.type}:{self.value}'
         return f'{self.type}'
 
-    def __add__(self,other):
-        value = eval(str(self.value)+str(other.value))
+    def __add__(self, other):
+        value = eval(str(self.value) + str(other.value))
         type = self.type + "_" + other.type
-        return Token(type, value,self.pos_start,self.pos_end)
+        return Token(type, value, self.pos_start, self.pos_end)

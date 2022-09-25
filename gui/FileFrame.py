@@ -38,7 +38,7 @@ class FileTranslation(BasicNotepage):
             height=13,
             stick='W',
             colspan=1,
-            font = ('Arial',16))
+            font=('Arial', 16))
         self.scrollBar = myScrollBar(
             txtFrame, row=0, col=100, stick='ns')
         self.loadedText.config(yscrollcommand=self.scrollBar.set)
@@ -285,7 +285,7 @@ class FileTranslation(BasicNotepage):
         if inputs == "":
             transList.append("Please enter an expression to convert.")
         else:
-            if(self.interpVar.get() == 1):
+            if (self.interpVar.get() == 1):
                 transList = self.runMultipleInterpretations(inputs)
             else:
                 transList = self.runMultipleTranslations(inputs)

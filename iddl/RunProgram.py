@@ -46,14 +46,14 @@ def run(fn, input):
     # print(f"First tokens->{tokens}")
     if error:
         return None, error
-    print("\nLEXER:\t %s\n"%tokens)
+    print("\nLEXER:\t %s\n" % tokens)
 
     parser = Parser(tokens)
     ast = parser.parse()
     if ast.error:
         return ast.error
-    print("PARSER:\t %s\n"%ast.node)
-    print("PARSER:\t %s\n"%type(ast.node))
+    print("PARSER:\t %s\n" % ast.node)
+    print("PARSER:\t %s\n" % type(ast.node))
 
     translator = Translator()
     translator.reset()
@@ -153,7 +153,7 @@ def run2(fn, input):
     if error2:
         print(error2)
         return None, error2
-    print("\nLEXER:\t %s\n"%tokens2)
+    print("\nLEXER:\t %s\n" % tokens2)
 
     parser2 = Parser(tokens2)
     ast2 = parser2.parse()
@@ -171,6 +171,7 @@ def run2(fn, input):
     # print(printingResults)
 
     return output, None
+
 
 def runTests(input):
     lexer = Lexer("", input)
