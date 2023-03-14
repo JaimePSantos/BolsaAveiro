@@ -469,7 +469,8 @@ class Interval:
             return Interval(min(resultList), max(resultList)), None
 
     def __repr__(self):
-        return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
+        return '[' + str(self.lowerNum) + ',' + \
+            str(self.upperNum) + ']'
 
 
 class NumberList:

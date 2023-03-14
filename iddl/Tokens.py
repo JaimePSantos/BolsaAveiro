@@ -47,7 +47,12 @@ TT_LCURLYBRACK = 'LCURLYBRACK'
 
 
 class Token:
-    def __init__(self, type_, value=None, pos_start=None, pos_end=None):
+    def __init__(
+            self,
+            type_,
+            value=None,
+            pos_start=None,
+            pos_end=None):
         self.type = type_
         self.value = value
 

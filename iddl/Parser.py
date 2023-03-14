@@ -203,7 +203,9 @@ class Parser:
                             self.current_tok.pos_end,
                             f"Expected {TT_INT} or {TT_FLOAT} but got {self.current_tok}."))
             elif self.current_tok.type == TT_INT or self.current_tok.type == TT_FLOAT:
-                success = res.success(LowerNumberNode(self.current_tok))
+                success = res.success(
+                    LowerNumberNode(
+                        self.current_tok))
 
             else:
                 return res.failure(
@@ -253,7 +255,9 @@ class Parser:
             self.advance()
             return success
         elif self.current_tok.type in TT_IDENTIFIERDIF:
-            success = res.success(DifferentialVarNode(self.current_tok))
+            success = res.success(
+                DifferentialVarNode(
+                    self.current_tok))
             if res.error:
                 return res
             res.register_advancement()
