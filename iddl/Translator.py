@@ -82,7 +82,8 @@ class Translator:
             newLower = [int(s) for s in list(lower) if s.isdigit()][0]
             lower = Number(newLower).set_pos(
                 node.pos_start, node.pos_end)
-            interval = TranslatedInterval(lower, upper, uniqueVar, True)
+            interval = TranslatedInterval(
+                lower, upper, uniqueVar, True)
             self.intervalDict[uniqueVar] = interval
         else:
             interval = TranslatedInterval(lower, upper, uniqueVar)
@@ -424,7 +425,8 @@ class Interval:
         return self
 
     def __repr__(self):
-        return '[' + str(self.lowerNum) + ',' + str(self.upperNum) + ']'
+        return '[' + str(self.lowerNum) + ',' + \
+            str(self.upperNum) + ']'
 
 
 class TranslatedInterval:

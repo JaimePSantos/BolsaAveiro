@@ -34,8 +34,8 @@ class Lexer:
         self.pos.advance(self.current_char)
         self.current_char = self.text[self.pos.idx] if self.pos.idx < len(
             self.text) else None
-        self.next_char = self.text[self.pos.idx + \
-            1] if self.pos.idx < len(self.text) - 1 else None
+        self.next_char = self.text[self.pos.idx +
+                                   1] if self.pos.idx < len(self.text) - 1 else None
         self.prev_char = self.text[self.pos.idx -
                                    1] if (self.pos.idx < len(self.text) +
                                           1 and len(self.text) > 0) else None
@@ -62,7 +62,10 @@ class Lexer:
                     return [], error
                 tokens.append(token)
             elif self.current_char == '{':
-                tokens.append(Token(TT_LCURLYBRACK, pos_start=self.pos))
+                tokens.append(
+                    Token(
+                        TT_LCURLYBRACK,
+                        pos_start=self.pos))
                 self.advance()
             elif self.current_char == ',':
                 tokens.append(self.makeComma())
@@ -78,7 +81,10 @@ class Lexer:
             elif self.current_char == '*':
                 tokens.append(self.makeAsterisk())
             elif self.current_char == '/':
-                tokens.append(Token(TT_INTERVALDIV, pos_start=self.pos))
+                tokens.append(
+                    Token(
+                        TT_INTERVALDIV,
+                        pos_start=self.pos))
                 self.advance()
             elif self.current_char == '(':
                 tokens.append(Token(TT_LPAREN, pos_start=self.pos))
@@ -335,4 +341,9 @@ class Position:
         return self
 
     def copy(self):
-        return Position(self.idx, self.ln, self.col, self.fn, self.ftxt)
+        return Position(
+            self.idx,
+            self.ln,
+            self.col,
+            self.fn,
+            self.ftxt)
