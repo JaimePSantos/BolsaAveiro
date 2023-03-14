@@ -97,3 +97,4 @@ It should be as simple as navigating to the cloned project folder and running `p
 `\[{ x := [1,2] ; {x'=x-1} }\] (x>0)`
 ##### Modality - diamond ( <{ .. }> )
 `\<{ x := [1,2] ; y:=[0,1] }\> (x>0 AND  y>=0)`
+

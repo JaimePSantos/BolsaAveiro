@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-from iddl.RunProgram import run, run2, run3,runTranslatorTest,runInterpTest
+from iddl.RunProgram import run, run2, run3, runTranslatorTest, runInterpTest
 import timeit
 
-def timeTest(n,samples):
+
+def timeTest(n, samples):
     str = "[1,1]*[1,1]"
     str2 = "+ [1,1]/[1,1]"
     interpTime = 0
@@ -34,7 +35,8 @@ def timeTest(n,samples):
         translTime = 0
         interpTime = 0
         print(f"\n#######length length {n}#######\n")
-    return translatorList,interpList
+    return translatorList, interpList
+
 
 n = 300
 samples = 100
@@ -45,7 +47,7 @@ samples = 100
 #     f.write(f"{interpList}\n\n")
 
 
-with open("testTime.txt","r") as f:
+with open("testTime.txt", "r") as f:
     output = list(line for line in (l.strip() for l in f) if line)
 
 print(output)
@@ -62,13 +64,26 @@ font = {'family': 'sans-serif',
         'size': 12}
 plt.rc('font', **font)
 
-x_range = range(1, len(translatorList) +1)
-print(list(range(1, len(translatorList) + 2,50)))
+x_range = range(1, len(translatorList) + 1)
+print(list(range(1, len(translatorList) + 2, 50)))
 
 
-plt.plot(x_range,translatorList,label='Interpreter Off', linewidth=1.5,color='blue',)
-plt.plot(x_range,interpList,label='Interpreter On', linestyle='-.', linewidth=1.5, color='red',)
-plt.xticks(range(1, len(translatorList) + 2,50))
+plt.plot(
+    x_range,
+    translatorList,
+    label='Interpreter Off',
+    linewidth=1.5,
+    color='blue',
+)
+plt.plot(
+    x_range,
+    interpList,
+    label='Interpreter On',
+    linestyle='-.',
+    linewidth=1.5,
+    color='red',
+)
+plt.xticks(range(1, len(translatorList) + 2, 50))
 plt.xlabel("Number of nodes")
 plt.ylabel("Execution Time (s)")
 plt.legend()
